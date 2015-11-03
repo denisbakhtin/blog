@@ -1,0 +1,4 @@
+config/config.json
+git_save
+blog
+*.rice-box.go
