@@ -8,6 +8,7 @@ import (
 	"github.com/claudiu/gocron"
 	"github.com/denisbakhtin/blog/controllers"
 	"github.com/denisbakhtin/blog/system"
+	_ "github.com/gorilla/csrf"
 	"golang.org/x/net/context"
 )
 
@@ -67,7 +68,10 @@ func main() {
 
 	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public")))) //styles, js, images
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	//TODO: set csrf.Secure(true) for release mode if ssl is available
+	//CSRF := csrf.Protect([]byte("32-byte-long-auth-key"), csrf.Secure(false))
+	//log.Fatal(http.ListenAndServe(":8080", CSRF(http.DefaultServeMux)))
+	log.Fatal(http.ListenAndServe(":8080", http.DefaultServeMux))
 }
 
 //Default executes default middleware chain for a HandlerFunc

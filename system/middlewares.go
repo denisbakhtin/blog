@@ -24,7 +24,8 @@ type CtxHandlerFunc func(context.Context, http.ResponseWriter, *http.Request)
 
 func createSession() {
 	store = sessions.NewFilesystemStore("", []byte(config.SessionSecret))
-	store.Options = &sessions.Options{HttpOnly: true, MaxAge: 7 * 86400} //Also set Secure: true if using SSL, you should though
+	//TODO: set Secure: true in release mode when ssl is available
+	store.Options = &sessions.Options{HttpOnly: true, MaxAge: 7 * 86400}
 }
 
 //ServeHTTPCtx makes CtxHandlerFunc implement CtxHandler interface

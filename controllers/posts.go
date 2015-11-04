@@ -8,6 +8,7 @@ import (
 
 	"github.com/denisbakhtin/blog/helpers"
 	"github.com/denisbakhtin/blog/models"
+	"github.com/gorilla/csrf"
 	"github.com/gorilla/sessions"
 	"golang.org/x/net/context"
 	"gopkg.in/guregu/null.v3"
@@ -137,6 +138,7 @@ func PostUpdate(ctx context.Context, w http.ResponseWriter, r *http.Request) {
 		data["Post"] = post
 		data["Tags"] = tags
 		data["Flash"] = session.Flashes()
+		data[csrf.TemplateTag] = csrf.TemplateField(r)
 		session.Save(r, w)
 		tmpl.Lookup("posts/form").Execute(w, data)
 

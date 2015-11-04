@@ -1,4 +1,4 @@
-GIN-powered blog boilerplate
+Blog boilerplate
 ===============
 
 Provides essentials that most web blogs need - MVC pattern, user authorisation, SQL db migration, admin dashboard, javascript form validation, rss feeds, etc. 
@@ -17,10 +17,10 @@ It consists of the following core components:
 - RSS feeds - https://github.com/gorilla/feeds
 - sitemap - XML sitemap for search engines - https://github.com/denisbakhtin/sitemap 
 - gocron - periodic task launcher (for sitemap generation, etc) - https://github.com/jasonlvhit/gocron
+- sql-migrate - SQL schema migration tool - https://github.com/rubenv/sql-migrate
 
 # TODO
 - csrf - gorilla csrf - https://github.com/gorilla/csrf
-- gomigrate - SQL schema migration tool - https://github.com/DavidHuie/gomigrate
 
 - Site search with Postgresql full text search (okish for most websites) - http://www.postgresql.org/docs/9.4/static/textsearch-intro.html
 - Comments with oauth2 authentication
