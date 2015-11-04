@@ -20,6 +20,8 @@ type Config struct {
 	Public        string `json:"public"`
 	Domain        string `json:"domain"`
 	SessionSecret string `json:"session_secret"`
+	CsrfSecret    string `json:"csrf_secret"`
+	Ssl           bool   `json:"ssl"`
 	SignupEnabled bool   `json:"signup_enabled"` //always set to false in release mode (config.json)
 	Database      DatabaseConfig
 }

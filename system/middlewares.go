@@ -15,8 +15,7 @@ var (
 
 func createSession() {
 	store = sessions.NewFilesystemStore("", []byte(config.SessionSecret))
-	//TODO: set Secure: true in release mode when ssl is available
-	store.Options = &sessions.Options{HttpOnly: true, MaxAge: 7 * 86400}
+	store.Options = &sessions.Options{Secure: config.Ssl, HttpOnly: true, MaxAge: 7 * 86400}
 }
 
 //SessionMiddleware creates gorilla session and stores it in context

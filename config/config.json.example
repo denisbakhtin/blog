@@ -3,6 +3,8 @@
     "public": "public",
     "domain": "http://localhost:8080",
     "session_secret": "session-secret-phrase",
+    "csrf_secret": "csrf-secret-phrase",
+    "ssl": false,
     "signup_enabled": true,
     "database": {
       "host": "192.168.0.1",
@@ -15,6 +17,8 @@
     "public": "path_to_public_dir",
     "domain": "http://mydomain.com",
     "session_secret": "session-secret-phrase",
+    "csrf_secret": "csrf-secret-phrase",
+    "ssl": true,
     "signup_enabled": false, 
     "database": {
       "host": "192.168.0.1",
@@ -27,6 +31,8 @@
     "public": "public",
     "domain": "http://localhost:8080",
     "session_secret": "session-secret-phrase",
+    "csrf_secret": "csrf-secret-phrase",
+    "ssl": false,
     "signup_enabled": true,
     "database": {
       "host": "192.168.0.1",
