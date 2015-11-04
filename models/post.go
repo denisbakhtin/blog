@@ -132,10 +132,7 @@ func GetPost(id interface{}) (*Post, error) {
 	if err != nil {
 		return post, err
 	}
-	err = db.Get(&post.Author, "SELECT id,name FROM users WHERE id=$1", post.UserID)
-	if err != nil {
-		return post, err
-	}
+	_ = db.Get(&post.Author, "SELECT id,name FROM users WHERE id=$1", post.UserID) //author may be removed
 	err = db.Select(&post.Tags, "SELECT name FROM tags WHERE EXISTS (SELECT null FROM poststags WHERE post_id=$1 AND tag_name=tags.name)", id)
 	return post, err
 }

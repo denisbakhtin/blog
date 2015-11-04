@@ -27,12 +27,6 @@ It consists of the following core components:
 - Social plugins (share, like buttons)
 - Auto posting previews to social walls
 
-# Screenshots
-## Home page
-## Dashboard
-## Markdown editor
-## Fancy 404, 405, 500 error pages
-
 # Usage
 ```
 git clone https://github.com/denisbakhtin/blog.git
@@ -41,9 +35,8 @@ go get .
 ```
 Copy sample config `cp config/config.json.example config/config.json`, create postgresql database, modify config/config.json accordingly.
 
-Type `go run main.go -migrate=up` to create users and pages tables.
-
-`go run main.go` to launch web server.
+Use `go run main.go -migrate=up` to apply initial database migrations.
+`go run main.go` to launch web server. Or if you have https://github.com/cespare/reflex installed `make debug`.
 
 # Deployment
 ```
