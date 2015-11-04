@@ -9,7 +9,6 @@ import (
 	"github.com/denisbakhtin/blog/controllers"
 	"github.com/denisbakhtin/blog/system"
 	_ "github.com/gorilla/csrf"
-	"golang.org/x/net/context"
 )
 
 func main() {
@@ -75,27 +74,25 @@ func main() {
 }
 
 //Default executes default middleware chain for a HandlerFunc
-func Default(fn func(context.Context, http.ResponseWriter, *http.Request)) http.Handler {
+func Default(fn func(http.ResponseWriter, *http.Request)) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		ctx := context.WithValue(context.Background(), "msg", "Hello, bunny")
 		system.SessionMiddleware(
 			system.TemplateMiddleware(
-				system.DataMiddleware(system.CtxHandlerFunc(fn)),
+				system.DataMiddleware(http.HandlerFunc(fn)),
 			),
-		).ServeHTTPCtx(ctx, w, r)
+		).ServeHTTP(w, r)
 	})
 }
 
 //DefaultRestricted executes default + restriced middleware chain for a HandlerFunc
-func DefaultRestricted(fn func(context.Context, http.ResponseWriter, *http.Request)) http.Handler {
+func DefaultRestricted(fn func(http.ResponseWriter, *http.Request)) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		ctx := context.WithValue(context.Background(), "msg", "Hello, bunny")
 		system.SessionMiddleware(
 			system.TemplateMiddleware(
 				system.DataMiddleware(
-					system.RestrictedMiddleware(system.CtxHandlerFunc(fn)),
+					system.RestrictedMiddleware(http.HandlerFunc(fn)),
 				),
 			),
-		).ServeHTTPCtx(ctx, w, r)
+		).ServeHTTP(w, r)
 	})
 }

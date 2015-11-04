@@ -11,13 +11,13 @@ import (
 
 	"github.com/denisbakhtin/blog/helpers"
 	"github.com/denisbakhtin/blog/models"
-	"golang.org/x/net/context"
+	"github.com/gorilla/context"
 )
 
 //ArchiveShow handles GET /archives/:year-:month route
-func ArchiveShow(ctx context.Context, w http.ResponseWriter, r *http.Request) {
-	tmpl := ctx.Value("template").(*template.Template)
-	data := helpers.DefaultData(ctx)
+func ArchiveShow(w http.ResponseWriter, r *http.Request) {
+	tmpl := context.Get(r, "template").(*template.Template)
+	data := helpers.DefaultData(r)
 	if r.Method == "GET" {
 
 		param := r.URL.Path[len("/archives/"):]

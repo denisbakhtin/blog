@@ -8,16 +8,16 @@ import (
 
 	"github.com/denisbakhtin/blog/helpers"
 	"github.com/denisbakhtin/blog/models"
+	"github.com/gorilla/context"
 	"github.com/gorilla/csrf"
 	"github.com/gorilla/sessions"
-	"golang.org/x/net/context"
 	"gopkg.in/guregu/null.v3"
 )
 
 //PostShow handles GET /posts/:id route
-func PostShow(ctx context.Context, w http.ResponseWriter, r *http.Request) {
-	tmpl := ctx.Value("template").(*template.Template)
-	data := helpers.DefaultData(ctx)
+func PostShow(w http.ResponseWriter, r *http.Request) {
+	tmpl := context.Get(r, "template").(*template.Template)
+	data := helpers.DefaultData(r)
 	if r.Method == "GET" {
 
 		id := r.URL.Path[len("/posts/"):]
@@ -39,9 +39,9 @@ func PostShow(ctx context.Context, w http.ResponseWriter, r *http.Request) {
 }
 
 //PostIndex handles GET /admin/posts route
-func PostIndex(ctx context.Context, w http.ResponseWriter, r *http.Request) {
-	tmpl := ctx.Value("template").(*template.Template)
-	data := helpers.DefaultData(ctx)
+func PostIndex(w http.ResponseWriter, r *http.Request) {
+	tmpl := context.Get(r, "template").(*template.Template)
+	data := helpers.DefaultData(r)
 	if r.Method == "GET" {
 
 		list, err := models.GetPosts()
@@ -64,10 +64,10 @@ func PostIndex(ctx context.Context, w http.ResponseWriter, r *http.Request) {
 }
 
 //PostCreate handles /admin/new_post route
-func PostCreate(ctx context.Context, w http.ResponseWriter, r *http.Request) {
-	tmpl := ctx.Value("template").(*template.Template)
-	session := ctx.Value("session").(*sessions.Session)
-	data := helpers.DefaultData(ctx)
+func PostCreate(w http.ResponseWriter, r *http.Request) {
+	tmpl := context.Get(r, "template").(*template.Template)
+	session := context.Get(r, "session").(*sessions.Session)
+	data := helpers.DefaultData(r)
 	if r.Method == "GET" {
 
 		tags, err := models.GetTags()
@@ -93,7 +93,7 @@ func PostCreate(ctx context.Context, w http.ResponseWriter, r *http.Request) {
 			Tags:        r.Form["tags"], //PostFormValue returns only first value
 		}
 
-		if user := ctx.Value("user"); user != nil {
+		if user := context.Get(r, "user"); user != nil {
 			post.UserID = null.IntFrom(user.(*models.User).ID)
 		}
 		if err := post.Insert(); err != nil {
@@ -113,10 +113,10 @@ func PostCreate(ctx context.Context, w http.ResponseWriter, r *http.Request) {
 }
 
 //PostUpdate handles /admin/edit_post/:id route
-func PostUpdate(ctx context.Context, w http.ResponseWriter, r *http.Request) {
-	tmpl := ctx.Value("template").(*template.Template)
-	session := ctx.Value("session").(*sessions.Session)
-	data := helpers.DefaultData(ctx)
+func PostUpdate(w http.ResponseWriter, r *http.Request) {
+	tmpl := context.Get(r, "template").(*template.Template)
+	session := context.Get(r, "session").(*sessions.Session)
+	data := helpers.DefaultData(r)
 	if r.Method == "GET" {
 
 		id := r.URL.Path[len("/admin/edit_post/"):]
@@ -170,8 +170,8 @@ func PostUpdate(ctx context.Context, w http.ResponseWriter, r *http.Request) {
 }
 
 //PostDelete handles /admin/delete_post route
-func PostDelete(ctx context.Context, w http.ResponseWriter, r *http.Request) {
-	tmpl := ctx.Value("template").(*template.Template)
+func PostDelete(w http.ResponseWriter, r *http.Request) {
+	tmpl := context.Get(r, "template").(*template.Template)
 
 	if r.Method == "POST" {
 

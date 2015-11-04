@@ -4,13 +4,13 @@ import (
 	"net/http"
 
 	"github.com/denisbakhtin/blog/helpers"
-	"golang.org/x/net/context"
+	"github.com/gorilla/context"
 	"html/template"
 )
 
 //Home handles GET / route
-func Home(ctx context.Context, w http.ResponseWriter, r *http.Request) {
-	tmpl, data := ctx.Value("template").(*template.Template), helpers.DefaultData(ctx)
+func Home(w http.ResponseWriter, r *http.Request) {
+	tmpl, data := context.Get(r, "template").(*template.Template), helpers.DefaultData(r)
 	if r.RequestURI != "/" {
 		w.WriteHeader(404)
 		tmpl.Lookup("errors/404").Execute(w, nil)

@@ -8,14 +8,14 @@ import (
 
 	"github.com/denisbakhtin/blog/helpers"
 	"github.com/denisbakhtin/blog/models"
+	"github.com/gorilla/context"
 	"github.com/gorilla/sessions"
-	"golang.org/x/net/context"
 )
 
 //TagShow handles GET /tags/:name route
-func TagShow(ctx context.Context, w http.ResponseWriter, r *http.Request) {
-	tmpl := ctx.Value("template").(*template.Template)
-	data := helpers.DefaultData(ctx)
+func TagShow(w http.ResponseWriter, r *http.Request) {
+	tmpl := context.Get(r, "template").(*template.Template)
+	data := helpers.DefaultData(r)
 	if r.Method == "GET" {
 
 		name := r.URL.Path[len("/tags/"):]
@@ -39,9 +39,9 @@ func TagShow(ctx context.Context, w http.ResponseWriter, r *http.Request) {
 }
 
 //TagIndex handles GET /admin/tags route
-func TagIndex(ctx context.Context, w http.ResponseWriter, r *http.Request) {
-	tmpl := ctx.Value("template").(*template.Template)
-	data := helpers.DefaultData(ctx)
+func TagIndex(w http.ResponseWriter, r *http.Request) {
+	tmpl := context.Get(r, "template").(*template.Template)
+	data := helpers.DefaultData(r)
 	if r.Method == "GET" {
 
 		list, err := models.GetTags()
@@ -64,10 +64,10 @@ func TagIndex(ctx context.Context, w http.ResponseWriter, r *http.Request) {
 }
 
 //TagCreate handles /admin/new_tag route
-func TagCreate(ctx context.Context, w http.ResponseWriter, r *http.Request) {
-	tmpl := ctx.Value("template").(*template.Template)
-	session := ctx.Value("session").(*sessions.Session)
-	data := helpers.DefaultData(ctx)
+func TagCreate(w http.ResponseWriter, r *http.Request) {
+	tmpl := context.Get(r, "template").(*template.Template)
+	session := context.Get(r, "session").(*sessions.Session)
+	data := helpers.DefaultData(r)
 	if r.Method == "GET" {
 
 		data["Title"] = "Create tag"
@@ -99,8 +99,8 @@ func TagCreate(ctx context.Context, w http.ResponseWriter, r *http.Request) {
 }
 
 //TagDelete handles /admin/delete_tag route
-func TagDelete(ctx context.Context, w http.ResponseWriter, r *http.Request) {
-	tmpl := ctx.Value("template").(*template.Template)
+func TagDelete(w http.ResponseWriter, r *http.Request) {
+	tmpl := context.Get(r, "template").(*template.Template)
 
 	if r.Method == "POST" {
 

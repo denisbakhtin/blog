@@ -8,14 +8,14 @@ import (
 
 	"github.com/denisbakhtin/blog/helpers"
 	"github.com/denisbakhtin/blog/models"
+	"github.com/gorilla/context"
 	"github.com/gorilla/sessions"
-	"golang.org/x/net/context"
 )
 
 //PageShow handles /pages/:id route
-func PageShow(ctx context.Context, w http.ResponseWriter, r *http.Request) {
-	tmpl := ctx.Value("template").(*template.Template)
-	data := helpers.DefaultData(ctx)
+func PageShow(w http.ResponseWriter, r *http.Request) {
+	tmpl := context.Get(r, "template").(*template.Template)
+	data := helpers.DefaultData(r)
 	if r.Method == "GET" {
 
 		id := r.URL.Path[len("/pages/"):]
@@ -39,9 +39,9 @@ func PageShow(ctx context.Context, w http.ResponseWriter, r *http.Request) {
 }
 
 //PageIndex handles GET /admin/pages route
-func PageIndex(ctx context.Context, w http.ResponseWriter, r *http.Request) {
-	tmpl := ctx.Value("template").(*template.Template)
-	data := helpers.DefaultData(ctx)
+func PageIndex(w http.ResponseWriter, r *http.Request) {
+	tmpl := context.Get(r, "template").(*template.Template)
+	data := helpers.DefaultData(r)
 	if r.Method == "GET" {
 
 		list, err := models.GetPages()
@@ -64,10 +64,10 @@ func PageIndex(ctx context.Context, w http.ResponseWriter, r *http.Request) {
 }
 
 //PageCreate handles /admin/new_page route
-func PageCreate(ctx context.Context, w http.ResponseWriter, r *http.Request) {
-	tmpl := ctx.Value("template").(*template.Template)
-	session := ctx.Value("session").(*sessions.Session)
-	data := helpers.DefaultData(ctx)
+func PageCreate(w http.ResponseWriter, r *http.Request) {
+	tmpl := context.Get(r, "template").(*template.Template)
+	session := context.Get(r, "session").(*sessions.Session)
+	data := helpers.DefaultData(r)
 	if r.Method == "GET" {
 
 		data["Title"] = "Create page"
@@ -101,10 +101,10 @@ func PageCreate(ctx context.Context, w http.ResponseWriter, r *http.Request) {
 }
 
 //PageUpdate handles /admin/edit_page/:id route
-func PageUpdate(ctx context.Context, w http.ResponseWriter, r *http.Request) {
-	tmpl := ctx.Value("template").(*template.Template)
-	session := ctx.Value("session").(*sessions.Session)
-	data := helpers.DefaultData(ctx)
+func PageUpdate(w http.ResponseWriter, r *http.Request) {
+	tmpl := context.Get(r, "template").(*template.Template)
+	session := context.Get(r, "session").(*sessions.Session)
+	data := helpers.DefaultData(r)
 	if r.Method == "GET" {
 
 		id := r.URL.Path[len("/admin/edit_page/"):]
@@ -148,8 +148,8 @@ func PageUpdate(ctx context.Context, w http.ResponseWriter, r *http.Request) {
 }
 
 //PageDelete handles /admin/delete_page route
-func PageDelete(ctx context.Context, w http.ResponseWriter, r *http.Request) {
-	tmpl := ctx.Value("template").(*template.Template)
+func PageDelete(w http.ResponseWriter, r *http.Request) {
+	tmpl := context.Get(r, "template").(*template.Template)
 
 	if r.Method == "POST" {
 

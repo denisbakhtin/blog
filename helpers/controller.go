@@ -1,17 +1,18 @@
 package helpers
 
 import (
-	"golang.org/x/net/context"
+	"github.com/gorilla/context"
+	"net/http"
 	"strconv"
 )
 
 //DefaultData returns common to all pages template data
-func DefaultData(ctx context.Context) map[string]interface{} {
+func DefaultData(r *http.Request) map[string]interface{} {
 	return map[string]interface{}{
-		"ActiveUser":    ctx.Value("user"),           //signed in models.User
-		"Active":        "",                          //active uri shortening for menu item highlight
-		"Title":         "",                          //page title:w
-		"SignupEnabled": ctx.Value("signup_enabled"), //signup route is enabled (otherwise everyone can signup ;)
+		"ActiveUser":    context.Get(r, "user"),           //signed in models.User
+		"Active":        "",                               //active uri shortening for menu item highlight
+		"Title":         "",                               //page title:w
+		"SignupEnabled": context.Get(r, "signup_enabled"), //signup route is enabled (otherwise everyone can signup ;)
 	}
 }
 

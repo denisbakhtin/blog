@@ -2,9 +2,8 @@ package system
 
 import (
 	"github.com/denisbakhtin/blog/models"
-	gcontext "github.com/gorilla/context"
+	"github.com/gorilla/context"
 	"github.com/gorilla/sessions"
-	"golang.org/x/net/context"
 	"html/template"
 	"log"
 	"net/http"
@@ -14,73 +13,65 @@ var (
 	store *sessions.FilesystemStore
 )
 
-//CtxHandler is practically http.Handler but with context param
-type CtxHandler interface {
-	ServeHTTPCtx(context.Context, http.ResponseWriter, *http.Request)
-}
-
-//CtxHandlerFunc is practically http.HandlerFunc but with context param
-type CtxHandlerFunc func(context.Context, http.ResponseWriter, *http.Request)
-
 func createSession() {
 	store = sessions.NewFilesystemStore("", []byte(config.SessionSecret))
 	//TODO: set Secure: true in release mode when ssl is available
 	store.Options = &sessions.Options{HttpOnly: true, MaxAge: 7 * 86400}
 }
 
-//ServeHTTPCtx makes CtxHandlerFunc implement CtxHandler interface
-func (h CtxHandlerFunc) ServeHTTPCtx(ctx context.Context, rw http.ResponseWriter, req *http.Request) {
-	h(ctx, rw, req)
-}
-
 //SessionMiddleware creates gorilla session and stores it in context
-func SessionMiddleware(next CtxHandler) CtxHandler {
-	return CtxHandlerFunc(func(ctx context.Context, w http.ResponseWriter, r *http.Request) {
-		defer gcontext.Clear(r) //one day all golang apps will rely on std context... dreams
+func SessionMiddleware(next http.Handler) http.Handler {
+	fn := func(w http.ResponseWriter, r *http.Request) {
+		defer context.Clear(r) //one day all golang apps will rely on std context... dreams
 		session, err := store.Get(r, "session")
 		if err != nil {
 			log.Printf("ERROR: can't get session: %s", err)
 			return //abort chain
 		}
-		next.ServeHTTPCtx(context.WithValue(ctx, "session", session), w, r)
-	})
+		context.Set(r, "session", session)
+		next.ServeHTTP(w, r)
+	}
+	return http.HandlerFunc(fn)
 }
 
 //TemplateMiddleware stores parsed templates in context
-func TemplateMiddleware(next CtxHandler) CtxHandler {
-	return CtxHandlerFunc(func(ctx context.Context, w http.ResponseWriter, r *http.Request) {
-		next.ServeHTTPCtx(context.WithValue(ctx, "template", tmpl), w, r)
-	})
+func TemplateMiddleware(next http.Handler) http.Handler {
+	fn := func(w http.ResponseWriter, r *http.Request) {
+		context.Set(r, "template", tmpl)
+		next.ServeHTTP(w, r)
+	}
+	return http.HandlerFunc(fn)
 }
 
 //DataMiddleware inits common request data (active user, et al). Must be preceded by SessionMiddleware
-func DataMiddleware(next CtxHandler) CtxHandler {
-	return CtxHandlerFunc(func(ctx context.Context, w http.ResponseWriter, r *http.Request) {
-		session := ctx.Value("session").(*sessions.Session)
+func DataMiddleware(next http.Handler) http.Handler {
+	fn := func(w http.ResponseWriter, r *http.Request) {
+		session := context.Get(r, "session").(*sessions.Session)
 		if uID, ok := session.Values["user_id"]; ok {
 			user, _ := models.GetUser(uID)
 			if user.ID != 0 {
-				ctx = context.WithValue(ctx, "user", user)
+				context.Set(r, "user", user)
 			}
 		}
 		if config.SignupEnabled {
-			ctx = context.WithValue(ctx, "signup_enabled", true)
+			context.Set(r, "signup_enabled", true)
 		}
-
-		next.ServeHTTPCtx(ctx, w, r)
-	})
+		next.ServeHTTP(w, r)
+	}
+	return http.HandlerFunc(fn)
 }
 
 //RestrictedMiddleware verifies presence on 'user' in context (which is set by DataMiddleware, if user has signed in
-func RestrictedMiddleware(next CtxHandler) CtxHandler {
-	return CtxHandlerFunc(func(ctx context.Context, w http.ResponseWriter, r *http.Request) {
-		if user := ctx.Value("user"); user != nil {
+func RestrictedMiddleware(next http.Handler) http.Handler {
+	fn := func(w http.ResponseWriter, r *http.Request) {
+		if user := context.Get(r, "user"); user != nil {
 			//access granted
-			next.ServeHTTPCtx(ctx, w, r)
+			next.ServeHTTP(w, r)
 		} else {
 			w.WriteHeader(403)
-			ctx.Value("template").(*template.Template).Lookup("errors/403").Execute(w, nil)
+			context.Get(r, "template").(*template.Template).Lookup("errors/403").Execute(w, nil)
 			log.Printf("ERROR: unauthorized access to %s\n", r.RequestURI)
 		}
-	})
+	}
+	return http.HandlerFunc(fn)
 }

@@ -1,10 +1,11 @@
 Blog boilerplate
 ===============
 
-Provides essentials that most web blogs need - MVC pattern, user authorisation, SQL db migration, admin dashboard, javascript form validation, rss feeds, etc. 
+Provides essentials that most web blogs need - MVC pattern, user authorisation, SQL db migration, admin dashboard, javascript form validation, rss feeds, etc.
 
 It consists of the following core components:
 - Standard http multiplexer (simplicity is king, no more microframeworks)
+- context - gorilla context (for native HandlerFuncs) - https://github.com/gorilla/context
 - sessions - gorilla sessions - https://github.com/gorilla/sessions
 - pq - Postgres driver for the Go language - https://github.com/lib/pq
 - sqlx - Relational database access interface - https://github.com/jmoiron/sqlx
@@ -12,10 +13,10 @@ It consists of the following core components:
 - Twitter Bootstrap - popular HTML, CSS, JS framework for developing responsive, mobile first web projects - http://getbootstrap.com
 - Parsley JS - form validation - http://parsleyjs.org
 - Bootstrap Markdown Editor with image upload - https://github.com/inacho/bootstrap-markdown-editor
-- blackfriday - markdown processor - https://github.com/russross/blackfriday 
-- bluemonday - html sanitizer (for excerpts, etc) - https://github.com/microcosm-cc/bluemonday 
+- blackfriday - markdown processor - https://github.com/russross/blackfriday
+- bluemonday - html sanitizer (for excerpts, etc) - https://github.com/microcosm-cc/bluemonday
 - RSS feeds - https://github.com/gorilla/feeds
-- sitemap - XML sitemap for search engines - https://github.com/denisbakhtin/sitemap 
+- sitemap - XML sitemap for search engines - https://github.com/denisbakhtin/sitemap
 - gocron - periodic task launcher (for sitemap generation, etc) - https://github.com/jasonlvhit/gocron
 - sql-migrate - SQL schema migration tool - https://github.com/rubenv/sql-migrate
 

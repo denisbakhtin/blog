@@ -12,11 +12,10 @@ import (
 	"time"
 
 	"github.com/denisbakhtin/blog/system"
-	"golang.org/x/net/context"
 )
 
 //Upload handles POST /upload route
-func Upload(ctx context.Context, w http.ResponseWriter, r *http.Request) {
+func Upload(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 
 		err := r.ParseMultipartForm(32 << 20) // ~32MB

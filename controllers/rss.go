@@ -5,8 +5,8 @@ import (
 	"github.com/denisbakhtin/blog/helpers"
 	"github.com/denisbakhtin/blog/models"
 	"github.com/denisbakhtin/blog/system"
+	"github.com/gorilla/context"
 	"github.com/gorilla/feeds"
-	"golang.org/x/net/context"
 	"html/template"
 	"log"
 	"net/http"
@@ -14,8 +14,8 @@ import (
 )
 
 //RssXML handles GET /rss route
-func RssXML(ctx context.Context, w http.ResponseWriter, r *http.Request) {
-	tmpl := ctx.Value("template").(*template.Template)
+func RssXML(w http.ResponseWriter, r *http.Request) {
+	tmpl := context.Get(r, "template").(*template.Template)
 	if r.Method == "GET" {
 
 		now := time.Now()
