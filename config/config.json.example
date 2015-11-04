@@ -1,0 +1,38 @@
+{
+  "debug": {
+    "public": "public",
+    "domain": "http://localhost:8080",
+    "session_secret": "session-secret-phrase",
+    "signup_enabled": true,
+    "database": {
+      "host": "192.168.0.1",
+      "name": "blog_dev",
+      "user": "your_db_user",
+      "password": "your_db_user_password"
+    }
+  },
+  "release": {
+    "public": "path_to_public_dir",
+    "domain": "http://mydomain.com",
+    "session_secret": "session-secret-phrase",
+    "signup_enabled": false, 
+    "database": {
+      "host": "192.168.0.1",
+      "name": "blog_dev",
+      "user": "your_db_user",
+      "password": "your_db_user_password"
+    }
+  },
+  "test": {
+    "public": "public",
+    "domain": "http://localhost:8080",
+    "session_secret": "session-secret-phrase",
+    "signup_enabled": true,
+    "database": {
+      "host": "192.168.0.1",
+      "name": "blog_dev",
+      "user": "your_db_user",
+      "password": "your_db_user_password"
+    }
+  }
+}

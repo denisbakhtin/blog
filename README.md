@@ -4,14 +4,10 @@ GIN-powered blog boilerplate
 Provides essentials that most web blogs need - MVC pattern, user authorisation, SQL db migration, admin dashboard, javascript form validation, rss feeds, etc. 
 
 It consists of the following core components:
-
-# TODO
-- Standard http multiplexer (some may argue, but less is more)
+- Standard http multiplexer (simplicity is king, no more microframeworks)
 - sessions - gorilla sessions - https://github.com/gorilla/sessions
-- csrf - gorilla csrf - https://github.com/gorilla/csrf
 - pq - Postgres driver for the Go language - https://github.com/lib/pq
 - sqlx - Relational database access interface - https://github.com/jmoiron/sqlx
-- gomigrate - SQL schema migration tool - https://github.com/DavidHuie/gomigrate
 - go.rice - Asset packaging tool for easy deployment - https://github.com/GeertJohan/go.rice
 - Twitter Bootstrap - popular HTML, CSS, JS framework for developing responsive, mobile first web projects - http://getbootstrap.com
 - Parsley JS - form validation - http://parsleyjs.org
@@ -21,6 +17,10 @@ It consists of the following core components:
 - RSS feeds - https://github.com/gorilla/feeds
 - sitemap - XML sitemap for search engines - https://github.com/denisbakhtin/sitemap 
 - gocron - periodic task launcher (for sitemap generation, etc) - https://github.com/jasonlvhit/gocron
+
+# TODO
+- csrf - gorilla csrf - https://github.com/gorilla/csrf
+- gomigrate - SQL schema migration tool - https://github.com/DavidHuie/gomigrate
 
 - Site search with Postgresql full text search (okish for most websites) - http://www.postgresql.org/docs/9.4/static/textsearch-intro.html
 - Comments with oauth2 authentication

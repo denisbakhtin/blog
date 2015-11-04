@@ -1,0 +1,15 @@
+{{define "posts/show"}}
+{{template "header" .}}
+{{template "navbar" .}}
+<div class="container" role="main">
+  {{template "sidebar" .}}
+  <div id="main-column">
+    <h1>{{.Post.Name}}</h1>
+    {{template "posts/post-info" .Post}}
+    <div class="description">{{.Post.HTMLDescription}}</div>
+    <div id="comments">
+    </div>
+  </div>
+</div>
+{{template "footer" .}}
+{{end}}
