@@ -11,6 +11,7 @@
         {{range .Flash}}
           <div class="alert alert-danger">{{.}}</div><p>
         {{end}}
+        {{.csrfField}}
         <input type="hidden" name="id" value="{{.User.ID}}" >
 
         <div class="form-group">

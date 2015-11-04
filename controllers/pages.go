@@ -9,6 +9,7 @@ import (
 	"github.com/denisbakhtin/blog/helpers"
 	"github.com/denisbakhtin/blog/models"
 	"github.com/gorilla/context"
+	"github.com/gorilla/csrf"
 	"github.com/gorilla/sessions"
 )
 
@@ -53,6 +54,7 @@ func PageIndex(w http.ResponseWriter, r *http.Request) {
 		data["Title"] = "List of pages"
 		data["Active"] = "pages"
 		data["List"] = list
+		data[csrf.TemplateTag] = csrf.TemplateField(r)
 		tmpl.Lookup("pages/index").Execute(w, data)
 
 	} else {
@@ -73,6 +75,7 @@ func PageCreate(w http.ResponseWriter, r *http.Request) {
 		data["Title"] = "Create page"
 		data["Active"] = "pages"
 		data["Flash"] = session.Flashes()
+		data[csrf.TemplateTag] = csrf.TemplateField(r)
 		session.Save(r, w)
 		tmpl.Lookup("pages/form").Execute(w, data)
 
@@ -119,6 +122,7 @@ func PageUpdate(w http.ResponseWriter, r *http.Request) {
 		data["Active"] = "pages"
 		data["Page"] = page
 		data["Flash"] = session.Flashes()
+		data[csrf.TemplateTag] = csrf.TemplateField(r)
 		session.Save(r, w)
 		tmpl.Lookup("pages/form").Execute(w, data)
 

@@ -7,6 +7,7 @@ It consists of the following core components:
 - Standard http multiplexer (simplicity is king, no more microframeworks)
 - context - gorilla context (for native HandlerFuncs) - https://github.com/gorilla/context
 - sessions - gorilla sessions - https://github.com/gorilla/sessions
+- csrf - gorilla csrf - https://github.com/gorilla/csrf
 - pq - Postgres driver for the Go language - https://github.com/lib/pq
 - sqlx - Relational database access interface - https://github.com/jmoiron/sqlx
 - go.rice - Asset packaging tool for easy deployment - https://github.com/GeertJohan/go.rice
@@ -21,8 +22,6 @@ It consists of the following core components:
 - sql-migrate - SQL schema migration tool - https://github.com/rubenv/sql-migrate
 
 # TODO
-- csrf - gorilla csrf - https://github.com/gorilla/csrf
-
 - Site search with Postgresql full text search (okish for most websites) - http://www.postgresql.org/docs/9.4/static/textsearch-intro.html
 - Comments with oauth2 authentication
 - Social plugins (share, like buttons)

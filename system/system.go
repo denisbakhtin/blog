@@ -7,6 +7,7 @@ import (
 	"log"
 )
 
+//Application mode
 const (
 	DebugMode   = "debug"
 	ReleaseMode = "release"

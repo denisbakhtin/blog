@@ -15,6 +15,7 @@
       </tr>
     </thead>
     <tbody>
+      {{$csrfField := .csrfField}}
       {{range .List}}
         <tr>
           <td class="id">{{.ID}}</td>
@@ -31,6 +32,7 @@
             <a href="/posts/{{.ID}}" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-eye-open"></span></a>
             <a href="/admin/edit_post/{{.ID}}" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-pencil"></span></a>
             <form class="inline-block" action="/admin/delete_post" method="post">
+              {{$csrfField}}
               <input type="hidden" name="id" value="{{.ID}}">
               <button type="button" class="btn btn-sm btn-danger" onclick="((confirm('Are you sure')) ? this.form.submit() : null);"><span class="glyphicon glyphicon-remove"></span></button>
             </form>

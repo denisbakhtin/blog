@@ -53,6 +53,7 @@ func PostIndex(w http.ResponseWriter, r *http.Request) {
 		data["Title"] = "List of posts"
 		data["Active"] = "posts"
 		data["List"] = list
+		data[csrf.TemplateTag] = csrf.TemplateField(r)
 		tmpl.Lookup("posts/index").Execute(w, data)
 
 	} else {
@@ -80,6 +81,7 @@ func PostCreate(w http.ResponseWriter, r *http.Request) {
 		data["Active"] = "posts"
 		data["Tags"] = tags
 		data["Flash"] = session.Flashes()
+		data[csrf.TemplateTag] = csrf.TemplateField(r)
 		session.Save(r, w)
 		tmpl.Lookup("posts/form").Execute(w, data)
 
