@@ -45,8 +45,8 @@ func PostIndex(w http.ResponseWriter, r *http.Request) {
 
 		list, err := models.GetPosts()
 		if err != nil {
-			w.WriteHeader(404)
-			tmpl.Lookup("errors/404").Execute(w, nil)
+			w.WriteHeader(500)
+			tmpl.Lookup("errors/500").Execute(w, helpers.ErrorData(err))
 			return
 		}
 		data["Title"] = "List of posts"
@@ -122,7 +122,7 @@ func PostUpdate(w http.ResponseWriter, r *http.Request) {
 		post, err := models.GetPost(id)
 		if err != nil {
 			w.WriteHeader(404)
-			tmpl.Lookup("errors/404").Execute(w, nil)
+			tmpl.Lookup("errors/404").Execute(w, helpers.ErrorData(err))
 			return
 		}
 		tags, err := models.GetTags()

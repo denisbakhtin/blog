@@ -1,0 +1,13 @@
+{{define "comments/show"}}
+<div class="container" role="main">
+  <div id="main-column">
+    <h5>{{.Comment.AuthorName}}</h5>
+    <div class="description">{{.Comment.Description}}</div>
+    <div class="children">
+      {{range .Children}}
+        {{template "comments/show" .}}
+      {{end}}
+    </div>
+  </div>
+</div>
+{{end}}

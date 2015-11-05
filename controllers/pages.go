@@ -46,8 +46,8 @@ func PageIndex(w http.ResponseWriter, r *http.Request) {
 
 		list, err := models.GetPages()
 		if err != nil {
-			w.WriteHeader(404)
-			tmpl.Lookup("errors/404").Execute(w, nil)
+			w.WriteHeader(500)
+			tmpl.Lookup("errors/500").Execute(w, helpers.ErrorData(err))
 			return
 		}
 		data["Title"] = "List of pages"
@@ -110,8 +110,8 @@ func PageUpdate(w http.ResponseWriter, r *http.Request) {
 		id := r.URL.Path[len("/admin/edit_page/"):]
 		page, err := models.GetPage(id)
 		if err != nil {
-			w.WriteHeader(404)
-			tmpl.Lookup("errors/404").Execute(w, nil)
+			w.WriteHeader(400)
+			tmpl.Lookup("errors/400").Execute(w, helpers.ErrorData(err))
 			return
 		}
 

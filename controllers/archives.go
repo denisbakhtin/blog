@@ -23,16 +23,16 @@ func ArchiveShow(w http.ResponseWriter, r *http.Request) {
 		param := r.URL.Path[len("/archives/"):]
 		ym := strings.Split(param, "-")
 		if len(ym) != 2 {
-			w.WriteHeader(404)
-			tmpl.Lookup("errors/404").Execute(w, nil)
+			w.WriteHeader(400)
+			tmpl.Lookup("errors/400").Execute(w, nil)
 			return
 		}
 		year, _ := strconv.Atoi(ym[0])
 		month, _ := strconv.Atoi(ym[1])
 		list, err := models.GetPostsByArchive(year, month)
 		if err != nil {
-			w.WriteHeader(404)
-			tmpl.Lookup("errors/404").Execute(w, nil)
+			w.WriteHeader(500)
+			tmpl.Lookup("errors/500").Execute(w, nil)
 			return
 		}
 		data["Title"] = fmt.Sprintf("%s %d archives", time.Month(month).String(), year)

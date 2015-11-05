@@ -20,8 +20,8 @@ func UserIndex(w http.ResponseWriter, r *http.Request) {
 
 		list, err := models.GetUsers()
 		if err != nil {
-			w.WriteHeader(404)
-			tmpl.Lookup("errors/404").Execute(w, nil)
+			w.WriteHeader(500)
+			tmpl.Lookup("errors/404").Execute(w, helpers.ErrorData(err))
 			return
 		}
 		data["Title"] = "List of users"
@@ -91,7 +91,7 @@ func UserUpdate(w http.ResponseWriter, r *http.Request) {
 		user, err := models.GetUser(id)
 		if err != nil {
 			w.WriteHeader(404)
-			tmpl.Lookup("errors/404").Execute(w, nil)
+			tmpl.Lookup("errors/404").Execute(w, helpers.ErrorData(err))
 			return
 		}
 

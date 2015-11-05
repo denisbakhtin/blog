@@ -41,6 +41,7 @@ func main() {
 	http.Handle("/archives/", Default(controllers.ArchiveShow))
 	http.Handle("/rss", Default(controllers.RssXML))
 	http.Handle("/search", Default(controllers.Search))
+	http.Handle("/new_comment", Default(controllers.CommentCreateAjax))
 
 	{
 		http.Handle("/admin", Restricted(controllers.Dashboard))
@@ -63,6 +64,10 @@ func main() {
 		http.Handle("/admin/tags", Restricted(controllers.TagIndex))
 		http.Handle("/admin/new_tag", Restricted(controllers.TagCreate))
 		http.Handle("/admin/delete_tag", Restricted(controllers.TagDelete))
+
+		http.Handle("/admin/comments", Restricted(controllers.CommentIndex))
+		http.Handle("/admin/edit_comment/", Restricted(controllers.CommentUpdate))
+		http.Handle("/admin/delete_comment", Restricted(controllers.CommentDelete))
 
 		//markdown editor does not support csrf when uploading images, so I have to apply CSRF middleware manually per route, sigh :/
 		http.Handle("/admin/upload", RestrictedWithoutCSRF(controllers.Upload))

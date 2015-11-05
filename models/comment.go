@@ -17,7 +17,7 @@ type Comment struct {
 	CreatedAt   time.Time `json:"created_at" db:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at" db:"updated_at"`
 	//calculated fields
-	Child *Comment `json:"comment" db:"-"`
+	Children []Comment `json:"children" db:"-"`
 }
 
 //Insert stores Comment  in db
