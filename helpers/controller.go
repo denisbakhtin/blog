@@ -2,6 +2,7 @@ package helpers
 
 import (
 	"github.com/gorilla/context"
+	"github.com/gorilla/csrf"
 	"net/http"
 	"strconv"
 )
@@ -9,10 +10,11 @@ import (
 //DefaultData returns common to all pages template data
 func DefaultData(r *http.Request) map[string]interface{} {
 	return map[string]interface{}{
-		"ActiveUser":    context.Get(r, "user"),           //signed in models.User
-		"Active":        "",                               //active uri shortening for menu item highlight
-		"Title":         "",                               //page title:w
-		"SignupEnabled": context.Get(r, "signup_enabled"), //signup route is enabled (otherwise everyone can signup ;)
+		"ActiveUser":     context.Get(r, "user"),           //signed in models.User
+		"Active":         "",                               //active uri shortening for menu item highlight
+		"Title":          "",                               //page title:w
+		"SignupEnabled":  context.Get(r, "signup_enabled"), //signup route is enabled (otherwise everyone can signup ;)
+		csrf.TemplateTag: csrf.TemplateField(r),
 	}
 }
 

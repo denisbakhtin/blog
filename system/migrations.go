@@ -50,7 +50,7 @@ func migrateNew(box *rice.Box) {
 		log.Fatalf("ERROR: Migration's name not specified\n")
 		return
 	}
-	name := path.Join(box.Name(), fmt.Sprintf("%d_%s.sql", time.Now().Unix(), flag.Arg(0)))
+	name := path.Join("migrations", fmt.Sprintf("%d_%s.sql", time.Now().Unix(), flag.Arg(0)))
 	file, err := os.Create(name)
 	if err != nil {
 		log.Printf("ERROR: %s\n", err)

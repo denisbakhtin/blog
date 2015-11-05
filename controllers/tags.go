@@ -9,7 +9,6 @@ import (
 	"github.com/denisbakhtin/blog/helpers"
 	"github.com/denisbakhtin/blog/models"
 	"github.com/gorilla/context"
-	"github.com/gorilla/csrf"
 	"github.com/gorilla/sessions"
 )
 
@@ -54,7 +53,6 @@ func TagIndex(w http.ResponseWriter, r *http.Request) {
 		data["Title"] = "List of tags"
 		data["Active"] = "tags"
 		data["List"] = list
-		data[csrf.TemplateTag] = csrf.TemplateField(r)
 		tmpl.Lookup("tags/index").Execute(w, data)
 
 	} else {
@@ -75,7 +73,6 @@ func TagCreate(w http.ResponseWriter, r *http.Request) {
 		data["Title"] = "Create tag"
 		data["Active"] = "tags"
 		data["Flash"] = session.Flashes()
-		data[csrf.TemplateTag] = csrf.TemplateField(r)
 		session.Save(r, w)
 		tmpl.Lookup("tags/form").Execute(w, data)
 

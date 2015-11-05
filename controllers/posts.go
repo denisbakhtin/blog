@@ -9,7 +9,6 @@ import (
 	"github.com/denisbakhtin/blog/helpers"
 	"github.com/denisbakhtin/blog/models"
 	"github.com/gorilla/context"
-	"github.com/gorilla/csrf"
 	"github.com/gorilla/sessions"
 	"gopkg.in/guregu/null.v3"
 )
@@ -53,7 +52,6 @@ func PostIndex(w http.ResponseWriter, r *http.Request) {
 		data["Title"] = "List of posts"
 		data["Active"] = "posts"
 		data["List"] = list
-		data[csrf.TemplateTag] = csrf.TemplateField(r)
 		tmpl.Lookup("posts/index").Execute(w, data)
 
 	} else {
@@ -81,7 +79,6 @@ func PostCreate(w http.ResponseWriter, r *http.Request) {
 		data["Active"] = "posts"
 		data["Tags"] = tags
 		data["Flash"] = session.Flashes()
-		data[csrf.TemplateTag] = csrf.TemplateField(r)
 		session.Save(r, w)
 		tmpl.Lookup("posts/form").Execute(w, data)
 
@@ -140,7 +137,6 @@ func PostUpdate(w http.ResponseWriter, r *http.Request) {
 		data["Post"] = post
 		data["Tags"] = tags
 		data["Flash"] = session.Flashes()
-		data[csrf.TemplateTag] = csrf.TemplateField(r)
 		session.Save(r, w)
 		tmpl.Lookup("posts/form").Execute(w, data)
 

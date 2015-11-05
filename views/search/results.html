@@ -1,0 +1,18 @@
+{{define "search/results"}}
+{{template "header" .}}
+{{template "navbar" .}}
+<div class="container" role="main">
+  {{template "sidebar" .}}
+  <div id="main-column">
+    <h1>{{.Title}}</h1>
+    {{range .Posts}}
+      <h2>{{.Name}}</h2>
+      {{template "posts/post-info" .}}
+      <div class="description">{{.Excerpt}}</div>
+    {{else}}
+      <p>No posts found.</p>
+    {{end}}
+  </div>
+</div>
+{{template "footer" .}}
+{{end}}

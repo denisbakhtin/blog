@@ -8,7 +8,6 @@ import (
 	"github.com/denisbakhtin/blog/helpers"
 	"github.com/denisbakhtin/blog/models"
 	"github.com/gorilla/context"
-	"github.com/gorilla/csrf"
 	"github.com/gorilla/sessions"
 	"html/template"
 )
@@ -24,7 +23,6 @@ func SignIn(w http.ResponseWriter, r *http.Request) {
 		data["Title"] = "Signin"
 		data["Active"] = "signin"
 		data["Flash"] = session.Flashes()
-		data[csrf.TemplateTag] = csrf.TemplateField(r)
 		session.Save(r, w)
 		tmpl.Lookup("auth/signin").Execute(w, data)
 
@@ -74,7 +72,6 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 		data["Title"] = "Signup"
 		data["Active"] = "signup"
 		data["Flash"] = session.Flashes()
-		data[csrf.TemplateTag] = csrf.TemplateField(r)
 		session.Save(r, w)
 		tmpl.Lookup("auth/signup").Execute(w, data)
 

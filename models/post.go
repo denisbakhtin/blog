@@ -197,6 +197,13 @@ func GetPostsByTag(name string) ([]Post, error) {
 	return list, nil
 }
 
+//SearchPosts returns a slice of posts, matching query
+func SearchPosts(query string) ([]Post, error) {
+	var list []Post
+	err := db.Select(&list, "SELECT * FROM posts WHERE to_tsvector('english', name || ' ' || description) @@ to_tsquery('english', $1) AND published=$2 ORDER BY posts.id DESC", query, true)
+	return list, err
+}
+
 //fillPostsAssociations initialises post associations, given post slice
 func fillPostsAssociations(list []Post) error {
 	for i := range list {

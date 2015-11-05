@@ -86,6 +86,10 @@ textarea.parsley-error {
   font-weight: bold;
 }
 
+.sidebar-block {
+  margin-bottom: 1em;
+}
+
 .table>tbody>tr>td {
   vertical-align: middle;
 }

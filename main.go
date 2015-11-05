@@ -40,6 +40,8 @@ func main() {
 	http.Handle("/tags/", Default(controllers.TagShow))
 	http.Handle("/archives/", Default(controllers.ArchiveShow))
 	http.Handle("/rss", Default(controllers.RssXML))
+	http.Handle("/search", Default(controllers.Search))
+
 	{
 		http.Handle("/admin", Restricted(controllers.Dashboard))
 

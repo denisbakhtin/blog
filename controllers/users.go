@@ -8,7 +8,6 @@ import (
 	"github.com/denisbakhtin/blog/helpers"
 	"github.com/denisbakhtin/blog/models"
 	"github.com/gorilla/context"
-	"github.com/gorilla/csrf"
 	"github.com/gorilla/sessions"
 	"html/template"
 )
@@ -28,7 +27,6 @@ func UserIndex(w http.ResponseWriter, r *http.Request) {
 		data["Title"] = "List of users"
 		data["Active"] = "users"
 		data["List"] = list
-		data[csrf.TemplateTag] = csrf.TemplateField(r)
 		tmpl.Lookup("users/index").Execute(w, data)
 
 	} else {
@@ -49,7 +47,6 @@ func UserCreate(w http.ResponseWriter, r *http.Request) {
 		data["Title"] = "Create user"
 		data["Active"] = "users"
 		data["Flash"] = session.Flashes()
-		data[csrf.TemplateTag] = csrf.TemplateField(r)
 		session.Save(r, w)
 		tmpl.Lookup("users/form").Execute(w, data)
 
@@ -102,7 +99,6 @@ func UserUpdate(w http.ResponseWriter, r *http.Request) {
 		data["Active"] = "users"
 		data["User"] = user
 		data["Flash"] = session.Flashes()
-		data[csrf.TemplateTag] = csrf.TemplateField(r)
 		session.Save(r, w)
 		tmpl.Lookup("users/form").Execute(w, data)
 

@@ -1,7 +1,7 @@
 {{define "sidebar"}}
 {{$active := .Active}}
 <aside id="sidebar">
-  <div class="">
+  <div class="sidebar-block">
     <h5><i class="glyphicon glyphicon-pencil indent"></i>Recent posts</h5>
     <ul class="nav nav-pills nav-stacked">
       {{range recentPosts}}
@@ -10,12 +10,19 @@
       </li>
       {{end}}
     </ul>
+  </div>
+  <div class="sidebar-block">
+    {{template "search/searchbox" .}}
+  </div>
+  <div class="sidebar-block">
     <h5><i class="glyphicon glyphicon-tags indent"></i>Tags</h5>
     <div class="sidebar-tags">
       {{range tags}}
         <a class="label label-success" href="/tags/{{.Name}}">{{.Name}}</a>
       {{end}}
     </div>
+  </div>
+  <div class="sidebar-block">
     <h5><i class="glyphicon glyphicon-menu-hamburger indent"></i>Archives</h5>
     <ul class="nav nav-pills nav-stacked">
       {{range archives}}
