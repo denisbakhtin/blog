@@ -9,26 +9,38 @@ import (
 
 //User type contains user info
 type User struct {
-	ID        int64     `form:"id" json:"id" database:"id"`
-	Email     string    `form:"email" json:"email"`
-	Name      string    `form:"name" json:"name"`
-	Password  string    `form:"password" json:"password"`
-	Timestamp time.Time `form:"-" json:"timestamp"`
+	ID        int64     `json:"id" database:"id"`
+	Email     string    `json:"email"`
+	Name      string    `json:"name"`
+	Password  string    `json:"password"`
+	Timestamp time.Time `json:"timestamp"`
 }
 
-//Insert saves user info into db
+//Insert stores User record in db
 func (user *User) Insert() error {
-	err := db.QueryRow("INSERT INTO users(email, name, password, timestamp) VALUES(lower($1),$2,$3,$4) RETURNING id", user.Email, user.Name, user.Password, time.Now()).Scan(&user.ID)
+	err := db.QueryRow(
+		"INSERT INTO users(email, name, password, timestamp) VALUES(lower($1),$2,$3,$4) RETURNING id",
+		user.Email,
+		user.Name,
+		user.Password,
+		time.Now(),
+	).Scan(&user.ID)
 	return err
 }
 
-//Update updates user info in db
+//Update updates User record in db
 func (user *User) Update() error {
-	_, err := db.Exec("UPDATE users SET email=lower($2), name=$3, password=$4 WHERE id=$1", user.ID, user.Email, user.Name, user.Password)
+	_, err := db.Exec(
+		"UPDATE users SET email=lower($2), name=$3, password=$4 WHERE id=$1",
+		user.ID,
+		user.Email,
+		user.Name,
+		user.Password,
+	)
 	return err
 }
 
-//Delete removes user record from db. Can't remove the last user
+//Delete removes user record from db
 func (user *User) Delete() error {
 	count := 0
 	_ = db.Get(&count, "SELECT count(id) FROM users")
@@ -57,21 +69,21 @@ func (user *User) ComparePassword(password string) error {
 	return nil
 }
 
-//GetUser returns user by his id
+//GetUser loads user record by its id
 func GetUser(id interface{}) (*User, error) {
 	user := &User{}
 	err := db.Get(user, "SELECT * FROM users WHERE id=$1", id)
 	return user, err
 }
 
-//GetUsers returns a list of user ordered by id
+//GetUsers returns a list of users
 func GetUsers() ([]User, error) {
 	var list []User
 	err := db.Select(&list, "SELECT * FROM users ORDER BY id")
 	return list, err
 }
 
-//GetUserByEmail returns user record by his email, case insensitive
+//GetUserByEmail returns user record by email
 func GetUserByEmail(email string) (*User, error) {
 	user := &User{}
 	err := db.Get(user, "SELECT * FROM users WHERE lower(email)=lower($1)", email)
