@@ -41,7 +41,7 @@ func main() {
 	http.Handle("/archives/", Default(controllers.ArchiveShow))
 	http.Handle("/rss", Default(controllers.RssXML))
 	http.Handle("/search", Default(controllers.Search))
-	http.Handle("/new_comment", Default(controllers.CommentCreateAjax))
+	http.Handle("/new_comment", Default(controllers.CommentCreate))
 
 	{
 		http.Handle("/admin", Restricted(controllers.Dashboard))

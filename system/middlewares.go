@@ -10,11 +10,13 @@ import (
 )
 
 var (
-	store *sessions.FilesystemStore
+	//store *sessions.FilesystemStore
+	store *sessions.CookieStore
 )
 
 func createSession() {
-	store = sessions.NewFilesystemStore("", []byte(config.SessionSecret))
+	//store = sessions.NewFilesystemStore("", []byte(config.SessionSecret))
+	store = sessions.NewCookieStore([]byte(config.SessionSecret))
 	store.Options = &sessions.Options{Secure: config.Ssl, HttpOnly: true, MaxAge: 7 * 86400}
 }
 

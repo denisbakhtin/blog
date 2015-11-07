@@ -8,7 +8,7 @@
     <thead>
       <tr>
         <th class="id">ID</th>
-        <th class="post_id">Post ID</th>
+        <th class="post_id">Post</th>
         <th class="parent_id">Parent ID</th>
         <th class="author_name">Author</th>
         <th class="published">Published</th>
@@ -21,8 +21,8 @@
       {{range .List}}
         <tr>
           <td class="id">{{.ID}}</td>
-          <td class="post_id">{{.PostID}}</td>
-          <td class="parent_id">{{.ParentID}}</td>
+          <td class="post_id"><a href="/posts/{{.PostID}}" target="_blank">{{.PostID}}</a></td>
+          <td class="parent_id">{{if .ParentID.Valid}}{{.ParentID}}{{end}}</td>
           <td class="author_name">{{.AuthorName}}</td>
           <td class="published">
             {{if .Published}}

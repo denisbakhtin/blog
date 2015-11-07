@@ -1,7 +1,7 @@
 {{define "auth/signin"}}
 {{template "header" .}}
 {{template "navbar" .}}
-<div class="container" role="main">		
+<div class="container" role="main">
   <div class="panel panel-default">
     <div class="panel-body">
       <form class="form-horizontal" method="post" data-parsley-validate>
@@ -12,9 +12,9 @@
         {{end}}
         {{.csrfField}}
         <div class="form-group">
-          <label class="col-md-4 control-label" for="email">Email</label>  
+          <label class="col-md-4 control-label" for="email">Email</label>
           <div class="col-md-6">
-            <input id="email" name="email" type="email" placeholder="Email address" class="form-control input-md" required="" data-parsley-required-message="Please enter your email">    
+            <input id="email" name="email" type="email" placeholder="Email address" class="form-control input-md" required="" data-parsley-required-message="Please enter your email">
           </div>
         </div>
 

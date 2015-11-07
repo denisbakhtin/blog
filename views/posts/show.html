@@ -8,6 +8,16 @@
     {{template "posts/post-info" .Post}}
     <div class="description">{{.Post.HTMLDescription}}</div>
     <div id="comments">
+      {{range .Flash}}
+        <div class="alert alert-info">{{.}}</div><p>
+      {{end}}
+      {{template "comments/post-form" .}}
+      {{range .Comments}}
+        <div id="comment-{{.ID}}" class="well well-sm">
+          <p>{{.AuthorName}}, {{dateTime .CreatedAt}}</p>
+          {{.Description}}
+        </div>
+      {{end}}
     </div>
   </div>
 </div>

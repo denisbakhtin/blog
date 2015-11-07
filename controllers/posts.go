@@ -16,6 +16,7 @@ import (
 //PostShow handles GET /posts/:id route
 func PostShow(w http.ResponseWriter, r *http.Request) {
 	tmpl := context.Get(r, "template").(*template.Template)
+	session := context.Get(r, "session").(*sessions.Session)
 	data := helpers.DefaultData(r)
 	if r.Method == "GET" {
 
@@ -25,9 +26,13 @@ func PostShow(w http.ResponseWriter, r *http.Request) {
 			tmpl.Lookup("errors/404").Execute(w, nil)
 			return
 		}
+		comments, _ := models.GetCommentsByPostID(post.ID)
 		data["Post"] = post
 		data["Title"] = post.Name
 		data["Active"] = fmt.Sprintf("posts/%s", id)
+		data["Comments"] = comments
+		data["Flash"] = session.Flashes()
+		session.Save(r, w)
 		tmpl.Lookup("posts/show").Execute(w, data)
 
 	} else {
@@ -93,7 +98,7 @@ func PostCreate(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if user := context.Get(r, "user"); user != nil {
-			post.UserID = null.IntFrom(user.(*models.User).ID)
+			post.UserID = null.NewInt(user.(*models.User).ID, user.(*models.User).ID > 0)
 		}
 		if err := post.Insert(); err != nil {
 			session.AddFlash(err.Error())

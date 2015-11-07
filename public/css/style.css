@@ -75,11 +75,13 @@ textarea.parsley-error {
 #sidebar {
   width: 210px;
   float: right;
+  margin-bottom: 1em;
 }
 
 #sidebar + #main-column {
   margin-right: 225px;
   overflow: hidden;
+  margin-bottom: 1em;
 }
 
 #sidebar h5 {

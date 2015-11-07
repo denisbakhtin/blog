@@ -38,29 +38,37 @@ func CommentIndex(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//CommentCreateAjax handles /new_comment route
-func CommentCreateAjax(w http.ResponseWriter, r *http.Request) {
-	//session := context.Get(r, "session").(*sessions.Session)
+//CommentCreate handles /new_comment route
+func CommentCreate(w http.ResponseWriter, r *http.Request) {
+	session := context.Get(r, "session").(*sessions.Session)
+	tmpl := context.Get(r, "template").(*template.Template)
 	if r.Method == "POST" {
 
-		r.ParseForm()
-		//TODO: Get author name from cookies or session
+		parentID := helpers.Atoi64(r.PostFormValue("parent_id"))
 		comment := &models.Comment{
 			PostID:      helpers.Atoi64(r.PostFormValue("post_id")),
-			ParentID:    null.IntFrom(helpers.Atoi64(r.PostFormValue("parent_id"))),
-			AuthorName:  r.PostFormValue("author_name"),
+			ParentID:    null.NewInt(parentID, parentID > 0),
+			AuthorName:  r.PostFormValue("author_name"), //TODO: get from cookies or session
 			Description: r.PostFormValue("description"),
-			Published:   helpers.Atob(r.PostFormValue("published")),
+			Published:   false, //comments are published by admin via dashboard
 		}
 
 		if err := comment.Insert(); err != nil {
+			log.Printf("ERROR: %s\n", err)
 			w.WriteHeader(400)
+			tmpl.Lookup("errors/400").Execute(w, helpers.ErrorData(err))
 			return
 		}
-		fmt.Fprintf(w, "{}")
+		session.AddFlash("Thank you! Your comment will be visible after approval.")
+		session.Save(r, w)
+		//TODO: show flash msg in comments block on that post page
+		http.Redirect(w, r, fmt.Sprintf("/posts/%d#comments", comment.PostID), 303)
 
 	} else {
+		err := fmt.Errorf("Method %q not allowed", r.Method)
+		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(405)
+		tmpl.Lookup("errors/405").Execute(w, helpers.ErrorData(err))
 	}
 }
 

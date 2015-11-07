@@ -16,21 +16,21 @@
         <div class="form-group">
           <label class="col-md-2 control-label" for="author_name">Author</label>
           <div class="col-md-10">
-            <input id="author_name" name="author_name" value="{{.Comment.AuthorName}}" placeholder="Author" class="form-control input-md" >
+            <input id="author_name" readonly name="author_name" value="{{.Comment.AuthorName}}" placeholder="Author" class="form-control input-md" >
           </div>
         </div>
 
         <div class="form-group">
           <label class="col-md-2 control-label" for="post_id">Post ID</label>
           <div class="col-md-10">
-            <input id="post_id" name="post_id" value="{{.Comment.PostID}}" placeholder="Post id" class="form-control input-md" >
+            <input id="post_id" readonly name="post_id" value="{{.Comment.PostID}}" placeholder="Post id" class="form-control input-md" >
           </div>
         </div>
 
         <div class="form-group">
           <label class="col-md-2 control-label" for="parent_id">Parent ID</label>
           <div class="col-md-10">
-            <input id="parent_id" name="parent_id" value="{{.Comment.ParentID}}" placeholder="Parent id" class="form-control input-md" >
+            <input id="parent_id" readonly name="parent_id" value="{{.Comment.ParentID.Value}}" placeholder="Parent id" class="form-control input-md" >
           </div>
         </div>
 
@@ -38,7 +38,6 @@
           <label class="col-md-2 control-label" for="description">Description</label>
           <div class="col-md-10">
             <textarea class="form-control" name="description" id="description">{{.Comment.Description}}</textarea>
-            <input id="description" type="hidden" name="description">
           </div>
         </div>
 
@@ -52,7 +51,7 @@
         <div class="form-group">
           <label class="col-md-2"></label>
           <div class="col-md-10">
-            <input type="submit" class="btn btn-primary" value="Submit" onclick="$('#description').val($('#markdown-editor').markdownEditor('content'))">
+            <input type="submit" class="btn btn-primary" value="Submit" >
             <input type="button" class="btn btn-default" formnovalidate onclick="window.history.back();" value="Cancel">
           </div>
         </div>

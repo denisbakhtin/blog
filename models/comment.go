@@ -9,7 +9,7 @@ import (
 //Comment type contains post comments
 type Comment struct {
 	ID          int64     `json:"id" db:"id"`
-	PostID      int64     `json:"post_id" db:"id"`
+	PostID      int64     `json:"post_id" db:"post_id"`
 	ParentID    null.Int  `json:"parent_id" db:"parent_id"`
 	AuthorName  string    `json:"name" db:"author_name"`
 	Description string    `json:"description"`
@@ -17,7 +17,7 @@ type Comment struct {
 	CreatedAt   time.Time `json:"created_at" db:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at" db:"updated_at"`
 	//calculated fields
-	Children []Comment `json:"children" db:"-"`
+	Parent *Comment `json:"parent" db:"-"`
 }
 
 //Insert stores Comment  in db
