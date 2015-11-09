@@ -21,9 +21,9 @@ It consists of the following core components:
 - gocron - periodic task launcher (for sitemap generation, etc) - https://github.com/jasonlvhit/gocron
 - sql-migrate - SQL schema migration tool - https://github.com/rubenv/sql-migrate
 - search - Postgresql full text search on posts table, can be extended to multiple tables + rankings - http://www.postgresql.org/docs/9.4/static/textsearch-intro.html
+- Post comments with oauth2 authentication
 
 # TODO
-- Comments with oauth2 authentication
 - Social plugins (share, like buttons)
 - Auto posting previews to social walls
 
