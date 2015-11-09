@@ -4,4 +4,8 @@ User-agent: *
 Disallow: /logout
 Disallow: /signin
 Disallow: /signup
+Disallow: /facebook_login
+Disallow: /google_login
+Disallow: /linkedin_login
+Disallow: /vk_login
 

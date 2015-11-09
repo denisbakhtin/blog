@@ -8,21 +8,21 @@ import (
 
 //Page type contains page info
 type Page struct {
-	ID          int64     `json:"id" db:"id"`
-	Name        string    `json:"name"`
-	Description string    `json:"description"`
-	Published   bool      `json:"published"`
-	CreatedAt   time.Time `json:"created_at" db:"created_at"`
-	UpdatedAt   time.Time `json:"updated_at" db:"updated_at"`
+	ID        int64     `json:"id" db:"id"`
+	Name      string    `json:"name"`
+	Content   string    `json:"content"`
+	Published bool      `json:"published"`
+	CreatedAt time.Time `json:"created_at" db:"created_at"`
+	UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
 }
 
 //Insert stores Page struct in db
 func (page *Page) Insert() error {
 	err := db.QueryRow(
-		`INSERT INTO pages(name, description, published, created_at, updated_at) 
+		`INSERT INTO pages(name, content, published, created_at, updated_at) 
 		VALUES($1,$2,$3,$4,$4) RETURNING id`,
 		page.Name,
-		page.Description,
+		page.Content,
 		page.Published,
 		time.Now(),
 	).Scan(&page.ID)
@@ -32,10 +32,10 @@ func (page *Page) Insert() error {
 //Update updates Page record in db
 func (page *Page) Update() error {
 	_, err := db.Exec(
-		"UPDATE pages SET name=$2, description=$3, published=$4, updated_at=$5 WHERE id=$1",
+		"UPDATE pages SET name=$2, content=$3, published=$4, updated_at=$5 WHERE id=$1",
 		page.ID,
 		page.Name,
-		page.Description,
+		page.Content,
 		page.Published,
 		time.Now(),
 	)
@@ -48,9 +48,9 @@ func (page *Page) Delete() error {
 	return err
 }
 
-//HTMLDescription returns parsed html description
-func (page *Page) HTMLDescription() template.HTML {
-	return template.HTML(string(blackfriday.MarkdownCommon([]byte(page.Description))))
+//HTMLContent returns parsed html content
+func (page *Page) HTMLContent() template.HTML {
+	return template.HTML(string(blackfriday.MarkdownCommon([]byte(page.Content))))
 }
 
 //GetPage loads page record by its id

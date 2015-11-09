@@ -10,23 +10,24 @@ import (
 )
 
 var (
-	//store *sessions.FilesystemStore
-	store *sessions.CookieStore
+	store *sessions.FilesystemStore
+	//store *sessions.CookieStore
 )
 
 func createSession() {
-	//store = sessions.NewFilesystemStore("", []byte(config.SessionSecret))
-	store = sessions.NewCookieStore([]byte(config.SessionSecret))
-	store.Options = &sessions.Options{Secure: config.Ssl, HttpOnly: true, MaxAge: 7 * 86400}
+	store = sessions.NewFilesystemStore("", []byte(config.SessionSecret))
+	//store = sessions.NewCookieStore([]byte(config.SessionSecret))
+	store.Options = &sessions.Options{Domain: config.Domain, Path: "/", Secure: config.Ssl, HttpOnly: true, MaxAge: 7 * 86400}
 }
 
 //SessionMiddleware creates gorilla session and stores it in context
 func SessionMiddleware(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
-		defer context.Clear(r) //one day all golang apps will rely on std context... dreams
+		defer context.Clear(r)
 		session, err := store.Get(r, "session")
 		if err != nil {
 			log.Printf("ERROR: can't get session: %s", err)
+			http.Error(w, err.Error(), 500)
 			return //abort chain
 		}
 		context.Set(r, "session", session)

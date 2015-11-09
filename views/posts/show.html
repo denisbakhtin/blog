@@ -6,16 +6,16 @@
   <div id="main-column">
     <h1>{{.Post.Name}}</h1>
     {{template "posts/post-info" .Post}}
-    <div class="description">{{.Post.HTMLDescription}}</div>
+    <div class="content">{{.Post.HTMLContent}}</div>
     <div id="comments">
       {{range .Flash}}
         <div class="alert alert-info">{{.}}</div><p>
       {{end}}
       {{template "comments/post-form" .}}
-      {{range .Comments}}
+      {{range .Post.Comments}}
         <div id="comment-{{.ID}}" class="well well-sm">
           <p>{{.AuthorName}}, {{dateTime .CreatedAt}}</p>
-          {{.Description}}
+          {{.Content}}
         </div>
       {{end}}
     </div>

@@ -44,13 +44,19 @@ func CommentCreate(w http.ResponseWriter, r *http.Request) {
 	tmpl := context.Get(r, "template").(*template.Template)
 	if r.Method == "POST" {
 
-		parentID := helpers.Atoi64(r.PostFormValue("parent_id"))
+		if _, ok := session.Values["oauth_name"]; !ok {
+			err := fmt.Errorf("You are not authorized to post comments.")
+			log.Printf("ERROR: %s\n", err)
+			w.WriteHeader(405)
+			tmpl.Lookup("errors/405").Execute(w, helpers.ErrorData(err))
+			return
+		}
+
 		comment := &models.Comment{
-			PostID:      helpers.Atoi64(r.PostFormValue("post_id")),
-			ParentID:    null.NewInt(parentID, parentID > 0),
-			AuthorName:  r.PostFormValue("author_name"), //TODO: get from cookies or session
-			Description: r.PostFormValue("description"),
-			Published:   false, //comments are published by admin via dashboard
+			PostID:     helpers.Atoi64(r.PostFormValue("post_id")),
+			AuthorName: session.Values["oauth_name"].(string),
+			Content:    r.PostFormValue("content"),
+			Published:  false, //comments are published by admin via dashboard
 		}
 
 		if err := comment.Insert(); err != nil {
@@ -59,9 +65,8 @@ func CommentCreate(w http.ResponseWriter, r *http.Request) {
 			tmpl.Lookup("errors/400").Execute(w, helpers.ErrorData(err))
 			return
 		}
-		session.AddFlash("Thank you! Your comment will be visible after approval.")
+		session.AddFlash("Thank you! Your comment will be visible after approval.", "comments")
 		session.Save(r, w)
-		//TODO: show flash msg in comments block on that post page
 		http.Redirect(w, r, fmt.Sprintf("/posts/%d#comments", comment.PostID), 303)
 
 	} else {
@@ -90,7 +95,7 @@ func CommentUpdate(w http.ResponseWriter, r *http.Request) {
 		data["Title"] = "Edit comment"
 		data["Active"] = "comments"
 		data["Comment"] = comment
-		data["Flash"] = session.Flashes()
+		data["Flash"] = session.Flashes("comments")
 		session.Save(r, w)
 		tmpl.Lookup("comments/form").Execute(w, data)
 
@@ -98,13 +103,63 @@ func CommentUpdate(w http.ResponseWriter, r *http.Request) {
 
 		r.ParseForm()
 		comment := &models.Comment{
-			ID:          helpers.Atoi64(r.PostFormValue("id")),
-			Description: r.PostFormValue("description"),
-			Published:   helpers.Atob(r.PostFormValue("published")),
+			ID:        helpers.Atoi64(r.PostFormValue("id")),
+			Content:   r.PostFormValue("content"),
+			Published: helpers.Atob(r.PostFormValue("published")),
 		}
 
 		if err := comment.Update(); err != nil {
-			session.AddFlash(err.Error())
+			session.AddFlash(err.Error(), "comments")
+			session.Save(r, w)
+			http.Redirect(w, r, r.RequestURI, 303)
+			return
+		}
+		http.Redirect(w, r, "/admin/comments", 303)
+
+	} else {
+		err := fmt.Errorf("Method %q not allowed", r.Method)
+		log.Printf("ERROR: %s\n", err)
+		w.WriteHeader(405)
+		tmpl.Lookup("errors/405").Execute(w, helpers.ErrorData(err))
+	}
+}
+
+//CommentReply handles /admin/new_comment route
+func CommentReply(w http.ResponseWriter, r *http.Request) {
+	tmpl := context.Get(r, "template").(*template.Template)
+	session := context.Get(r, "session").(*sessions.Session)
+	data := helpers.DefaultData(r)
+	if r.Method == "GET" {
+
+		user := context.Get(r, "user").(*models.User)
+		parentID := helpers.Atoi64(r.FormValue("parent_id"))
+		parent, _ := models.GetComment(parentID)
+		comment := &models.Comment{
+			PostID:     parent.PostID,
+			ParentID:   null.NewInt(parentID, parentID > 0),
+			AuthorName: user.Name,
+		}
+
+		data["Title"] = "Create reply"
+		data["Active"] = "comments"
+		data["Comment"] = comment
+		data["Flash"] = session.Flashes("comments")
+		session.Save(r, w)
+		tmpl.Lookup("comments/form").Execute(w, data)
+
+	} else if r.Method == "POST" {
+
+		parentID := helpers.Atoi64(r.PostFormValue("parent_id"))
+		comment := &models.Comment{
+			PostID:     helpers.Atoi64(r.PostFormValue("post_id")),
+			ParentID:   null.NewInt(parentID, parentID > 0),
+			AuthorName: r.PostFormValue("author_name"),
+			Content:    r.PostFormValue("content"),
+			Published:  helpers.Atob(r.PostFormValue("published")),
+		}
+
+		if err := comment.Insert(); err != nil {
+			session.AddFlash(err.Error(), "comments")
 			session.Save(r, w)
 			http.Redirect(w, r, r.RequestURI, 303)
 			return

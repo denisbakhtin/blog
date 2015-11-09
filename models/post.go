@@ -12,17 +12,17 @@ import (
 
 //Post type contains blog post info
 type Post struct {
-	ID          int64     `json:"id" db:"id"`
-	Name        string    `json:"name"`
-	Description string    `json:"description"`
-	Published   bool      `json:"published"`
-	UserID      null.Int  `json:"user_id" db:"user_id"`
-	CreatedAt   time.Time `json:"created_at" db:"created_at"`
-	UpdatedAt   time.Time `json:"updated_at" db:"updated_at"`
+	ID        int64     `json:"id" db:"id"`
+	Name      string    `json:"name"`
+	Content   string    `json:"content"`
+	Published bool      `json:"published"`
+	UserID    null.Int  `json:"user_id" db:"user_id"`
+	CreatedAt time.Time `json:"created_at" db:"created_at"`
+	UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
 	//calculated fields
-	Author       User     `json:"author" db:"author"`
-	Tags         []string `json:"tags" db:"-"` //can't make gin Bind form field to []Tag, so use []string instead
-	CommentCount int64    `json:"comment_count" db:"comment_count"`
+	Author   User      `json:"author" db:"author"`
+	Tags     []string  `json:"tags" db:"-"` //can't make gin Bind form field to []Tag, so use []string instead
+	Comments []Comment `json:"comments" db:"comments"`
 }
 
 //Insert stores Post record & its associations in db. Creates tags if needed.
@@ -32,10 +32,10 @@ func (post *Post) Insert() error {
 		return err
 	}
 	err = db.QueryRow(
-		`INSERT INTO posts(name, description, published, user_id, created_at, updated_at) 
+		`INSERT INTO posts(name, content, published, user_id, created_at, updated_at) 
 		VALUES($1,$2,$3,$4,$5,$5) RETURNING id`,
 		post.Name,
-		post.Description,
+		post.Content,
 		post.Published,
 		post.UserID,
 		time.Now(),
@@ -59,10 +59,10 @@ func (post *Post) Update() error {
 		return err
 	}
 	_, err = tx.Exec(
-		"UPDATE posts SET name=$2, description=$3, published=$4, updated_at=$5 WHERE id=$1",
+		"UPDATE posts SET name=$2, content=$3, published=$4, updated_at=$5 WHERE id=$1",
 		post.ID,
 		post.Name,
-		post.Description,
+		post.Content,
 		post.Published,
 		time.Now(),
 	)
@@ -133,14 +133,21 @@ func (post *Post) Delete() error {
 func (post *Post) Excerpt() template.HTML {
 	//you can sanitize, cut it down, add images, etc
 	policy := bluemonday.StrictPolicy() //remove all html tags
-	sanitized := policy.Sanitize(string(blackfriday.MarkdownCommon([]byte(post.Description))))
+	sanitized := policy.Sanitize(string(blackfriday.MarkdownCommon([]byte(post.Content))))
 	excerpt := template.HTML(truncate(sanitized, 300) + "...")
 	return excerpt
 }
 
-//HTMLDescription returns parsed html description
-func (post *Post) HTMLDescription() template.HTML {
-	return template.HTML(string(blackfriday.MarkdownCommon([]byte(post.Description))))
+//HTMLContent returns parsed html content
+func (post *Post) HTMLContent() template.HTML {
+	return template.HTML(string(blackfriday.MarkdownCommon([]byte(post.Content))))
+}
+
+//GetCommentCount returns comment count
+func (post *Post) GetCommentCount() int {
+	count := 0
+	db.Get(&count, "SELECT count(id) FROM comments WHERE published=$1 AND post_id=$2", true, post.ID)
+	return count
 }
 
 //GetPost loads Post record by its ID
@@ -156,6 +163,10 @@ func GetPost(id interface{}) (*Post, error) {
 		"SELECT name FROM tags WHERE EXISTS (SELECT null FROM poststags WHERE post_id=$1 AND tag_name=tags.name)",
 		id,
 	)
+	if err != nil {
+		return post, err
+	}
+	err = db.Select(&post.Comments, "SELECT * FROM comments WHERE published=$1 AND post_id=$2 ORDER BY id", true, post.ID)
 	return post, err
 }
 
@@ -245,7 +256,7 @@ func SearchPosts(query string) ([]Post, error) {
 	err := db.Select(
 		&list,
 		`SELECT * FROM posts 
-		WHERE to_tsvector('english', name || ' ' || description) @@ to_tsquery('english', $1) AND 
+		WHERE to_tsvector('english', name || ' ' || content) @@ to_tsquery('english', $1) AND 
 		published=$2 
 		ORDER BY posts.id DESC`,
 		query,

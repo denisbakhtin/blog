@@ -9,7 +9,10 @@
     <i class="glyphicon glyphicon-calendar indent"></i>{{printf "%d-%02d-%02d" .CreatedAt.Year .CreatedAt.Month .CreatedAt.Day}}
   </span>
   <span class="post-info-item">
-    <a href="#comments"><i class="glyphicon glyphicon-comment indent"></i>Comments: {{.CommentCount}}</a>
+    <a href="#comments">
+      <i class="glyphicon glyphicon-comment indent"></i>
+      Comments: {{if .Comments}}{{len .Comments}}{{else}}{{.GetCommentCount}}{{end}}
+    </a>
   </span>
   <span class="post-info-item">
     <i class="glyphicon glyphicon-tags indent"></i>

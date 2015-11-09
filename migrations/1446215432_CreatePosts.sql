@@ -3,7 +3,7 @@
 CREATE TABLE posts(
   id SERIAL PRIMARY KEY,
   name TEXT NOT NULL,
-  description TEXT NOT NULL,
+  content TEXT NOT NULL,
   published BOOLEAN NOT NULL DEFAULT true,
   user_id INTEGER REFERENCES users (id) ON DELETE SET NULL,
   created_at TIMESTAMP,

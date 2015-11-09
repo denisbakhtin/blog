@@ -8,7 +8,7 @@
     {{range .Posts}}
       <h2>{{.Name}}</h2>
       {{template "posts/post-info" .}}
-      <div class="description">{{.Excerpt}}</div>
+      <div class="content">{{.Excerpt}}</div>
     {{else}}
       <p>No posts found.</p>
     {{end}}

@@ -26,12 +26,11 @@ func PostShow(w http.ResponseWriter, r *http.Request) {
 			tmpl.Lookup("errors/404").Execute(w, nil)
 			return
 		}
-		comments, _ := models.GetCommentsByPostID(post.ID)
 		data["Post"] = post
 		data["Title"] = post.Name
 		data["Active"] = fmt.Sprintf("posts/%s", id)
-		data["Comments"] = comments
-		data["Flash"] = session.Flashes()
+		data["OauthName"] = session.Values["oauth_name"]
+		data["Flash"] = session.Flashes("comments")
 		session.Save(r, w)
 		tmpl.Lookup("posts/show").Execute(w, data)
 
@@ -91,10 +90,10 @@ func PostCreate(w http.ResponseWriter, r *http.Request) {
 
 		r.ParseForm()
 		post := &models.Post{
-			Name:        r.PostFormValue("name"),
-			Description: r.PostFormValue("description"),
-			Published:   helpers.Atob(r.PostFormValue("published")),
-			Tags:        r.Form["tags"], //PostFormValue returns only first value
+			Name:      r.PostFormValue("name"),
+			Content:   r.PostFormValue("content"),
+			Published: helpers.Atob(r.PostFormValue("published")),
+			Tags:      r.Form["tags"], //PostFormValue returns only first value
 		}
 
 		if user := context.Get(r, "user"); user != nil {
@@ -149,11 +148,11 @@ func PostUpdate(w http.ResponseWriter, r *http.Request) {
 
 		r.ParseForm()
 		post := &models.Post{
-			ID:          helpers.Atoi64(r.PostFormValue("id")),
-			Name:        r.PostFormValue("name"),
-			Description: r.PostFormValue("description"),
-			Published:   helpers.Atob(r.PostFormValue("published")),
-			Tags:        r.Form["tags"], //PostFormValue returns only first value
+			ID:        helpers.Atoi64(r.PostFormValue("id")),
+			Name:      r.PostFormValue("name"),
+			Content:   r.PostFormValue("content"),
+			Published: helpers.Atob(r.PostFormValue("published")),
+			Tags:      r.Form["tags"], //PostFormValue returns only first value
 		}
 
 		if err := post.Update(); err != nil {

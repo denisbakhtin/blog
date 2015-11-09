@@ -79,9 +79,9 @@ func PageCreate(w http.ResponseWriter, r *http.Request) {
 	} else if r.Method == "POST" {
 
 		page := &models.Page{
-			Name:        r.PostFormValue("name"),
-			Description: r.PostFormValue("description"),
-			Published:   helpers.Atob(r.PostFormValue("published")),
+			Name:      r.PostFormValue("name"),
+			Content:   r.PostFormValue("content"),
+			Published: helpers.Atob(r.PostFormValue("published")),
 		}
 
 		if err := page.Insert(); err != nil {
@@ -125,10 +125,10 @@ func PageUpdate(w http.ResponseWriter, r *http.Request) {
 	} else if r.Method == "POST" {
 
 		page := &models.Page{
-			ID:          helpers.Atoi64(r.PostFormValue("id")),
-			Name:        r.PostFormValue("name"),
-			Description: r.PostFormValue("description"),
-			Published:   helpers.Atob(r.PostFormValue("published")),
+			ID:        helpers.Atoi64(r.PostFormValue("id")),
+			Name:      r.PostFormValue("name"),
+			Content:   r.PostFormValue("content"),
+			Published: helpers.Atob(r.PostFormValue("published")),
 		}
 
 		if err := page.Update(); err != nil {

@@ -168,3 +168,11 @@ textarea.parsley-error {
 .post-info-item {
   margin-right: 1em;
 }
+#comments {
+  padding-top: 70px;
+  margin-top: -70px;
+}
+#comment-oauth-login img {
+  width: 36px;
+  height: 36px;
+}

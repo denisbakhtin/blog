@@ -24,6 +24,7 @@ type Config struct {
 	Ssl           bool   `json:"ssl"`
 	SignupEnabled bool   `json:"signup_enabled"` //always set to false in release mode (config.json)
 	Database      DatabaseConfig
+	Oauth         OauthConfig
 }
 
 //DatabaseConfig contains database connection info
@@ -32,6 +33,21 @@ type DatabaseConfig struct {
 	Name     string //database name
 	User     string
 	Password string
+}
+
+//OauthConfig contains oauth login info
+type OauthConfig struct {
+	Facebook OauthApp
+	Google   OauthApp
+	Linkedin OauthApp
+	Vk       OauthApp
+}
+
+//OauthApp contains basic oauth application data
+type OauthApp struct {
+	ClientID     string `json:"client_id"`
+	ClientSecret string `json:"client_secret"`
+	RedirectURL  string `json:"redirect_url"`
 }
 
 var (
