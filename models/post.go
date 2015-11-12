@@ -2,6 +2,7 @@ package models
 
 import (
 	"html/template"
+	"regexp"
 	"time"
 
 	"github.com/jmoiron/sqlx"
@@ -148,6 +149,17 @@ func (post *Post) GetCommentCount() int {
 	count := 0
 	db.Get(&count, "SELECT count(id) FROM comments WHERE published=$1 AND post_id=$2", true, post.ID)
 	return count
+}
+
+//GetImage returns extracts first image url from post content
+func (post *Post) GetImage() string {
+	content := string(blackfriday.MarkdownCommon([]byte(post.Content)))
+	re := regexp.MustCompile(`<img[^<>]+src="([^"]+)"[^<>]*>`)
+	res := re.FindStringSubmatch(content)
+	if len(res) == 2 {
+		return res[1]
+	}
+	return ""
 }
 
 //GetPost loads Post record by its ID

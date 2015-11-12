@@ -34,15 +34,12 @@ func PostShow(w http.ResponseWriter, r *http.Request) {
 		//Facebook open graph meta tags
 		data["Ogheadprefix"] = "og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#"
 		data["Ogtitle"] = post.Name
-		data["Ogurl"] = fmt.Sprintf(
-			"http://%s/posts/%d",
-			r.Host,
-			post.ID,
-		)
+		data["Ogurl"] = fmt.Sprintf("http://%s/posts/%d", r.Host, post.ID)
 		data["Ogtype"] = "article"
 		data["Ogdescription"] = post.Excerpt()
-		data["Ogimage"] = ""
-		log.Printf("%+v\n", r.Host)
+		if img := post.GetImage(); len(img) > 0 {
+			data["Ogimage"] = fmt.Sprintf("http://%s%s", r.Host, img)
+		}
 		//flashes
 		data["Flash"] = session.Flashes("comments")
 		session.Save(r, w)
