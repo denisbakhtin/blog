@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/denisbakhtin/blog/controllers/oauth"
 	"github.com/denisbakhtin/blog/helpers"
 	"github.com/denisbakhtin/blog/models"
 	"github.com/gorilla/context"
@@ -30,6 +31,19 @@ func PostShow(w http.ResponseWriter, r *http.Request) {
 		data["Title"] = post.Name
 		data["Active"] = fmt.Sprintf("posts/%s", id)
 		data["OauthName"] = session.Values["oauth_name"]
+		//Facebook open graph meta tags
+		data["Ogheadprefix"] = "og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#"
+		data["Ogtitle"] = post.Name
+		data["Ogurl"] = fmt.Sprintf(
+			"http://%s/posts/%d",
+			r.Host,
+			post.ID,
+		)
+		data["Ogtype"] = "article"
+		data["Ogdescription"] = post.Excerpt()
+		data["Ogimage"] = ""
+		log.Printf("%+v\n", r.Host)
+		//flashes
 		data["Flash"] = session.Flashes("comments")
 		session.Save(r, w)
 		tmpl.Lookup("posts/show").Execute(w, data)
@@ -182,6 +196,7 @@ func PostDelete(w http.ResponseWriter, r *http.Request) {
 			log.Printf("ERROR: %s\n", err)
 			w.WriteHeader(404)
 			tmpl.Lookup("errors/404").Execute(w, helpers.ErrorData(err))
+			return
 		}
 
 		if err := post.Delete(); err != nil {
@@ -197,5 +212,34 @@ func PostDelete(w http.ResponseWriter, r *http.Request) {
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(405)
 		tmpl.Lookup("errors/405").Execute(w, helpers.ErrorData(err))
+	}
+}
+
+//PostOnFacebook publishes post preview on facebook page wall
+func PostOnFacebook(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method == "POST" {
+
+		post, err := models.GetPost(r.FormValue("id"))
+		if err != nil {
+			log.Printf("ERROR: %s\n", err)
+			w.WriteHeader(404)
+			return
+		}
+		err = oauth.PostOnFacebook(
+			fmt.Sprintf("http://%s/posts/%d", r.Host, post.ID),
+			post.Name,
+		)
+		if err != nil {
+			log.Printf("ERROR: %s\n", err)
+			w.WriteHeader(500)
+			return
+		}
+		w.WriteHeader(200)
+
+	} else {
+		err := fmt.Errorf("Method %q not allowed", r.Method)
+		log.Printf("ERROR: %s\n", err)
+		w.WriteHeader(405)
 	}
 }

@@ -22,10 +22,11 @@ It consists of the following core components:
 - sql-migrate - SQL schema migration tool - https://github.com/rubenv/sql-migrate
 - search - Postgresql full text search on posts table, can be extended to multiple tables + rankings - http://www.postgresql.org/docs/9.4/static/textsearch-intro.html
 - Post comments with oauth2 authentication
+- Post blog entries on facebook page
 
 # TODO
 - Social plugins (share, like buttons)
-- Auto posting previews to social walls
+- Post updates on twitter, google +, linkedin
 
 # Usage
 ```

@@ -75,6 +75,7 @@ func main() {
 		http.Handle("/admin/new_post", Restricted(controllers.PostCreate))
 		http.Handle("/admin/edit_post/", Restricted(controllers.PostUpdate))
 		http.Handle("/admin/delete_post", Restricted(controllers.PostDelete))
+		http.Handle("/admin/post_on_facebook", RestrictedWithoutCSRF(controllers.PostOnFacebook))
 
 		http.Handle("/admin/tags", Restricted(controllers.TagIndex))
 		http.Handle("/admin/new_tag", Restricted(controllers.TagCreate))

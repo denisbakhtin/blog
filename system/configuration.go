@@ -43,11 +43,13 @@ type OauthConfig struct {
 	Vk       OauthApp
 }
 
-//OauthApp contains basic oauth application data
+//OauthApp contains oauth application data
 type OauthApp struct {
 	ClientID     string `json:"client_id"`
 	ClientSecret string `json:"client_secret"`
 	RedirectURL  string `json:"redirect_url"`
+	Page         string `json:"page"`  //page id, mainly for facebook atm
+	Token        string `json:"token"` //page token, mainly for facebook atm. Read http://stackoverflow.com/questions/17197970/facebook-permanent-page-access-token
 }
 
 var (

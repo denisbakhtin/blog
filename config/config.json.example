@@ -11,6 +11,30 @@
       "name": "blog_dev",
       "user": "your_db_user",
       "password": "your_db_user_password"
+    },
+    "oauth": {
+      "facebook": {
+        "client_id": "",
+        "client_secret": "",
+        "redirect_url": "http://localhost:8080/facebook_callback",
+        "page": "",
+        "token": ""
+      },
+      "google": {
+        "client_id": "",
+        "client_secret": "",
+        "redirect_url": "http://localhost:8080/google_callback"
+      },
+      "linkedin": {
+        "client_id": "",
+        "client_secret": "",
+        "redirect_url": "http://localhost:8080/linkedin_callback"
+      },
+      "vk": {
+        "client_id": "",
+        "client_secret": "",
+        "redirect_url": "http://localhost:8080/vk_callback"
+      }
     }
   },
   "release": {

@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"net/url"
 
 	"github.com/denisbakhtin/blog/helpers"
 	"github.com/denisbakhtin/blog/system"
@@ -94,6 +95,39 @@ func FacebookCallback(w http.ResponseWriter, r *http.Request) {
 	} else {
 		http.Redirect(w, r, "/", 303)
 	}
+}
+
+//PostOnFacebook creates new post on facebook page wall
+func PostOnFacebook(link, message string) error {
+	//see http://stackoverflow.com/questions/17197970/facebook-permanent-page-access-token
+	//for info on obtaining upexpirable page access token
+	//also https://developers.facebook.com/docs/graph-api/reference/v2.5/page/feed for api description
+
+	token := &oauth2.Token{
+		AccessToken: system.GetConfig().Oauth.Facebook.Token, //page access token
+	}
+	client := fbConfig().Client(oauth2.NoContext, token)
+	response, err := client.Post(
+		fmt.Sprintf(
+			"https://graph.facebook.com/v2.5/%s/feed?access_token=%s&link=%s&message=%s",
+			system.GetConfig().Oauth.Facebook.Page,
+			token.AccessToken,
+			url.QueryEscape(link),
+			url.QueryEscape(message),
+		),
+		"application/json",
+		nil,
+	)
+	if err != nil {
+		return err
+	}
+	body, _ := ioutil.ReadAll(response.Body)
+	response.Body.Close()
+	if response.StatusCode != 200 {
+		err := fmt.Errorf("ERROR: while posting on facebook: %s\n", body)
+		return err
+	}
+	return nil
 }
 
 //facebook config

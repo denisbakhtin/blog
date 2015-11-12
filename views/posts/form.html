@@ -51,7 +51,19 @@
           <label class="col-md-2"></label>
           <div class="col-md-10">
             <input type="submit" class="btn btn-primary" value="Submit" onclick="$('#content').val($('#markdown-editor').markdownEditor('content'))">
+            <input type="button" {{if not .Post.Published}}title="Post is unpublished" disabled="disabled"{{end}} class="btn btn-success" value="Post on facebook" onclick="postonfacebook();" />
             <input type="button" class="btn btn-default" formnovalidate onclick="window.history.back();" value="Cancel">
+            <script>
+              function postonfacebook() {
+                $.ajax({
+                  method: "POST",
+                  url: '/admin/post_on_facebook?id={{.Post.ID}}', 
+                  data: null, 
+                  error: function(jqXHR, status){alert("Fail, see logs");},
+                  success: function(data, status){alert('Posted successfully');},
+                });
+              }
+            </script>
           </div>
         </div>
       </fieldset>
