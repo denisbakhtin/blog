@@ -10,6 +10,7 @@ import (
 	"github.com/denisbakhtin/blog/models"
 	"github.com/gorilla/context"
 	"github.com/gorilla/sessions"
+	"github.com/nicksnyder/go-i18n/i18n"
 	"gopkg.in/guregu/null.v3"
 )
 
@@ -17,6 +18,7 @@ import (
 func CommentIndex(w http.ResponseWriter, r *http.Request) {
 	tmpl := context.Get(r, "template").(*template.Template)
 	data := helpers.DefaultData(r)
+	T := context.Get(r, "T").(i18n.TranslateFunc)
 	if r.Method == "GET" {
 
 		list, err := models.GetComments()
@@ -25,7 +27,7 @@ func CommentIndex(w http.ResponseWriter, r *http.Request) {
 			tmpl.Lookup("errors/500").Execute(w, helpers.ErrorData(err))
 			return
 		}
-		data["Title"] = "List of comments"
+		data["Title"] = T("comments")
 		data["Active"] = "comments"
 		data["List"] = list
 		tmpl.Lookup("comments/index").Execute(w, data)
@@ -82,6 +84,7 @@ func CommentUpdate(w http.ResponseWriter, r *http.Request) {
 	tmpl := context.Get(r, "template").(*template.Template)
 	session := context.Get(r, "session").(*sessions.Session)
 	data := helpers.DefaultData(r)
+	T := context.Get(r, "T").(i18n.TranslateFunc)
 	if r.Method == "GET" {
 
 		id := r.URL.Path[len("/admin/edit_comment/"):]
@@ -92,7 +95,7 @@ func CommentUpdate(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		data["Title"] = "Edit comment"
+		data["Title"] = T("edit_comment")
 		data["Active"] = "comments"
 		data["Comment"] = comment
 		data["Flash"] = session.Flashes("comments")
@@ -129,6 +132,7 @@ func CommentReply(w http.ResponseWriter, r *http.Request) {
 	tmpl := context.Get(r, "template").(*template.Template)
 	session := context.Get(r, "session").(*sessions.Session)
 	data := helpers.DefaultData(r)
+	T := context.Get(r, "T").(i18n.TranslateFunc)
 	if r.Method == "GET" {
 
 		user := context.Get(r, "user").(*models.User)
@@ -140,7 +144,7 @@ func CommentReply(w http.ResponseWriter, r *http.Request) {
 			AuthorName: user.Name,
 		}
 
-		data["Title"] = "Create reply"
+		data["Title"] = T("reply")
 		data["Active"] = "comments"
 		data["Comment"] = comment
 		data["Flash"] = session.Flashes("comments")
@@ -178,7 +182,7 @@ func CommentReply(w http.ResponseWriter, r *http.Request) {
 func CommentDelete(w http.ResponseWriter, r *http.Request) {
 	tmpl := context.Get(r, "template").(*template.Template)
 
-	if r.Method == "comment" {
+	if r.Method == "POST" {
 
 		comment, err := models.GetComment(r.PostFormValue("id"))
 		if err != nil {

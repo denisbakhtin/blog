@@ -4,6 +4,7 @@ import (
 	"github.com/denisbakhtin/blog/models"
 	"github.com/gorilla/context"
 	"github.com/gorilla/sessions"
+	"github.com/nicksnyder/go-i18n/i18n"
 	"html/template"
 	"log"
 	"net/http"
@@ -24,11 +25,15 @@ func createSession() {
 func SessionMiddleware(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		defer context.Clear(r)
-		session, err := store.Get(r, "session")
-		if err != nil {
-			log.Printf("ERROR: can't get session: %s", err)
-			http.Error(w, err.Error(), 500)
-			return //abort chain
+		session, _ := store.Get(r, "session") //ignore unrecoverable error if file storage has been removed from /tmp dir after server reboot. Instead check session == nil
+		if session == nil {
+			var err error
+			session, err = store.New(r, "session")
+			if err != nil {
+				log.Printf("ERROR: can't get session: %s", err)
+				http.Error(w, err.Error(), 500)
+				return //abort chain
+			}
 		}
 		context.Set(r, "session", session)
 		next.ServeHTTP(w, r)
@@ -36,10 +41,36 @@ func SessionMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(fn)
 }
 
-//TemplateMiddleware stores parsed templates in context
+//LocaleMiddleware stores current locale
+func LocaleMiddleware(next http.Handler) http.Handler {
+	fn := func(w http.ResponseWriter, r *http.Request) {
+		cookieLang := ""
+		if cookieL, _ := r.Cookie("lang"); cookieL != nil {
+			cookieLang = cookieL.Value
+		}
+		acceptLang := r.Header.Get("Accept-Language")
+		defaultLang := config.Language // known valid language
+		T, lang, err := i18n.TfuncAndLanguage(cookieLang, acceptLang, defaultLang)
+		if err != nil {
+			w.WriteHeader(500)
+			w.Write([]byte(err.Error()))
+			log.Printf("ERROR: %s\n", err)
+			return
+		}
+		context.Set(r, "T", T)
+		context.Set(r, "language", lang.Tag)
+		next.ServeHTTP(w, r)
+	}
+	return http.HandlerFunc(fn)
+}
+
+//TemplateMiddleware stores parsed templates in context. Must be preceded by LocaleMiddleware
 func TemplateMiddleware(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
-		context.Set(r, "template", tmpl)
+		t := tmpl.Funcs(map[string]interface{}{
+			"T": context.Get(r, "T").(i18n.TranslateFunc), //translation func for current locale, see LocaleMiddleware
+		})
+		context.Set(r, "template", t)
 		next.ServeHTTP(w, r)
 	}
 	return http.HandlerFunc(fn)
@@ -48,6 +79,7 @@ func TemplateMiddleware(next http.Handler) http.Handler {
 //DataMiddleware inits common request data (active user, et al). Must be preceded by SessionMiddleware
 func DataMiddleware(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
+		//set active user
 		session := context.Get(r, "session").(*sessions.Session)
 		if uID, ok := session.Values["user_id"]; ok {
 			user, _ := models.GetUser(uID)
@@ -55,9 +87,11 @@ func DataMiddleware(next http.Handler) http.Handler {
 				context.Set(r, "user", user)
 			}
 		}
+		//enable signup link
 		if config.SignupEnabled {
 			context.Set(r, "signup_enabled", true)
 		}
+
 		next.ServeHTTP(w, r)
 	}
 	return http.HandlerFunc(fn)

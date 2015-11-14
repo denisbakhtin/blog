@@ -12,12 +12,14 @@ import (
 	"github.com/denisbakhtin/blog/helpers"
 	"github.com/denisbakhtin/blog/models"
 	"github.com/gorilla/context"
+	"github.com/nicksnyder/go-i18n/i18n"
 )
 
 //ArchiveShow handles GET /archives/:year-:month route
 func ArchiveShow(w http.ResponseWriter, r *http.Request) {
 	tmpl := context.Get(r, "template").(*template.Template)
 	data := helpers.DefaultData(r)
+	T := context.Get(r, "T").(i18n.TranslateFunc)
 	if r.Method == "GET" {
 
 		param := r.URL.Path[len("/archives/"):]
@@ -35,7 +37,7 @@ func ArchiveShow(w http.ResponseWriter, r *http.Request) {
 			tmpl.Lookup("errors/500").Execute(w, nil)
 			return
 		}
-		data["Title"] = fmt.Sprintf("%s %d archives", time.Month(month).String(), year)
+		data["Title"] = fmt.Sprintf("%s %s %d", T("archives_for"), T(time.Month(month).String()), year)
 		data["List"] = list
 		data["Active"] = fmt.Sprintf("archives/%d-%02d", year, month)
 		tmpl.Lookup("archives/show").Execute(w, data)

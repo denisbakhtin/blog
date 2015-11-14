@@ -3,10 +3,10 @@
 {{template "navbar" .}}
 <div class="container" role="main">
   <div class="jumbotron">
-    <h1>403 Error</h1>
+    <h1>{{T "403_error"}}</h1>
     <div class="description">
       <i class="glyphicon glyphicon-exclamation-sign indent"></i>
-      Oops, access forbidden! {{.Error}}
+      {{T "403_error_description"}}! {{.Error}}
     </div>
   </div>
 </div>

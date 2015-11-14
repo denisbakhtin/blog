@@ -5,6 +5,7 @@ package system
 import (
 	"github.com/GeertJohan/go.rice"
 	"github.com/denisbakhtin/blog/helpers"
+	"github.com/nicksnyder/go-i18n/i18n"
 	"html/template"
 	"log"
 	"os"
@@ -22,6 +23,7 @@ func loadTemplates() {
 		"recentPosts":   helpers.RecentPosts,
 		"tags":          helpers.Tags,
 		"archives":      helpers.Archives,
+		"T":             i18n.MustTfunc(config.Language), //will be replaced by actual TranslationFunc in LocaleMiddleware
 	})
 
 	fn := func(path string, f os.FileInfo, err error) error {

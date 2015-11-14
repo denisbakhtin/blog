@@ -14,14 +14,14 @@
         {{.csrfField}}
         <input type="hidden" name="id" value="{{.Page.ID}}" >
         <div class="form-group">
-          <label class="col-md-2 control-label" for="name">Name</label>
+          <label class="col-md-2 control-label" for="name">{{T "title"}}</label>
           <div class="col-md-10">
-            <input id="name" name="name" value="{{.Page.Name}}" placeholder="Page title" class="form-control input-md" required="" >
+            <input id="name" name="name" value="{{.Page.Name}}" placeholder="{{T "title_placeholder"}}" class="form-control input-md" required="" >
           </div>
         </div>
 
         <div class="form-group">
-          <label class="col-md-2 control-label" for="content">Content</label>
+          <label class="col-md-2 control-label" for="content">{{T "content"}}</label>
           <div class="col-md-10">
             <input id="content" type="hidden" name="content">
             <div id="markdown-editor">{{.Page.Content}}</div>
@@ -31,15 +31,15 @@
         <div class="form-group">
           <label class="col-md-offset-2 col-md-10" for="published">
             <input id="published" name="published" type="checkbox" value="true" {{if .Page.Published}}checked{{end}} >
-            Publish
+            {{T "published"}}
           </label>
         </div>
 
         <div class="form-group">
           <label class="col-md-2"></label>
           <div class="col-md-10">
-            <input type="submit" class="btn btn-primary" value="Submit" onclick="$('#content').val($('#markdown-editor').markdownEditor('content'))">
-            <input type="button" class="btn btn-default" formnovalidate onclick="window.history.back();" value="Cancel">
+            <input type="submit" class="btn btn-primary" value="{{T "submit"}}" onclick="$('#content').val($('#markdown-editor').markdownEditor('content'))">
+            <input type="button" class="btn btn-default" formnovalidate onclick="window.history.back();" value="{{T "cancel"}}">
           </div>
         </div>
       </fieldset>

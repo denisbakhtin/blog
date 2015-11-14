@@ -6,29 +6,29 @@
     <div class="panel-body">
       <form class="form-horizontal" method="post" data-parsley-validate>
       <fieldset>
-        <legend>Sign In</legend>
+        <legend>{{T "sign_in"}}</legend>
         {{range .Flash}}
           <div class="alert alert-danger">{{.}}</div><p>
         {{end}}
         {{.csrfField}}
         <div class="form-group">
-          <label class="col-md-4 control-label" for="email">Email</label>
+          <label class="col-md-4 control-label" for="email">{{T "email"}}</label>
           <div class="col-md-6">
-            <input id="email" name="email" type="email" placeholder="Email address" class="form-control input-md" required="" data-parsley-required-message="Please enter your email">
+            <input id="email" name="email" type="email" placeholder="{{T "email_placeholder"}}" class="form-control input-md" required="" data-parsley-required-message="{{T "parsley_email_required"}}">
           </div>
         </div>
 
         <div class="form-group">
-          <label class="col-md-4 control-label" for="password">Password</label>
+          <label class="col-md-4 control-label" for="password">{{T "password"}}</label>
           <div class="col-md-6">
-            <input id="password" name="password" type="password" placeholder="Password" class="form-control input-md" required="" data-parsley-required-message="Please enter your password">
+            <input id="password" name="password" type="password" placeholder="{{T "password_placeholder"}}" class="form-control input-md" required="" data-parsley-required-message="{{T "parsley_password_required"}}">
           </div>
         </div>
 
         <div class="form-group">
           <label class="col-md-4 control-label" for="signin"></label>
           <div class="col-md-4">
-            <button id="signin" name="signin" class="btn btn-primary">Sign In</button>
+            <button id="signin" name="signin" class="btn btn-primary">{{T "sign_in"}}</button>
           </div>
         </div>
       </fieldset>

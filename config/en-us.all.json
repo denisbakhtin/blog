@@ -1,0 +1,382 @@
+[
+  {
+    "id": "400_error",
+    "translation": "400 Error"
+  },
+  {
+    "id": "400_error_description",
+    "translation": "Oops, bad request"
+  },
+  {
+    "id": "403_error",
+    "translation": "403 Error"
+  },
+  {
+    "id": "403_error_description",
+    "translation": "Oops, access forbidden"
+  },
+  {
+    "id": "404_error",
+    "translation": "404 Error"
+  },
+  {
+    "id": "404_error_description",
+    "translation": "Oops, page not found"
+  },
+  {
+    "id": "405_error",
+    "translation": "405 Error"
+  },
+  {
+    "id": "405_error_description",
+    "translation": "Oops, request method not allowed"
+  },
+  {
+    "id": "500_error",
+    "translation": "500 Error"
+  },
+  {
+    "id": "April",
+    "translation": "April"
+  },
+  {
+    "id": "August",
+    "translation": "August"
+  },
+  {
+    "id": "December",
+    "translation": "December"
+  },
+  {
+    "id": "February",
+    "translation": "February"
+  },
+  {
+    "id": "ID",
+    "translation": "ID"
+  },
+  {
+    "id": "January",
+    "translation": "January"
+  },
+  {
+    "id": "July",
+    "translation": "July"
+  },
+  {
+    "id": "June",
+    "translation": "June"
+  },
+  {
+    "id": "March",
+    "translation": "March"
+  },
+  {
+    "id": "May",
+    "translation": "May"
+  },
+  {
+    "id": "November",
+    "translation": "November"
+  },
+  {
+    "id": "October",
+    "translation": "October"
+  },
+  {
+    "id": "September",
+    "translation": "September"
+  },
+  {
+    "id": "actions",
+    "translation": "Actions"
+  },
+  {
+    "id": "archives_for",
+    "translation": "Archives for"
+  },
+  {
+    "id": "are_you_sure",
+    "translation": "Are you sure"
+  },
+  {
+    "id": "author",
+    "translation": "Author"
+  },
+  {
+    "id": "author_placeholder",
+    "translation": "Author name"
+  },
+  {
+    "id": "cancel",
+    "translation": "Cancel"
+  },
+  {
+    "id": "comment",
+    "translation": "Comment"
+  },
+  {
+    "id": "comments",
+    "translation": "Comments"
+  },
+  {
+    "id": "content",
+    "translation": "Content"
+  },
+  {
+    "id": "created",
+    "translation": "Created"
+  },
+  {
+    "id": "dashboard",
+    "translation": "Dashboard"
+  },
+  {
+    "id": "edit_comment",
+    "translation": "Edit comment"
+  },
+  {
+    "id": "edit_page",
+    "translation": "Edit page"
+  },
+  {
+    "id": "edit_post",
+    "translation": "Edit post"
+  },
+  {
+    "id": "edit_profile",
+    "translation": "Edit profile"
+  },
+  {
+    "id": "edit_user",
+    "translation": "Edit user"
+  },
+  {
+    "id": "email",
+    "translation": "Email"
+  },
+  {
+    "id": "email_placeholder",
+    "translation": "Email address"
+  },
+  {
+    "id": "error_see_logs",
+    "translation": "Error, see logs"
+  },
+  {
+    "id": "greeting",
+    "translation": "Welcome to blog boilerplate"
+  },
+  {
+    "id": "home",
+    "translation": "Home"
+  },
+  {
+    "id": "i_accept_terms",
+    "translation": "I accept terms and conditions"
+  },
+  {
+    "id": "login_with_facebook",
+    "translation": "Login with Facebook"
+  },
+  {
+    "id": "login_with_gplus",
+    "translation": "Login with Google+"
+  },
+  {
+    "id": "login_with_linkedin",
+    "translation": "Login with Linkedin"
+  },
+  {
+    "id": "login_with_vk",
+    "translation": "Login with Vkontakte"
+  },
+  {
+    "id": "logout",
+    "translation": "Logout"
+  },
+  {
+    "id": "name",
+    "translation": "Name"
+  },
+  {
+    "id": "name_placeholder",
+    "translation": "Enter name"
+  },
+  {
+    "id": "navigation",
+    "translation": "Navigation"
+  },
+  {
+    "id": "new_page",
+    "translation": "New page"
+  },
+  {
+    "id": "new_post",
+    "translation": "New post"
+  },
+  {
+    "id": "new_tag",
+    "translation": "New tag"
+  },
+  {
+    "id": "new_user",
+    "translation": "New user"
+  },
+  {
+    "id": "no_posts_found",
+    "translation": "No blog posts found"
+  },
+  {
+    "id": "pages",
+    "translation": "Pages"
+  },
+  {
+    "id": "parent_id",
+    "translation": "Parent ID"
+  },
+  {
+    "id": "parent_id_placeholder",
+    "translation": "Parent ID"
+  },
+  {
+    "id": "parsley_accept_terms_required",
+    "translation": "You can't continue without accepting our Terms and Conditions"
+  },
+  {
+    "id": "parsley_comment_required",
+    "translation": "Please enter your comment"
+  },
+  {
+    "id": "parsley_email_required",
+    "translation": "Please enter your email"
+  },
+  {
+    "id": "parsley_name_required",
+    "translation": "Please enter user name"
+  },
+  {
+    "id": "parsley_password_not_equal",
+    "translation": "Passwords do not match"
+  },
+  {
+    "id": "parsley_password_required",
+    "translation": "Please enter your password"
+  },
+  {
+    "id": "parsley_repeat_password_required",
+    "translation": "Please repeat your password"
+  },
+  {
+    "id": "password",
+    "translation": "Password"
+  },
+  {
+    "id": "password_placeholder",
+    "translation": "Password"
+  },
+  {
+    "id": "post_id",
+    "translation": "Post ID"
+  },
+  {
+    "id": "post_id_placeholder",
+    "translation": "Post ID"
+  },
+  {
+    "id": "post_is_unpublished",
+    "translation": "Post is unpublished"
+  },
+  {
+    "id": "post_on_facebook",
+    "translation": "Post on Facebook"
+  },
+  {
+    "id": "posted_successfully",
+    "translation": "Posted successfully"
+  },
+  {
+    "id": "posts",
+    "translation": "Posts"
+  },
+  {
+    "id": "published",
+    "translation": "Published"
+  },
+  {
+    "id": "recent_posts",
+    "translation": "Recent posts"
+  },
+  {
+    "id": "repeat_password",
+    "translation": "Repeat password"
+  },
+  {
+    "id": "repeat_password_placeholder",
+    "translation": "Repeat password"
+  },
+  {
+    "id": "reply",
+    "translation": "Reply"
+  },
+  {
+    "id": "search_placeholder",
+    "translation": "Search"
+  },
+  {
+    "id": "search_results_for",
+    "translation": "Search results for"
+  },
+  {
+    "id": "settings",
+    "translation": "settings"
+  },
+  {
+    "id": "sign_in",
+    "translation": "Sign in"
+  },
+  {
+    "id": "sign_up",
+    "translation": "Sign up"
+  },
+  {
+    "id": "site_description",
+    "translation": "Blog boilerplate"
+  },
+  {
+    "id": "site_name",
+    "translation": "My blog"
+  },
+  {
+    "id": "submit",
+    "translation": "Submit"
+  },
+  {
+    "id": "tags",
+    "translation": "Tags"
+  },
+  {
+    "id": "title",
+    "translation": "Title"
+  },
+  {
+    "id": "title_placeholder",
+    "translation": "Enter title"
+  },
+  {
+    "id": "to_comment_login_with",
+    "translation": "To Comment Login With"
+  },
+  {
+    "id": "user_profile",
+    "translation": "User profile"
+  },
+  {
+    "id": "users",
+    "translation": "Users"
+  },
+  {
+    "id": "website",
+    "translation": "Website"
+  }
+]

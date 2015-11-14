@@ -11,7 +11,7 @@
   <span class="post-info-item">
     <a href="#comments">
       <i class="glyphicon glyphicon-comment indent"></i>
-      Comments: {{if .Comments}}{{len .Comments}}{{else}}{{.GetCommentCount}}{{end}}
+      {{T "comments"}}: {{if .Comments}}{{len .Comments}}{{else}}{{.GetCommentCount}}{{end}}
     </a>
   </span>
   <span class="post-info-item">

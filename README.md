@@ -23,6 +23,7 @@ It consists of the following core components:
 - search - Postgresql full text search on posts table, can be extended to multiple tables + rankings - http://www.postgresql.org/docs/9.4/static/textsearch-intro.html
 - Post comments with oauth2 authentication
 - Post blog entries on facebook page
+- go-i18n - Multi language interface - https://github.com/nicksnyder/go-i18n
 
 # TODO
 - Social plugins (share, like buttons)

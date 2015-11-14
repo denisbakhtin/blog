@@ -2,7 +2,7 @@
 {{$active := .Active}}
 <aside id="sidebar">
   <div class="sidebar-block">
-    <h5><i class="glyphicon glyphicon-pencil indent"></i>Recent posts</h5>
+    <h5><i class="glyphicon glyphicon-pencil indent"></i>{{T "recent_posts"}}</h5>
     <ul class="nav nav-pills nav-stacked">
       {{range recentPosts}}
       <li class="{{isActive $active (printf "posts/%d" .ID)}}">
@@ -15,7 +15,7 @@
     {{template "search/searchbox" .}}
   </div>
   <div class="sidebar-block">
-    <h5><i class="glyphicon glyphicon-tags indent"></i>Tags</h5>
+    <h5><i class="glyphicon glyphicon-tags indent"></i>{{T "tags"}}</h5>
     <div class="sidebar-tags">
       {{range tags}}
         <a class="label label-success" href="/tags/{{.Name}}">{{.Name}}</a>
@@ -23,13 +23,13 @@
     </div>
   </div>
   <div class="sidebar-block">
-    <h5><i class="glyphicon glyphicon-menu-hamburger indent"></i>Archives</h5>
+    <h5><i class="glyphicon glyphicon-menu-hamburger indent"></i>{{T "archives"}}</h5>
     <ul class="nav nav-pills nav-stacked">
       {{range archives}}
       <li class="{{isActive $active (printf "archives/%d-%02d" .CreatedAt.Year .CreatedAt.Month)}}">
         <a href="/archives/{{printf "%d-%02d" .CreatedAt.Year .CreatedAt.Month}}">
           <i class="glyphicon glyphicon-chevron-right indent"></i>
-          {{printf "%s %d" (.CreatedAt.Month.String) .CreatedAt.Year}}
+          {{printf "%s %d" (T .CreatedAt.Month.String) .CreatedAt.Year}}
         </a>
       </li>
       {{end}}

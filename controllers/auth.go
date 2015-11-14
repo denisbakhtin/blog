@@ -9,6 +9,7 @@ import (
 	"github.com/denisbakhtin/blog/models"
 	"github.com/gorilla/context"
 	"github.com/gorilla/sessions"
+	"github.com/nicksnyder/go-i18n/i18n"
 	"html/template"
 )
 
@@ -17,10 +18,11 @@ func SignIn(w http.ResponseWriter, r *http.Request) {
 	tmpl := context.Get(r, "template").(*template.Template)
 	session := context.Get(r, "session").(*sessions.Session)
 	data := helpers.DefaultData(r)
+	T := context.Get(r, "T").(i18n.TranslateFunc)
 
 	if r.Method == "GET" {
 
-		data["Title"] = "Signin"
+		data["Title"] = T("sign_in")
 		data["Active"] = "signin"
 		data["Flash"] = session.Flashes()
 		session.Save(r, w)
@@ -66,10 +68,11 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 	tmpl := context.Get(r, "template").(*template.Template)
 	session := context.Get(r, "session").(*sessions.Session)
 	data := helpers.DefaultData(r)
+	T := context.Get(r, "T").(i18n.TranslateFunc)
 
 	if r.Method == "GET" {
 
-		data["Title"] = "Signup"
+		data["Title"] = T("sign_up")
 		data["Active"] = "signup"
 		data["Flash"] = session.Flashes()
 		session.Save(r, w)

@@ -99,9 +99,11 @@ func main() {
 func Default(fn func(http.ResponseWriter, *http.Request)) http.Handler {
 	return CSRF(
 		system.SessionMiddleware(
-			system.TemplateMiddleware(
-				system.DataMiddleware(
-					http.HandlerFunc(fn),
+			system.LocaleMiddleware(
+				system.TemplateMiddleware(
+					system.DataMiddleware(
+						http.HandlerFunc(fn),
+					),
 				),
 			),
 		),
@@ -118,9 +120,11 @@ func Restricted(fn func(http.ResponseWriter, *http.Request)) http.Handler {
 //RestrictedWithoutCSRF executes default + restriced middleware chain without CSRF middleware
 func RestrictedWithoutCSRF(fn func(http.ResponseWriter, *http.Request)) http.Handler {
 	return system.SessionMiddleware(
-		system.TemplateMiddleware(
-			system.DataMiddleware(
-				system.RestrictedMiddleware(http.HandlerFunc(fn)),
+		system.LocaleMiddleware(
+			system.TemplateMiddleware(
+				system.DataMiddleware(
+					system.RestrictedMiddleware(http.HandlerFunc(fn)),
+				),
 			),
 		),
 	)

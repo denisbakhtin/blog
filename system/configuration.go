@@ -23,6 +23,7 @@ type Config struct {
 	CsrfSecret    string `json:"csrf_secret"`
 	Ssl           bool   `json:"ssl"`
 	SignupEnabled bool   `json:"signup_enabled"` //always set to false in release mode (config.json)
+	Language      string `json:"language"`       //default i18n language RFC 5646 code
 	Database      DatabaseConfig
 	Oauth         OauthConfig
 }

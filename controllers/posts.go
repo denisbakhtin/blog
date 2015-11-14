@@ -11,6 +11,7 @@ import (
 	"github.com/denisbakhtin/blog/models"
 	"github.com/gorilla/context"
 	"github.com/gorilla/sessions"
+	"github.com/nicksnyder/go-i18n/i18n"
 	"gopkg.in/guregu/null.v3"
 )
 
@@ -56,6 +57,7 @@ func PostShow(w http.ResponseWriter, r *http.Request) {
 func PostIndex(w http.ResponseWriter, r *http.Request) {
 	tmpl := context.Get(r, "template").(*template.Template)
 	data := helpers.DefaultData(r)
+	T := context.Get(r, "T").(i18n.TranslateFunc)
 	if r.Method == "GET" {
 
 		list, err := models.GetPosts()
@@ -64,7 +66,7 @@ func PostIndex(w http.ResponseWriter, r *http.Request) {
 			tmpl.Lookup("errors/500").Execute(w, helpers.ErrorData(err))
 			return
 		}
-		data["Title"] = "List of posts"
+		data["Title"] = T("posts")
 		data["Active"] = "posts"
 		data["List"] = list
 		tmpl.Lookup("posts/index").Execute(w, data)
@@ -82,6 +84,7 @@ func PostCreate(w http.ResponseWriter, r *http.Request) {
 	tmpl := context.Get(r, "template").(*template.Template)
 	session := context.Get(r, "session").(*sessions.Session)
 	data := helpers.DefaultData(r)
+	T := context.Get(r, "T").(i18n.TranslateFunc)
 	if r.Method == "GET" {
 
 		tags, err := models.GetTags()
@@ -90,7 +93,7 @@ func PostCreate(w http.ResponseWriter, r *http.Request) {
 			tmpl.Lookup("errors/404").Execute(w, nil)
 			return
 		}
-		data["Title"] = "Create post"
+		data["Title"] = T("new_post")
 		data["Active"] = "posts"
 		data["Tags"] = tags
 		data["Flash"] = session.Flashes()
@@ -131,6 +134,7 @@ func PostUpdate(w http.ResponseWriter, r *http.Request) {
 	tmpl := context.Get(r, "template").(*template.Template)
 	session := context.Get(r, "session").(*sessions.Session)
 	data := helpers.DefaultData(r)
+	T := context.Get(r, "T").(i18n.TranslateFunc)
 	if r.Method == "GET" {
 
 		id := r.URL.Path[len("/admin/edit_post/"):]
@@ -147,7 +151,7 @@ func PostUpdate(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		data["Title"] = "Edit post"
+		data["Title"] = T("edit_post")
 		data["Active"] = "posts"
 		data["Post"] = post
 		data["Tags"] = tags

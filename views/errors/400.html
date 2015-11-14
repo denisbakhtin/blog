@@ -3,10 +3,10 @@
 {{template "navbar" .}}
 <div class="container" role="main">
   <div class="jumbotron">
-    <h1>400 Error</h1>
+    <h1>{{T "400_error"}}</h1>
     <div class="description">
       <i class="glyphicon glyphicon-exclamation-sign indent"></i>
-      Oops, bad request {{.Error}}
+      {{T "400_error_description"}}. {{.Error}}
     </div>
   </div>
 </div>

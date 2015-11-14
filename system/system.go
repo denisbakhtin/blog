@@ -19,6 +19,7 @@ var mode string //application mode: debug, release, test
 //Init initializes core system elements (DB, sessions, templates, et al)
 func Init() {
 	loadConfig(rice.MustFindBox("../config").MustBytes("config.json"))
+	loadI18n()
 	createSession()
 	loadTemplates()
 	connection := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable", config.Database.Host, config.Database.User, config.Database.Password, config.Database.Name)

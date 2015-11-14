@@ -7,29 +7,29 @@
       <form method="post" class="form-horizontal" data-parsley-validate>
       <fieldset>
 
-        <legend>Sign Up</legend>
+        <legend>{{T "sign_up"}}</legend>
         {{range .Flash}}
           <div class="alert alert-danger">{{.}}</div><p>
         {{end}}
         {{.csrfField}}
         <div class="form-group">
-          <label class="col-md-4 control-label" for="email">Email</label>  
+          <label class="col-md-4 control-label" for="email">{{T "email"}}</label>  
           <div class="col-md-6">
-            <input id="email" name="email" type="email" placeholder="Email address" class="form-control input-md" required="" data-parsley-required-message="Please enter your email">
+            <input id="email" name="email" type="email" placeholder="{{T "email_placeholder"}}" class="form-control input-md" required="" data-parsley-required-message="{{T "parsley_email_required"}}">
           </div>
         </div>
 
         <div class="form-group">
-          <label class="col-md-4 control-label" for="password">Password</label>
+          <label class="col-md-4 control-label" for="password">{{T "password"}}</label>
           <div class="col-md-6">
-            <input id="password" name="password" type="password" placeholder="Password" class="form-control input-md" required="" data-parsley-required-message="Please enter your password">
+            <input id="password" name="password" type="password" placeholder="{{T "password_placeholder"}}" class="form-control input-md" required="" data-parsley-required-message="{{T "parsley_password_required"}}">
           </div>
         </div>
 
         <div class="form-group">
-          <label class="col-md-4 control-label" for="passwordrepeat">Repeat password</label>
+          <label class="col-md-4 control-label" for="passwordrepeat">{{T "repeat_password"}}</label>
           <div class="col-md-6">
-            <input id="passwordrepeat" name="passwordrepeat" type="password" placeholder="Repeat password" class="form-control input-md" required="" data-parsley-required-message="Please repeat your password" data-parsley-equalto="#password" data-parsley-equalto-message="Passwords do not match">
+            <input id="passwordrepeat" name="passwordrepeat" type="password" placeholder="{{T "repeat_password_placeholder"}}" class="form-control input-md" required="" data-parsley-required-message="{{T "parsley_repeat_password_required"}}" data-parsley-equalto="#password" data-parsley-equalto-message="{{T "parsley_password_not_equal"}}">
           </div>
         </div>
 
@@ -37,8 +37,8 @@
           <label class="col-md-4 control-label" for=""></label>
           <div class="col-md-6">
             <label class="checkbox-inline" for="terms">
-              <input type="checkbox" name="terms" id="terms" required="" data-parsley-required-message="You can't continue without accepting our Terms and Conditions">
-              I accept terms and conditions
+              <input type="checkbox" name="terms" id="terms" required="" data-parsley-required-message="{{T "parsley_accept_terms_required"}}">
+              {{T "i_accept_terms"}}
             </label>
           </div>
         </div>
@@ -46,7 +46,7 @@
         <div class="form-group">
           <label class="col-md-4 control-label" for="signup"></label>
           <div class="col-md-4">
-            <button id="signup" name="signup" class="btn btn-primary">Sign Up</button>
+            <button id="signup" name="signup" class="btn btn-primary">{{T "sign_up"}}</button>
           </div>
         </div>
 

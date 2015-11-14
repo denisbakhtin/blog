@@ -10,6 +10,7 @@ import (
 	"github.com/denisbakhtin/blog/models"
 	"github.com/gorilla/context"
 	"github.com/gorilla/sessions"
+	"github.com/nicksnyder/go-i18n/i18n"
 )
 
 //TagShow handles GET /tags/:name route
@@ -42,6 +43,7 @@ func TagShow(w http.ResponseWriter, r *http.Request) {
 func TagIndex(w http.ResponseWriter, r *http.Request) {
 	tmpl := context.Get(r, "template").(*template.Template)
 	data := helpers.DefaultData(r)
+	T := context.Get(r, "T").(i18n.TranslateFunc)
 	if r.Method == "GET" {
 
 		list, err := models.GetTags()
@@ -50,7 +52,7 @@ func TagIndex(w http.ResponseWriter, r *http.Request) {
 			tmpl.Lookup("errors/500").Execute(w, helpers.ErrorData(err))
 			return
 		}
-		data["Title"] = "List of tags"
+		data["Title"] = T("tags")
 		data["Active"] = "tags"
 		data["List"] = list
 		tmpl.Lookup("tags/index").Execute(w, data)
@@ -68,9 +70,10 @@ func TagCreate(w http.ResponseWriter, r *http.Request) {
 	tmpl := context.Get(r, "template").(*template.Template)
 	session := context.Get(r, "session").(*sessions.Session)
 	data := helpers.DefaultData(r)
+	T := context.Get(r, "T").(i18n.TranslateFunc)
 	if r.Method == "GET" {
 
-		data["Title"] = "Create tag"
+		data["Title"] = T("new_tag")
 		data["Active"] = "tags"
 		data["Flash"] = session.Flashes()
 		session.Save(r, w)

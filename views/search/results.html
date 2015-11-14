@@ -10,7 +10,7 @@
       {{template "posts/post-info" .}}
       <div class="content">{{.Excerpt}}</div>
     {{else}}
-      <p>No posts found.</p>
+    <p>{{T "no_posts_found"}}.</p>
     {{end}}
   </div>
 </div>

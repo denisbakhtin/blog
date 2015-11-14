@@ -9,6 +9,7 @@ import (
 	"github.com/denisbakhtin/blog/models"
 	"github.com/gorilla/context"
 	"github.com/gorilla/sessions"
+	"github.com/nicksnyder/go-i18n/i18n"
 	"html/template"
 )
 
@@ -16,6 +17,7 @@ import (
 func UserIndex(w http.ResponseWriter, r *http.Request) {
 	tmpl := context.Get(r, "template").(*template.Template)
 	data := helpers.DefaultData(r)
+	T := context.Get(r, "T").(i18n.TranslateFunc)
 	if r.Method == "GET" {
 
 		list, err := models.GetUsers()
@@ -24,7 +26,7 @@ func UserIndex(w http.ResponseWriter, r *http.Request) {
 			tmpl.Lookup("errors/404").Execute(w, helpers.ErrorData(err))
 			return
 		}
-		data["Title"] = "List of users"
+		data["Title"] = T("users")
 		data["Active"] = "users"
 		data["List"] = list
 		tmpl.Lookup("users/index").Execute(w, data)
@@ -42,9 +44,10 @@ func UserCreate(w http.ResponseWriter, r *http.Request) {
 	tmpl := context.Get(r, "template").(*template.Template)
 	session := context.Get(r, "session").(*sessions.Session)
 	data := helpers.DefaultData(r)
+	T := context.Get(r, "T").(i18n.TranslateFunc)
 	if r.Method == "GET" {
 
-		data["Title"] = "Create user"
+		data["Title"] = T("new_user")
 		data["Active"] = "users"
 		data["Flash"] = session.Flashes()
 		session.Save(r, w)
@@ -85,6 +88,7 @@ func UserUpdate(w http.ResponseWriter, r *http.Request) {
 	tmpl := context.Get(r, "template").(*template.Template)
 	session := context.Get(r, "session").(*sessions.Session)
 	data := helpers.DefaultData(r)
+	T := context.Get(r, "T").(i18n.TranslateFunc)
 	if r.Method == "GET" {
 
 		id := r.URL.Path[len("/admin/edit_user/"):]
@@ -95,7 +99,7 @@ func UserUpdate(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		data["Title"] = "Edit user"
+		data["Title"] = T("edit_user")
 		data["Active"] = "users"
 		data["User"] = user
 		data["Flash"] = session.Flashes()

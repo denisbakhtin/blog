@@ -9,17 +9,17 @@
           <input type="hidden" name="post_id" value="{{.Post.ID}}" >
 
           <div class="form-group">
-            <label class="col-md-2 control-label" for="content">Comment</label>
+            <label class="col-md-2 control-label" for="content">{{T "comment"}}</label>
             <div class="col-md-10">
-              <textarea class="form-control" name="content" id="content" required data-parsley-required-message="Please enter your comment">{{.Comment.Content}}</textarea>
+              <textarea class="form-control" name="content" id="content" required data-parsley-required-message="{{T "parsley_comment_required"}}">{{.Comment.Content}}</textarea>
             </div>
           </div>
 
           <div class="form-group">
             <label class="col-md-2"></label>
             <div class="col-md-10">
-              <input type="submit" class="btn btn-primary" value="Submit" >
-              <input type="button" class="btn btn-default" formnovalidate onclick="window.history.back();" value="Cancel">
+              <input type="submit" class="btn btn-primary" value="{{T "submit"}}" >
+              <input type="button" class="btn btn-default" formnovalidate onclick="window.history.back();" value="{{T "cancel"}}">
             </div>
           </div>
         </fieldset>
@@ -29,13 +29,13 @@
   {{else}}
   <div id="comment-oauth-login" class="panel panel-info">
     <div class="text-center panel-heading">
-      To Comment Login With
+      {{T "to_comment_login_with"}}
     </div>
     <div class="panel-body text-center">
-      <a href="/facebook_login" title="Login with facebook"><img src="/public/images/facebook_icon.jpg" /></a>
-      <a href="/google_login" title="Login with Google"><img src="/public/images/gplus_icon.jpg" /></a>
-      <a href="/linkedin_login" title="Login with Linkedin"><img src="/public/images/linkedin_icon.jpg" /></a>
-      <a href="/vk_login" title="Login with Vk"><img src="/public/images/vk_icon.jpg" /></a>
+      <a href="/facebook_login" title="{{T "login_with_facebook"}}"><img src="/public/images/facebook_icon.jpg" /></a>
+      <a href="/google_login" title="{{T "login_with_gplus"}}"><img src="/public/images/gplus_icon.jpg" /></a>
+      <a href="/linkedin_login" title="{{T "login_with_linkedin"}}"><img src="/public/images/linkedin_icon.jpg" /></a>
+      <a href="/vk_login" title="{{T "login_with_vk"}}"><img src="/public/images/vk_icon.jpg" /></a>
     </div>
   </div>
   {{end}}

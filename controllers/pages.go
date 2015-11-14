@@ -10,6 +10,7 @@ import (
 	"github.com/denisbakhtin/blog/models"
 	"github.com/gorilla/context"
 	"github.com/gorilla/sessions"
+	"github.com/nicksnyder/go-i18n/i18n"
 )
 
 //PageShow handles /pages/:id route
@@ -42,6 +43,7 @@ func PageShow(w http.ResponseWriter, r *http.Request) {
 func PageIndex(w http.ResponseWriter, r *http.Request) {
 	tmpl := context.Get(r, "template").(*template.Template)
 	data := helpers.DefaultData(r)
+	T := context.Get(r, "T").(i18n.TranslateFunc)
 	if r.Method == "GET" {
 
 		list, err := models.GetPages()
@@ -50,7 +52,7 @@ func PageIndex(w http.ResponseWriter, r *http.Request) {
 			tmpl.Lookup("errors/500").Execute(w, helpers.ErrorData(err))
 			return
 		}
-		data["Title"] = "List of pages"
+		data["Title"] = T("pages")
 		data["Active"] = "pages"
 		data["List"] = list
 		tmpl.Lookup("pages/index").Execute(w, data)
@@ -68,9 +70,10 @@ func PageCreate(w http.ResponseWriter, r *http.Request) {
 	tmpl := context.Get(r, "template").(*template.Template)
 	session := context.Get(r, "session").(*sessions.Session)
 	data := helpers.DefaultData(r)
+	T := context.Get(r, "T").(i18n.TranslateFunc)
 	if r.Method == "GET" {
 
-		data["Title"] = "Create page"
+		data["Title"] = T("new_page")
 		data["Active"] = "pages"
 		data["Flash"] = session.Flashes()
 		session.Save(r, w)
@@ -105,6 +108,7 @@ func PageUpdate(w http.ResponseWriter, r *http.Request) {
 	tmpl := context.Get(r, "template").(*template.Template)
 	session := context.Get(r, "session").(*sessions.Session)
 	data := helpers.DefaultData(r)
+	T := context.Get(r, "T").(i18n.TranslateFunc)
 	if r.Method == "GET" {
 
 		id := r.URL.Path[len("/admin/edit_page/"):]
@@ -115,7 +119,7 @@ func PageUpdate(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		data["Title"] = "Edit page"
+		data["Title"] = T("edit_page")
 		data["Active"] = "pages"
 		data["Page"] = page
 		data["Flash"] = session.Flashes()

@@ -14,14 +14,14 @@
         {{.csrfField}}
         <input type="hidden" name="id" value="{{.Post.ID}}" >
         <div class="form-group">
-          <label class="col-md-2 control-label" for="name">Name</label>
+          <label class="col-md-2 control-label" for="name">{{T "title"}}</label>
           <div class="col-md-10">
-            <input id="name" name="name" value="{{.Post.Name}}" placeholder="Post title" class="form-control input-md" required="" >
+            <input id="name" name="name" value="{{.Post.Name}}" placeholder="{{T "title_placeholder"}}" class="form-control input-md" required="" >
           </div>
         </div>
 
         <div class="form-group">
-          <label class="col-md-2 control-label" for="content">Content</label>
+          <label class="col-md-2 control-label" for="content">{{T "content"}}</label>
           <div class="col-md-10">
             <input id="content" type="hidden" name="content">
             <div id="markdown-editor">{{.Post.Content}}</div>
@@ -29,7 +29,7 @@
         </div>
 
         <div class="form-group">
-          <label class="col-md-2 control-label" for="tags">Tags</label>
+          <label class="col-md-2 control-label" for="tags">{{T "tags"}}</label>
           <div class="col-md-10">
             <select id="tags" name="tags" class="form-control" multiple="multiple">
               {{$post := .Post}}
@@ -43,24 +43,24 @@
         <div class="form-group">
           <label class="col-md-offset-2 col-md-10" for="published">
             <input id="published" name="published" type="checkbox" value="true" {{if .Post.Published}}checked{{end}} >
-            Publish
+            {{T "published"}}
           </label>
         </div>
 
         <div class="form-group">
           <label class="col-md-2"></label>
           <div class="col-md-10">
-            <input type="submit" class="btn btn-primary" value="Submit" onclick="$('#content').val($('#markdown-editor').markdownEditor('content'))">
-            <input type="button" {{if not .Post.Published}}title="Post is unpublished" disabled="disabled"{{end}} class="btn btn-success" value="Post on facebook" onclick="postonfacebook();" />
-            <input type="button" class="btn btn-default" formnovalidate onclick="window.history.back();" value="Cancel">
+            <input type="submit" class="btn btn-primary" value="{{T "submit"}}" onclick="$('#content').val($('#markdown-editor').markdownEditor('content'))">
+            <input type="button" {{if not .Post.Published}}title="{{T "post_is_unpublished"}}" disabled="disabled"{{end}} class="btn btn-success" value="{{T "post_on_facebook"}}" onclick="postonfacebook();" />
+            <input type="button" class="btn btn-default" formnovalidate onclick="window.history.back();" value="{{T "cancel"}}">
             <script>
               function postonfacebook() {
                 $.ajax({
                   method: "POST",
-                  url: '/admin/post_on_facebook?id={{.Post.ID}}', 
+                  url: '/admin/post_on_facebook?id={{.Post.ID}}',
                   data: null, 
-                  error: function(jqXHR, status){alert("Fail, see logs");},
-                  success: function(data, status){alert('Posted successfully');},
+                  error: function(jqXHR, status){alert('{{T "error_see_logs"}}');},
+                  success: function(data, status){alert('{{T "posted_successfully"}}');},
                 });
               }
             </script>

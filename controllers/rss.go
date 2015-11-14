@@ -7,6 +7,7 @@ import (
 	"github.com/denisbakhtin/blog/system"
 	"github.com/gorilla/context"
 	"github.com/gorilla/feeds"
+	"github.com/nicksnyder/go-i18n/i18n"
 	"html/template"
 	"log"
 	"net/http"
@@ -16,17 +17,18 @@ import (
 //RssXML handles GET /rss route
 func RssXML(w http.ResponseWriter, r *http.Request) {
 	tmpl := context.Get(r, "template").(*template.Template)
+	T := context.Get(r, "T").(i18n.TranslateFunc)
 	if r.Method == "GET" {
 
 		now := time.Now()
 		domain := system.GetConfig().Domain
 		feed := &feeds.Feed{
-			Title:       "blog",
+			Title:       T("site_name"),
 			Link:        &feeds.Link{Href: domain},
-			Description: "Blog boilerplate",
+			Description: T("blog_description"),
 			Author:      &feeds.Author{Name: "Blog Author"},
 			Created:     now,
-			Copyright:   "This work is copyright © Blog",
+			Copyright:   fmt.Sprintf("© %s", T("site_name")),
 		}
 
 		feed.Items = make([]*feeds.Item, 0)
