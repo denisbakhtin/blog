@@ -5,10 +5,7 @@ import (
 	"github.com/denisbakhtin/blog/helpers"
 	"github.com/denisbakhtin/blog/models"
 	"github.com/denisbakhtin/blog/system"
-	"github.com/gorilla/context"
 	"github.com/gorilla/feeds"
-	"github.com/nicksnyder/go-i18n/i18n"
-	"html/template"
 	"log"
 	"net/http"
 	"time"
@@ -16,8 +13,8 @@ import (
 
 //RssXML handles GET /rss route
 func RssXML(w http.ResponseWriter, r *http.Request) {
-	tmpl := context.Get(r, "template").(*template.Template)
-	T := context.Get(r, "T").(i18n.TranslateFunc)
+	tmpl := helpers.Template(r)
+	T := helpers.T(r)
 	if r.Method == "GET" {
 
 		now := time.Now()

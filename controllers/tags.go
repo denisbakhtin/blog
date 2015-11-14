@@ -2,20 +2,16 @@ package controllers
 
 import (
 	"fmt"
-	"html/template"
 	"log"
 	"net/http"
 
 	"github.com/denisbakhtin/blog/helpers"
 	"github.com/denisbakhtin/blog/models"
-	"github.com/gorilla/context"
-	"github.com/gorilla/sessions"
-	"github.com/nicksnyder/go-i18n/i18n"
 )
 
 //TagShow handles GET /tags/:name route
 func TagShow(w http.ResponseWriter, r *http.Request) {
-	tmpl := context.Get(r, "template").(*template.Template)
+	tmpl := helpers.Template(r)
 	data := helpers.DefaultData(r)
 	if r.Method == "GET" {
 
@@ -41,9 +37,9 @@ func TagShow(w http.ResponseWriter, r *http.Request) {
 
 //TagIndex handles GET /admin/tags route
 func TagIndex(w http.ResponseWriter, r *http.Request) {
-	tmpl := context.Get(r, "template").(*template.Template)
+	tmpl := helpers.Template(r)
 	data := helpers.DefaultData(r)
-	T := context.Get(r, "T").(i18n.TranslateFunc)
+	T := helpers.T(r)
 	if r.Method == "GET" {
 
 		list, err := models.GetTags()
@@ -67,10 +63,10 @@ func TagIndex(w http.ResponseWriter, r *http.Request) {
 
 //TagCreate handles /admin/new_tag route
 func TagCreate(w http.ResponseWriter, r *http.Request) {
-	tmpl := context.Get(r, "template").(*template.Template)
-	session := context.Get(r, "session").(*sessions.Session)
+	tmpl := helpers.Template(r)
+	session := helpers.Session(r)
 	data := helpers.DefaultData(r)
-	T := context.Get(r, "T").(i18n.TranslateFunc)
+	T := helpers.T(r)
 	if r.Method == "GET" {
 
 		data["Title"] = T("new_tag")
@@ -103,7 +99,7 @@ func TagCreate(w http.ResponseWriter, r *http.Request) {
 
 //TagDelete handles /admin/delete_tag route
 func TagDelete(w http.ResponseWriter, r *http.Request) {
-	tmpl := context.Get(r, "template").(*template.Template)
+	tmpl := helpers.Template(r)
 
 	if r.Method == "POST" {
 

@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"fmt"
-	"html/template"
 	"log"
 	"net/http"
 
@@ -10,15 +9,13 @@ import (
 	"github.com/denisbakhtin/blog/helpers"
 	"github.com/denisbakhtin/blog/models"
 	"github.com/gorilla/context"
-	"github.com/gorilla/sessions"
-	"github.com/nicksnyder/go-i18n/i18n"
 	"gopkg.in/guregu/null.v3"
 )
 
 //PostShow handles GET /posts/:id route
 func PostShow(w http.ResponseWriter, r *http.Request) {
-	tmpl := context.Get(r, "template").(*template.Template)
-	session := context.Get(r, "session").(*sessions.Session)
+	tmpl := helpers.Template(r)
+	session := helpers.Session(r)
 	data := helpers.DefaultData(r)
 	if r.Method == "GET" {
 
@@ -55,9 +52,9 @@ func PostShow(w http.ResponseWriter, r *http.Request) {
 
 //PostIndex handles GET /admin/posts route
 func PostIndex(w http.ResponseWriter, r *http.Request) {
-	tmpl := context.Get(r, "template").(*template.Template)
+	tmpl := helpers.Template(r)
 	data := helpers.DefaultData(r)
-	T := context.Get(r, "T").(i18n.TranslateFunc)
+	T := helpers.T(r)
 	if r.Method == "GET" {
 
 		list, err := models.GetPosts()
@@ -81,10 +78,10 @@ func PostIndex(w http.ResponseWriter, r *http.Request) {
 
 //PostCreate handles /admin/new_post route
 func PostCreate(w http.ResponseWriter, r *http.Request) {
-	tmpl := context.Get(r, "template").(*template.Template)
-	session := context.Get(r, "session").(*sessions.Session)
+	tmpl := helpers.Template(r)
+	session := helpers.Session(r)
 	data := helpers.DefaultData(r)
-	T := context.Get(r, "T").(i18n.TranslateFunc)
+	T := helpers.T(r)
 	if r.Method == "GET" {
 
 		tags, err := models.GetTags()
@@ -131,10 +128,10 @@ func PostCreate(w http.ResponseWriter, r *http.Request) {
 
 //PostUpdate handles /admin/edit_post/:id route
 func PostUpdate(w http.ResponseWriter, r *http.Request) {
-	tmpl := context.Get(r, "template").(*template.Template)
-	session := context.Get(r, "session").(*sessions.Session)
+	tmpl := helpers.Template(r)
+	session := helpers.Session(r)
 	data := helpers.DefaultData(r)
-	T := context.Get(r, "T").(i18n.TranslateFunc)
+	T := helpers.T(r)
 	if r.Method == "GET" {
 
 		id := r.URL.Path[len("/admin/edit_post/"):]
@@ -188,7 +185,7 @@ func PostUpdate(w http.ResponseWriter, r *http.Request) {
 
 //PostDelete handles /admin/delete_post route
 func PostDelete(w http.ResponseWriter, r *http.Request) {
-	tmpl := context.Get(r, "template").(*template.Template)
+	tmpl := helpers.Template(r)
 
 	if r.Method == "POST" {
 

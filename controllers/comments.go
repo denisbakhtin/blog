@@ -2,23 +2,20 @@ package controllers
 
 import (
 	"fmt"
-	"html/template"
 	"log"
 	"net/http"
 
 	"github.com/denisbakhtin/blog/helpers"
 	"github.com/denisbakhtin/blog/models"
 	"github.com/gorilla/context"
-	"github.com/gorilla/sessions"
-	"github.com/nicksnyder/go-i18n/i18n"
 	"gopkg.in/guregu/null.v3"
 )
 
 //CommentIndex handles GET /admin/comments route
 func CommentIndex(w http.ResponseWriter, r *http.Request) {
-	tmpl := context.Get(r, "template").(*template.Template)
+	tmpl := helpers.Template(r)
 	data := helpers.DefaultData(r)
-	T := context.Get(r, "T").(i18n.TranslateFunc)
+	T := helpers.T(r)
 	if r.Method == "GET" {
 
 		list, err := models.GetComments()
@@ -42,8 +39,8 @@ func CommentIndex(w http.ResponseWriter, r *http.Request) {
 
 //CommentCreate handles /new_comment route
 func CommentCreate(w http.ResponseWriter, r *http.Request) {
-	session := context.Get(r, "session").(*sessions.Session)
-	tmpl := context.Get(r, "template").(*template.Template)
+	session := helpers.Session(r)
+	tmpl := helpers.Template(r)
 	if r.Method == "POST" {
 
 		if _, ok := session.Values["oauth_name"]; !ok {
@@ -81,10 +78,10 @@ func CommentCreate(w http.ResponseWriter, r *http.Request) {
 
 //CommentUpdate handles /admin/edit_comment/:id route
 func CommentUpdate(w http.ResponseWriter, r *http.Request) {
-	tmpl := context.Get(r, "template").(*template.Template)
-	session := context.Get(r, "session").(*sessions.Session)
+	tmpl := helpers.Template(r)
+	session := helpers.Session(r)
 	data := helpers.DefaultData(r)
-	T := context.Get(r, "T").(i18n.TranslateFunc)
+	T := helpers.T(r)
 	if r.Method == "GET" {
 
 		id := r.URL.Path[len("/admin/edit_comment/"):]
@@ -129,10 +126,10 @@ func CommentUpdate(w http.ResponseWriter, r *http.Request) {
 
 //CommentReply handles /admin/new_comment route
 func CommentReply(w http.ResponseWriter, r *http.Request) {
-	tmpl := context.Get(r, "template").(*template.Template)
-	session := context.Get(r, "session").(*sessions.Session)
+	tmpl := helpers.Template(r)
+	session := helpers.Session(r)
 	data := helpers.DefaultData(r)
-	T := context.Get(r, "T").(i18n.TranslateFunc)
+	T := helpers.T(r)
 	if r.Method == "GET" {
 
 		user := context.Get(r, "user").(*models.User)
@@ -180,7 +177,7 @@ func CommentReply(w http.ResponseWriter, r *http.Request) {
 
 //CommentDelete handles /admin/delete_comment route
 func CommentDelete(w http.ResponseWriter, r *http.Request) {
-	tmpl := context.Get(r, "template").(*template.Template)
+	tmpl := helpers.Template(r)
 
 	if r.Method == "POST" {
 

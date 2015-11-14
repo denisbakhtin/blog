@@ -4,18 +4,15 @@ import (
 	"fmt"
 	"github.com/denisbakhtin/blog/helpers"
 	"github.com/denisbakhtin/blog/models"
-	"github.com/gorilla/context"
-	"github.com/nicksnyder/go-i18n/i18n"
-	"html/template"
 	"log"
 	"net/http"
 )
 
 //Search handles POST /search route
 func Search(w http.ResponseWriter, r *http.Request) {
-	tmpl := context.Get(r, "template").(*template.Template)
+	tmpl := helpers.Template(r)
 	data := helpers.DefaultData(r)
-	T := context.Get(r, "T").(i18n.TranslateFunc)
+	T := helpers.T(r)
 	if r.Method == "POST" {
 
 		query := r.PostFormValue("query")

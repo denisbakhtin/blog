@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"fmt"
-	"html/template"
 	"log"
 	"net/http"
 	"strconv"
@@ -11,15 +10,13 @@ import (
 
 	"github.com/denisbakhtin/blog/helpers"
 	"github.com/denisbakhtin/blog/models"
-	"github.com/gorilla/context"
-	"github.com/nicksnyder/go-i18n/i18n"
 )
 
 //ArchiveShow handles GET /archives/:year-:month route
 func ArchiveShow(w http.ResponseWriter, r *http.Request) {
-	tmpl := context.Get(r, "template").(*template.Template)
+	tmpl := helpers.Template(r)
 	data := helpers.DefaultData(r)
-	T := context.Get(r, "T").(i18n.TranslateFunc)
+	T := helpers.T(r)
 	if r.Method == "GET" {
 
 		param := r.URL.Path[len("/archives/"):]

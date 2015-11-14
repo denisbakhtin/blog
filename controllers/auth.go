@@ -7,18 +7,14 @@ import (
 
 	"github.com/denisbakhtin/blog/helpers"
 	"github.com/denisbakhtin/blog/models"
-	"github.com/gorilla/context"
-	"github.com/gorilla/sessions"
-	"github.com/nicksnyder/go-i18n/i18n"
-	"html/template"
 )
 
 //SignIn handles /signin route
 func SignIn(w http.ResponseWriter, r *http.Request) {
-	tmpl := context.Get(r, "template").(*template.Template)
-	session := context.Get(r, "session").(*sessions.Session)
+	tmpl := helpers.Template(r)
+	session := helpers.Session(r)
 	data := helpers.DefaultData(r)
-	T := context.Get(r, "T").(i18n.TranslateFunc)
+	T := helpers.T(r)
 
 	if r.Method == "GET" {
 
@@ -65,10 +61,10 @@ func SignIn(w http.ResponseWriter, r *http.Request) {
 
 //SignUp handles /signup route
 func SignUp(w http.ResponseWriter, r *http.Request) {
-	tmpl := context.Get(r, "template").(*template.Template)
-	session := context.Get(r, "session").(*sessions.Session)
+	tmpl := helpers.Template(r)
+	session := helpers.Session(r)
 	data := helpers.DefaultData(r)
-	T := context.Get(r, "T").(i18n.TranslateFunc)
+	T := helpers.T(r)
 
 	if r.Method == "GET" {
 
@@ -122,7 +118,7 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 //Logout handles /logout route
 func Logout(w http.ResponseWriter, r *http.Request) {
 	//any method will do :3
-	session := context.Get(r, "session").(*sessions.Session)
+	session := helpers.Session(r)
 	delete(session.Values, "user_id")
 	session.Save(r, w)
 	http.Redirect(w, r, "/", 303)

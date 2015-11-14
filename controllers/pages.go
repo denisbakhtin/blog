@@ -2,20 +2,16 @@ package controllers
 
 import (
 	"fmt"
-	"html/template"
 	"log"
 	"net/http"
 
 	"github.com/denisbakhtin/blog/helpers"
 	"github.com/denisbakhtin/blog/models"
-	"github.com/gorilla/context"
-	"github.com/gorilla/sessions"
-	"github.com/nicksnyder/go-i18n/i18n"
 )
 
 //PageShow handles /pages/:id route
 func PageShow(w http.ResponseWriter, r *http.Request) {
-	tmpl := context.Get(r, "template").(*template.Template)
+	tmpl := helpers.Template(r)
 	data := helpers.DefaultData(r)
 	if r.Method == "GET" {
 
@@ -41,9 +37,9 @@ func PageShow(w http.ResponseWriter, r *http.Request) {
 
 //PageIndex handles GET /admin/pages route
 func PageIndex(w http.ResponseWriter, r *http.Request) {
-	tmpl := context.Get(r, "template").(*template.Template)
+	tmpl := helpers.Template(r)
 	data := helpers.DefaultData(r)
-	T := context.Get(r, "T").(i18n.TranslateFunc)
+	T := helpers.T(r)
 	if r.Method == "GET" {
 
 		list, err := models.GetPages()
@@ -67,10 +63,10 @@ func PageIndex(w http.ResponseWriter, r *http.Request) {
 
 //PageCreate handles /admin/new_page route
 func PageCreate(w http.ResponseWriter, r *http.Request) {
-	tmpl := context.Get(r, "template").(*template.Template)
-	session := context.Get(r, "session").(*sessions.Session)
+	tmpl := helpers.Template(r)
+	session := helpers.Session(r)
 	data := helpers.DefaultData(r)
-	T := context.Get(r, "T").(i18n.TranslateFunc)
+	T := helpers.T(r)
 	if r.Method == "GET" {
 
 		data["Title"] = T("new_page")
@@ -105,10 +101,10 @@ func PageCreate(w http.ResponseWriter, r *http.Request) {
 
 //PageUpdate handles /admin/edit_page/:id route
 func PageUpdate(w http.ResponseWriter, r *http.Request) {
-	tmpl := context.Get(r, "template").(*template.Template)
-	session := context.Get(r, "session").(*sessions.Session)
+	tmpl := helpers.Template(r)
+	session := helpers.Session(r)
 	data := helpers.DefaultData(r)
-	T := context.Get(r, "T").(i18n.TranslateFunc)
+	T := helpers.T(r)
 	if r.Method == "GET" {
 
 		id := r.URL.Path[len("/admin/edit_page/"):]
@@ -153,7 +149,7 @@ func PageUpdate(w http.ResponseWriter, r *http.Request) {
 
 //PageDelete handles /admin/delete_page route
 func PageDelete(w http.ResponseWriter, r *http.Request) {
-	tmpl := context.Get(r, "template").(*template.Template)
+	tmpl := helpers.Template(r)
 
 	if r.Method == "POST" {
 

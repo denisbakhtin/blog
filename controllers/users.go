@@ -7,17 +7,13 @@ import (
 	"fmt"
 	"github.com/denisbakhtin/blog/helpers"
 	"github.com/denisbakhtin/blog/models"
-	"github.com/gorilla/context"
-	"github.com/gorilla/sessions"
-	"github.com/nicksnyder/go-i18n/i18n"
-	"html/template"
 )
 
 //UserIndex handles GET /admin/users route
 func UserIndex(w http.ResponseWriter, r *http.Request) {
-	tmpl := context.Get(r, "template").(*template.Template)
+	tmpl := helpers.Template(r)
 	data := helpers.DefaultData(r)
-	T := context.Get(r, "T").(i18n.TranslateFunc)
+	T := helpers.T(r)
 	if r.Method == "GET" {
 
 		list, err := models.GetUsers()
@@ -41,10 +37,10 @@ func UserIndex(w http.ResponseWriter, r *http.Request) {
 
 //UserCreate handles /admin/new_user route
 func UserCreate(w http.ResponseWriter, r *http.Request) {
-	tmpl := context.Get(r, "template").(*template.Template)
-	session := context.Get(r, "session").(*sessions.Session)
+	tmpl := helpers.Template(r)
+	session := helpers.Session(r)
 	data := helpers.DefaultData(r)
-	T := context.Get(r, "T").(i18n.TranslateFunc)
+	T := helpers.T(r)
 	if r.Method == "GET" {
 
 		data["Title"] = T("new_user")
@@ -85,10 +81,10 @@ func UserCreate(w http.ResponseWriter, r *http.Request) {
 
 //UserUpdate handles /admin/edit_user/:id route
 func UserUpdate(w http.ResponseWriter, r *http.Request) {
-	tmpl := context.Get(r, "template").(*template.Template)
-	session := context.Get(r, "session").(*sessions.Session)
+	tmpl := helpers.Template(r)
+	session := helpers.Session(r)
 	data := helpers.DefaultData(r)
-	T := context.Get(r, "T").(i18n.TranslateFunc)
+	T := helpers.T(r)
 	if r.Method == "GET" {
 
 		id := r.URL.Path[len("/admin/edit_user/"):]
@@ -139,7 +135,7 @@ func UserUpdate(w http.ResponseWriter, r *http.Request) {
 
 //UserDelete handles /admin/delete_user route
 func UserDelete(w http.ResponseWriter, r *http.Request) {
-	tmpl := context.Get(r, "template").(*template.Template)
+	tmpl := helpers.Template(r)
 
 	if r.Method == "POST" {
 
