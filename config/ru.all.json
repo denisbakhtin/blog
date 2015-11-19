@@ -1,0 +1,382 @@
+[
+  {
+    "id": "400_error",
+    "translation": "400 ошибка"
+  },
+  {
+    "id": "400_error_description",
+    "translation": "Похоже, запрос не верный"
+  },
+  {
+    "id": "403_error",
+    "translation": "403 ошибка"
+  },
+  {
+    "id": "403_error_description",
+    "translation": "Похоже, доступ запрещен"
+  },
+  {
+    "id": "404_error",
+    "translation": "404 ошибка"
+  },
+  {
+    "id": "404_error_description",
+    "translation": "К сожалению, страница не найдена"
+  },
+  {
+    "id": "405_error",
+    "translation": "405 ошибка"
+  },
+  {
+    "id": "405_error_description",
+    "translation": "Метод запроса не допустим"
+  },
+  {
+    "id": "500_error",
+    "translation": "500 ошибка"
+  },
+  {
+    "id": "April",
+    "translation": "Апрель"
+  },
+  {
+    "id": "August",
+    "translation": "Август"
+  },
+  {
+    "id": "December",
+    "translation": "Декабрь"
+  },
+  {
+    "id": "February",
+    "translation": "Февраль"
+  },
+  {
+    "id": "ID",
+    "translation": "№"
+  },
+  {
+    "id": "January",
+    "translation": "Январь"
+  },
+  {
+    "id": "July",
+    "translation": "Июль"
+  },
+  {
+    "id": "June",
+    "translation": "Июнь"
+  },
+  {
+    "id": "March",
+    "translation": "Март"
+  },
+  {
+    "id": "May",
+    "translation": "Май"
+  },
+  {
+    "id": "November",
+    "translation": "Ноябрь"
+  },
+  {
+    "id": "October",
+    "translation": "Октябрь"
+  },
+  {
+    "id": "September",
+    "translation": "Сентябрь"
+  },
+  {
+    "id": "actions",
+    "translation": "Действия"
+  },
+  {
+    "id": "archives_for",
+    "translation": "Архивы за"
+  },
+  {
+    "id": "are_you_sure",
+    "translation": "Вы уверены"
+  },
+  {
+    "id": "author",
+    "translation": "Автор"
+  },
+  {
+    "id": "author_placeholder",
+    "translation": "Имя автора"
+  },
+  {
+    "id": "cancel",
+    "translation": "Отмена"
+  },
+  {
+    "id": "comment",
+    "translation": "Комментарий"
+  },
+  {
+    "id": "comments",
+    "translation": "Комментарии"
+  },
+  {
+    "id": "content",
+    "translation": "Содержание"
+  },
+  {
+    "id": "created",
+    "translation": "Создано"
+  },
+  {
+    "id": "dashboard",
+    "translation": "Админка"
+  },
+  {
+    "id": "edit_comment",
+    "translation": "Редактировать комментарий"
+  },
+  {
+    "id": "edit_page",
+    "translation": "Редактировать страницу"
+  },
+  {
+    "id": "edit_post",
+    "translation": "Редактировать запись"
+  },
+  {
+    "id": "edit_profile",
+    "translation": "Редактировать профиль"
+  },
+  {
+    "id": "edit_user",
+    "translation": "Редактировать пользователя"
+  },
+  {
+    "id": "email",
+    "translation": "Эл. почта"
+  },
+  {
+    "id": "email_placeholder",
+    "translation": "Адрес электронной почты"
+  },
+  {
+    "id": "error_see_logs",
+    "translation": "Ошибка, смотрите логи"
+  },
+  {
+    "id": "greeting",
+    "translation": "Добро пожаловать"
+  },
+  {
+    "id": "home",
+    "translation": "Главная"
+  },
+  {
+    "id": "i_accept_terms",
+    "translation": "Я принимаю условия соглашения"
+  },
+  {
+    "id": "login_with_facebook",
+    "translation": "Войти с помощью Facebook"
+  },
+  {
+    "id": "login_with_gplus",
+    "translation": "Войти с помощью Google+"
+  },
+  {
+    "id": "login_with_linkedin",
+    "translation": "Войти с помощью Linkedin"
+  },
+  {
+    "id": "login_with_vk",
+    "translation": "Войти с помощью Vkontakte"
+  },
+  {
+    "id": "logout",
+    "translation": "Выйти"
+  },
+  {
+    "id": "name",
+    "translation": "Имя"
+  },
+  {
+    "id": "name_placeholder",
+    "translation": "Введите имя"
+  },
+  {
+    "id": "navigation",
+    "translation": "Навигация"
+  },
+  {
+    "id": "new_page",
+    "translation": "Новая страница"
+  },
+  {
+    "id": "new_post",
+    "translation": "Новая запись"
+  },
+  {
+    "id": "new_tag",
+    "translation": "Новый тэг"
+  },
+  {
+    "id": "new_user",
+    "translation": "Новый пользователь"
+  },
+  {
+    "id": "no_posts_found",
+    "translation": "Записи не найдены"
+  },
+  {
+    "id": "pages",
+    "translation": "Страницы"
+  },
+  {
+    "id": "parent_id",
+    "translation": "№ родителя"
+  },
+  {
+    "id": "parent_id_placeholder",
+    "translation": "№ родителя"
+  },
+  {
+    "id": "parsley_accept_terms_required",
+    "translation": "Вы не сможете продолжить, пока не примете условия соглашения"
+  },
+  {
+    "id": "parsley_comment_required",
+    "translation": "Пожалуйста, введите комментарий"
+  },
+  {
+    "id": "parsley_email_required",
+    "translation": "Пожалуйста, введите ваш адрес эл. почты"
+  },
+  {
+    "id": "parsley_name_required",
+    "translation": "Пожалуйста, введите ваше имя"
+  },
+  {
+    "id": "parsley_password_not_equal",
+    "translation": "Пароли не совпадают"
+  },
+  {
+    "id": "parsley_password_required",
+    "translation": "Пожалуйста, введите ваш пароль"
+  },
+  {
+    "id": "parsley_repeat_password_required",
+    "translation": "Пожалуйста, повторите ваш пароль"
+  },
+  {
+    "id": "password",
+    "translation": "Пароль"
+  },
+  {
+    "id": "password_placeholder",
+    "translation": "Введите пароль"
+  },
+  {
+    "id": "post_id",
+    "translation": "№ записи"
+  },
+  {
+    "id": "post_id_placeholder",
+    "translation": "Введите № записи"
+  },
+  {
+    "id": "post_is_unpublished",
+    "translation": "Запись не опубликована"
+  },
+  {
+    "id": "post_on_facebook",
+    "translation": "Опубликовать в Facebook"
+  },
+  {
+    "id": "posted_successfully",
+    "translation": "Успешно опубликовано"
+  },
+  {
+    "id": "posts",
+    "translation": "Записи"
+  },
+  {
+    "id": "published",
+    "translation": "Опубликовано"
+  },
+  {
+    "id": "recent_posts",
+    "translation": "Свежие записи"
+  },
+  {
+    "id": "repeat_password",
+    "translation": "Повторите пароль"
+  },
+  {
+    "id": "repeat_password_placeholder",
+    "translation": "Повторите пароль"
+  },
+  {
+    "id": "reply",
+    "translation": "Ответить"
+  },
+  {
+    "id": "search_placeholder",
+    "translation": "Поиск"
+  },
+  {
+    "id": "search_results_for",
+    "translation": "Результаты поиска по запросу"
+  },
+  {
+    "id": "settings",
+    "translation": "настройки"
+  },
+  {
+    "id": "sign_in",
+    "translation": "Войти"
+  },
+  {
+    "id": "sign_up",
+    "translation": "Регистрация"
+  },
+  {
+    "id": "site_description",
+    "translation": "Шаблон блога"
+  },
+  {
+    "id": "site_name",
+    "translation": "Мой блог"
+  },
+  {
+    "id": "submit",
+    "translation": "Сохранить"
+  },
+  {
+    "id": "tags",
+    "translation": "Тэги"
+  },
+  {
+    "id": "title",
+    "translation": "Заголовок"
+  },
+  {
+    "id": "title_placeholder",
+    "translation": "Введите заголовок"
+  },
+  {
+    "id": "to_comment_login_with",
+    "translation": "Чтобы оставить комментарий, войдите с помощью"
+  },
+  {
+    "id": "user_profile",
+    "translation": "Профиль пользователя"
+  },
+  {
+    "id": "users",
+    "translation": "Пользователи"
+  },
+  {
+    "id": "website",
+    "translation": "Сайт"
+  }
+]
