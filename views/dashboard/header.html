@@ -1,4 +1,4 @@
-{{define "header"}}
+{{define "dashboard/header"}}
 <!DOCTYPE html>
 <html lang="en">
   <head {{if .Ogheadprefix}}prefix="{{.Ogheadprefix}}"{{end}}>
@@ -10,6 +10,8 @@
     <title>{{.Title}}</title>
 
     <link href="/public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/public/css/bootstrap-markdown-editor.css" rel="stylesheet">
+    <link href="/public/css/select2.min.css" rel="stylesheet">
     <link href="/public/css/style.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -19,22 +21,6 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-    <!-- open graph meta tags -->
-    {{if .Ogtitle}}
-    <meta property="og:title" content="{{.Ogtitle}}" />
-    {{end}}
-    {{if .Ogurl}}
-    <meta property="og:url" content="{{.Ogurl}}" />
-    {{end}}
-    {{if .Ogtype}}
-    <meta property="og:type" content="{{.Ogtype}}" />
-    {{end}}
-    {{if .Ogdescription}}
-    <meta property="og:description" content="{{.Ogdescription}}" />
-    {{end}}
-    {{if .Ogimage}}
-    <meta property="og:image" content="{{.Ogimage}}" />
-    {{end}}
   </head>
   <body>
 {{end}}

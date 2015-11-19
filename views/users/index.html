@@ -1,5 +1,5 @@
 {{define "users/index"}}
-{{template "header" .}}
+{{template "dashboard/header" .}}
 {{template "dashboard/navbar" .}}
 {{template "dashboard/sidebar" .}}
 <div id="main-column" class="container-fluid" role="main">
@@ -38,5 +38,5 @@
     <a href="/admin/new_user" class="btn btn-primary">{{T "new_user"}}</a>
   </div>
 </div>
-{{template "footer" .}}
+{{template "dashboard/footer" .}}
 {{end}}
