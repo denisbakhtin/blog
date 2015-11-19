@@ -14,7 +14,7 @@ func loadI18n() {
 	box := rice.MustFindBox("../config")
 
 	fn := func(path string, f os.FileInfo, err error) error {
-		if matched, _ := regexp.MatchString("[a-z]{2}-[a-z]{2}\\.all\\.json", f.Name()); matched {
+		if matched, _ := regexp.MatchString("[a-z\\-]{2,}\\.all\\.json", f.Name()); matched {
 			err := i18n.ParseTranslationFileBytes(f.Name(), []byte(box.MustString(path)))
 			if err != nil {
 				return err
