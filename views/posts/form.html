@@ -5,7 +5,7 @@
 <div id="main-column" class="container-fluid" role="main">
   <div class="panel panel-default">
     <div class="panel-body">
-      <form class="form-horizontal" method="post">
+      <form id="markdown-form" class="form-horizontal" method="post" data-parsley-validate>
       <fieldset>
         <legend>{{.Title}}</legend>
         {{range .Flash}}
@@ -16,7 +16,7 @@
         <div class="form-group">
           <label class="col-md-2 control-label" for="name">{{T "title"}}</label>
           <div class="col-md-10">
-            <input id="name" name="name" value="{{.Post.Name}}" placeholder="{{T "title_placeholder"}}" class="form-control input-md" required="" >
+            <input id="name" name="name" value="{{.Post.Name}}" placeholder="{{T "title_placeholder"}}" class="form-control input-md" required="" data-parsley-required-message="{{T "parsley_title_required"}}">
           </div>
         </div>
 
@@ -37,6 +37,12 @@
               <option {{if stringInSlice .Name $post.Tags}}selected="selected"{{end}}>{{.Name}}</option>
               {{end}}
             </select>
+            <script>
+              $('select#tags').select2({
+                tags: true,
+                tokenSeparators: [','],
+              });
+            </script>
           </div>
         </div>
 
@@ -50,7 +56,7 @@
         <div class="form-group">
           <label class="col-md-2"></label>
           <div class="col-md-10">
-            <input type="submit" class="btn btn-primary" value="{{T "submit"}}" onclick="$('#content').val($('#markdown-editor').markdownEditor('content'))">
+            <input type="submit" class="btn btn-primary" value="{{T "submit"}}" >
             <input type="button" {{if not .Post.Published}}title="{{T "post_is_unpublished"}}" disabled="disabled"{{end}} class="btn btn-success" value="{{T "post_on_facebook"}}" onclick="postonfacebook();" />
             <input type="button" class="btn btn-default" formnovalidate onclick="window.history.back();" value="{{T "cancel"}}">
             <script>

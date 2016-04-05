@@ -324,6 +324,10 @@
     "translation": "Enter title"
   },
   {
+    "id": "parsley_title_required",
+    "translation": "Please enter title"
+  },
+  {
     "id": "new_page",
     "translation": "New page"
   },

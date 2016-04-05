@@ -1,1 +1,6 @@
-[]
+[
+  {
+    "id": "parsley_title_required",
+    "translation": "Please enter title"
+  }
+]

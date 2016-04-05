@@ -5,7 +5,7 @@
 <div id="main-column" class="container-fluid" role="main">
   <div class="panel panel-default">
     <div class="panel-body">
-      <form class="form-horizontal" method="post">
+      <form class="form-horizontal" method="post" data-parsley-validate>
       <fieldset>
         <legend>{{.Title}}</legend>
         {{range .Flash}}
@@ -15,7 +15,7 @@
         <div class="form-group">
           <label class="col-md-2 control-label" for="name">{{T "title"}}</label>
           <div class="col-md-10">
-            <input id="name" name="name" value="{{.Tag.Name}}" placeholder="{{T "title_placeholder"}}" class="form-control input-md" required="" >
+            <input id="name" name="name" value="{{.Tag.Name}}" placeholder="{{T "title_placeholder"}}" class="form-control input-md" required=""  data-parsley-required-message="{{T "parsley_title_required"}}">
           </div>
         </div>
 

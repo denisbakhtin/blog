@@ -22,6 +22,7 @@ func PostShow(w http.ResponseWriter, r *http.Request) {
 		id := r.URL.Path[len("/posts/"):]
 		post, err := models.GetPost(id)
 		if err != nil || !post.Published {
+			w.WriteHeader(404)
 			tmpl.Lookup("errors/404").Execute(w, nil)
 			return
 		}
@@ -46,6 +47,7 @@ func PostShow(w http.ResponseWriter, r *http.Request) {
 	} else {
 		err := fmt.Errorf("Method %q not allowed", r.Method)
 		log.Printf("ERROR: %s\n", err)
+		w.WriteHeader(405)
 		tmpl.Lookup("errors/405").Execute(w, helpers.ErrorData(err))
 	}
 }
