@@ -6,17 +6,17 @@ import (
 	"net/http"
 
 	"github.com/denisbakhtin/blog/controllers/oauth"
-	"github.com/denisbakhtin/blog/helpers"
 	"github.com/denisbakhtin/blog/models"
+	"github.com/denisbakhtin/blog/shared"
 	"github.com/gorilla/context"
 	"gopkg.in/guregu/null.v3"
 )
 
 //PostShow handles GET /posts/:id route
 func PostShow(w http.ResponseWriter, r *http.Request) {
-	tmpl := helpers.Template(r)
-	session := helpers.Session(r)
-	data := helpers.DefaultData(r)
+	tmpl := shared.Template(r)
+	session := shared.Session(r)
+	data := shared.DefaultData(r)
 	if r.Method == "GET" {
 
 		id := r.URL.Path[len("/posts/"):]
@@ -48,24 +48,23 @@ func PostShow(w http.ResponseWriter, r *http.Request) {
 		err := fmt.Errorf("Method %q not allowed", r.Method)
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(405)
-		tmpl.Lookup("errors/405").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/405").Execute(w, shared.ErrorData(err))
 	}
 }
 
 //PostIndex handles GET /admin/posts route
 func PostIndex(w http.ResponseWriter, r *http.Request) {
-	tmpl := helpers.Template(r)
-	data := helpers.DefaultData(r)
-	T := helpers.T(r)
+	tmpl := shared.Template(r)
+	data := shared.DefaultData(r)
 	if r.Method == "GET" {
 
 		list, err := models.GetPosts()
 		if err != nil {
 			w.WriteHeader(500)
-			tmpl.Lookup("errors/500").Execute(w, helpers.ErrorData(err))
+			tmpl.Lookup("errors/500").Execute(w, shared.ErrorData(err))
 			return
 		}
-		data["Title"] = T("posts")
+		data["Title"] = "Posts"
 		data["Active"] = "posts"
 		data["List"] = list
 		tmpl.Lookup("posts/index").Execute(w, data)
@@ -74,16 +73,15 @@ func PostIndex(w http.ResponseWriter, r *http.Request) {
 		err := fmt.Errorf("Method %q not allowed", r.Method)
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(405)
-		tmpl.Lookup("errors/405").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/405").Execute(w, shared.ErrorData(err))
 	}
 }
 
 //PostCreate handles /admin/new_post route
 func PostCreate(w http.ResponseWriter, r *http.Request) {
-	tmpl := helpers.Template(r)
-	session := helpers.Session(r)
-	data := helpers.DefaultData(r)
-	T := helpers.T(r)
+	tmpl := shared.Template(r)
+	session := shared.Session(r)
+	data := shared.DefaultData(r)
 	if r.Method == "GET" {
 
 		tags, err := models.GetTags()
@@ -92,7 +90,7 @@ func PostCreate(w http.ResponseWriter, r *http.Request) {
 			tmpl.Lookup("errors/404").Execute(w, nil)
 			return
 		}
-		data["Title"] = T("new_post")
+		data["Title"] = "New post"
 		data["Active"] = "posts"
 		data["Tags"] = tags
 		data["Flash"] = session.Flashes()
@@ -105,7 +103,7 @@ func PostCreate(w http.ResponseWriter, r *http.Request) {
 		post := &models.Post{
 			Name:      r.PostFormValue("name"),
 			Content:   r.PostFormValue("content"),
-			Published: helpers.Atob(r.PostFormValue("published")),
+			Published: shared.Atob(r.PostFormValue("published")),
 			Tags:      r.Form["tags"], //PostFormValue returns only first value
 		}
 
@@ -124,23 +122,22 @@ func PostCreate(w http.ResponseWriter, r *http.Request) {
 		err := fmt.Errorf("Method %q not allowed", r.Method)
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(405)
-		tmpl.Lookup("errors/405").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/405").Execute(w, shared.ErrorData(err))
 	}
 }
 
 //PostUpdate handles /admin/edit_post/:id route
 func PostUpdate(w http.ResponseWriter, r *http.Request) {
-	tmpl := helpers.Template(r)
-	session := helpers.Session(r)
-	data := helpers.DefaultData(r)
-	T := helpers.T(r)
+	tmpl := shared.Template(r)
+	session := shared.Session(r)
+	data := shared.DefaultData(r)
 	if r.Method == "GET" {
 
 		id := r.URL.Path[len("/admin/edit_post/"):]
 		post, err := models.GetPost(id)
 		if err != nil {
 			w.WriteHeader(404)
-			tmpl.Lookup("errors/404").Execute(w, helpers.ErrorData(err))
+			tmpl.Lookup("errors/404").Execute(w, shared.ErrorData(err))
 			return
 		}
 		tags, err := models.GetTags()
@@ -150,7 +147,7 @@ func PostUpdate(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		data["Title"] = T("edit_post")
+		data["Title"] = "Edit post"
 		data["Active"] = "posts"
 		data["Post"] = post
 		data["Tags"] = tags
@@ -162,10 +159,10 @@ func PostUpdate(w http.ResponseWriter, r *http.Request) {
 
 		r.ParseForm()
 		post := &models.Post{
-			ID:        helpers.Atoi64(r.PostFormValue("id")),
+			ID:        shared.Atoi64(r.PostFormValue("id")),
 			Name:      r.PostFormValue("name"),
 			Content:   r.PostFormValue("content"),
-			Published: helpers.Atob(r.PostFormValue("published")),
+			Published: shared.Atob(r.PostFormValue("published")),
 			Tags:      r.Form["tags"], //PostFormValue returns only first value
 		}
 
@@ -181,13 +178,13 @@ func PostUpdate(w http.ResponseWriter, r *http.Request) {
 		err := fmt.Errorf("Method %q not allowed", r.Method)
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(405)
-		tmpl.Lookup("errors/405").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/405").Execute(w, shared.ErrorData(err))
 	}
 }
 
 //PostDelete handles /admin/delete_post route
 func PostDelete(w http.ResponseWriter, r *http.Request) {
-	tmpl := helpers.Template(r)
+	tmpl := shared.Template(r)
 
 	if r.Method == "POST" {
 
@@ -195,14 +192,14 @@ func PostDelete(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Printf("ERROR: %s\n", err)
 			w.WriteHeader(404)
-			tmpl.Lookup("errors/404").Execute(w, helpers.ErrorData(err))
+			tmpl.Lookup("errors/404").Execute(w, shared.ErrorData(err))
 			return
 		}
 
 		if err := post.Delete(); err != nil {
 			log.Printf("ERROR: %s\n", err)
 			w.WriteHeader(500)
-			tmpl.Lookup("errors/500").Execute(w, helpers.ErrorData(err))
+			tmpl.Lookup("errors/500").Execute(w, shared.ErrorData(err))
 			return
 		}
 		http.Redirect(w, r, "/admin/posts", 303)
@@ -211,7 +208,7 @@ func PostDelete(w http.ResponseWriter, r *http.Request) {
 		err := fmt.Errorf("Method %q not allowed", r.Method)
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(405)
-		tmpl.Lookup("errors/405").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/405").Execute(w, shared.ErrorData(err))
 	}
 }
 

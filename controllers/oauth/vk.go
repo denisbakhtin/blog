@@ -8,8 +8,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/denisbakhtin/blog/helpers"
-	"github.com/denisbakhtin/blog/system"
+	"github.com/denisbakhtin/blog/shared"
 	"github.com/gorilla/context"
 	"github.com/gorilla/sessions"
 	"golang.org/x/oauth2"
@@ -33,7 +32,7 @@ func VkCallback(w http.ResponseWriter, r *http.Request) {
 		err := fmt.Errorf("Wrong state string: Expected %s, got %s. Please, try again", oauthState, state)
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(400)
-		tmpl.Lookup("errors/400").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/400").Execute(w, shared.ErrorData(err))
 		return
 	}
 
@@ -41,7 +40,7 @@ func VkCallback(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(400)
-		tmpl.Lookup("errors/400").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/400").Execute(w, shared.ErrorData(err))
 		return
 	}
 
@@ -53,7 +52,7 @@ func VkCallback(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(400)
-		tmpl.Lookup("errors/400").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/400").Execute(w, shared.ErrorData(err))
 		return
 	}
 
@@ -62,7 +61,7 @@ func VkCallback(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(400)
-		tmpl.Lookup("errors/400").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/400").Execute(w, shared.ErrorData(err))
 		return
 	}
 
@@ -77,7 +76,7 @@ func VkCallback(w http.ResponseWriter, r *http.Request) {
 	if err := json.Unmarshal(buf, &vkuser); err != nil {
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(500)
-		tmpl.Lookup("errors/500").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/500").Execute(w, shared.ErrorData(err))
 		return
 	}
 
@@ -95,9 +94,9 @@ func VkCallback(w http.ResponseWriter, r *http.Request) {
 
 func vkConfig() *oauth2.Config {
 	return &oauth2.Config{
-		ClientID:     system.GetConfig().Oauth.Vk.ClientID,
-		ClientSecret: system.GetConfig().Oauth.Vk.ClientSecret,
-		RedirectURL:  system.GetConfig().Oauth.Vk.RedirectURL,
+		ClientID:     shared.GetConfig().Oauth.Vk.ClientID,
+		ClientSecret: shared.GetConfig().Oauth.Vk.ClientSecret,
+		RedirectURL:  shared.GetConfig().Oauth.Vk.RedirectURL,
 		Scopes:       []string{"email"},
 		Endpoint:     vk.Endpoint,
 	}

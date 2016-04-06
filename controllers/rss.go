@@ -2,9 +2,8 @@ package controllers
 
 import (
 	"fmt"
-	"github.com/denisbakhtin/blog/helpers"
 	"github.com/denisbakhtin/blog/models"
-	"github.com/denisbakhtin/blog/system"
+	"github.com/denisbakhtin/blog/shared"
 	"github.com/gorilla/feeds"
 	"log"
 	"net/http"
@@ -13,19 +12,18 @@ import (
 
 //RssXML handles GET /rss route
 func RssXML(w http.ResponseWriter, r *http.Request) {
-	tmpl := helpers.Template(r)
-	T := helpers.T(r)
+	tmpl := shared.Template(r)
 	if r.Method == "GET" {
 
 		now := time.Now()
-		domain := system.GetConfig().Domain
+		domain := shared.GetConfig().Domain
 		feed := &feeds.Feed{
-			Title:       T("site_name"),
+			Title:       "Blog boilerplate",
 			Link:        &feeds.Link{Href: domain},
-			Description: T("blog_description"),
+			Description: "Basic blog boilerplate in Go",
 			Author:      &feeds.Author{Name: "Blog Author"},
 			Created:     now,
-			Copyright:   fmt.Sprintf("© %s", T("site_name")),
+			Copyright:   fmt.Sprintf("© %s", "Blog"),
 		}
 
 		feed.Items = make([]*feeds.Item, 0)
@@ -33,7 +31,7 @@ func RssXML(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Printf("ERROR: %s\n", err)
 			w.WriteHeader(500)
-			tmpl.Lookup("errors/500").Execute(w, helpers.ErrorData(err))
+			tmpl.Lookup("errors/500").Execute(w, shared.ErrorData(err))
 			return
 		}
 		for i := range posts {
@@ -51,7 +49,7 @@ func RssXML(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Printf("ERROR: %s\n", err)
 			w.WriteHeader(500)
-			tmpl.Lookup("errors/500").Execute(w, helpers.ErrorData(err))
+			tmpl.Lookup("errors/500").Execute(w, shared.ErrorData(err))
 			return
 		}
 		fmt.Fprintln(w, rss)
@@ -60,6 +58,6 @@ func RssXML(w http.ResponseWriter, r *http.Request) {
 		err := fmt.Errorf("Method %q not allowed", r.Method)
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(405)
-		tmpl.Lookup("errors/405").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/405").Execute(w, shared.ErrorData(err))
 	}
 }

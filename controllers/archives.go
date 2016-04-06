@@ -8,15 +8,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/denisbakhtin/blog/helpers"
 	"github.com/denisbakhtin/blog/models"
+	"github.com/denisbakhtin/blog/shared"
 )
 
 //ArchiveShow handles GET /archives/:year-:month route
 func ArchiveShow(w http.ResponseWriter, r *http.Request) {
-	tmpl := helpers.Template(r)
-	data := helpers.DefaultData(r)
-	T := helpers.T(r)
+	tmpl := shared.Template(r)
+	data := shared.DefaultData(r)
 	if r.Method == "GET" {
 
 		param := r.URL.Path[len("/archives/"):]
@@ -34,7 +33,7 @@ func ArchiveShow(w http.ResponseWriter, r *http.Request) {
 			tmpl.Lookup("errors/500").Execute(w, nil)
 			return
 		}
-		data["Title"] = fmt.Sprintf("%s %s %d", T("archives_for"), T(time.Month(month).String()), year)
+		data["Title"] = fmt.Sprintf("%s %s %d", "Archives for", time.Month(month).String(), year)
 		data["List"] = list
 		data["Active"] = fmt.Sprintf("archives/%d-%02d", year, month)
 		tmpl.Lookup("archives/show").Execute(w, data)
@@ -43,6 +42,6 @@ func ArchiveShow(w http.ResponseWriter, r *http.Request) {
 		err := fmt.Errorf("Method %q not allowed", r.Method)
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(405)
-		tmpl.Lookup("errors/405").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/405").Execute(w, shared.ErrorData(err))
 	}
 }

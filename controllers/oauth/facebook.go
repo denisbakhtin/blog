@@ -9,8 +9,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/denisbakhtin/blog/helpers"
-	"github.com/denisbakhtin/blog/system"
+	"github.com/denisbakhtin/blog/shared"
 	"github.com/gorilla/context"
 	"github.com/gorilla/sessions"
 	"golang.org/x/oauth2"
@@ -39,7 +38,7 @@ func FacebookCallback(w http.ResponseWriter, r *http.Request) {
 		err := fmt.Errorf("Wrong state string: Expected %s, got %s. Please, try again", oauthState, state)
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(400)
-		tmpl.Lookup("errors/400").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/400").Execute(w, shared.ErrorData(err))
 		return
 	}
 
@@ -47,7 +46,7 @@ func FacebookCallback(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(400)
-		tmpl.Lookup("errors/400").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/400").Execute(w, shared.ErrorData(err))
 		return
 	}
 
@@ -57,7 +56,7 @@ func FacebookCallback(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(400)
-		tmpl.Lookup("errors/400").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/400").Execute(w, shared.ErrorData(err))
 		return
 	}
 
@@ -66,7 +65,7 @@ func FacebookCallback(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(500)
-		tmpl.Lookup("errors/500").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/500").Execute(w, shared.ErrorData(err))
 		return
 	}
 
@@ -81,7 +80,7 @@ func FacebookCallback(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(500)
-		tmpl.Lookup("errors/500").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/500").Execute(w, shared.ErrorData(err))
 		return
 	}
 
@@ -104,13 +103,13 @@ func PostOnFacebook(link, message string) error {
 	//also https://developers.facebook.com/docs/graph-api/reference/v2.5/page/feed for api description
 
 	token := &oauth2.Token{
-		AccessToken: system.GetConfig().Oauth.Facebook.Token, //page access token
+		AccessToken: shared.GetConfig().Oauth.Facebook.Token, //page access token
 	}
 	client := fbConfig().Client(oauth2.NoContext, token)
 	response, err := client.Post(
 		fmt.Sprintf(
 			"https://graph.facebook.com/v2.5/%s/feed?access_token=%s&link=%s&message=%s",
-			system.GetConfig().Oauth.Facebook.Page,
+			shared.GetConfig().Oauth.Facebook.Page,
 			token.AccessToken,
 			url.QueryEscape(link),
 			url.QueryEscape(message),
@@ -133,9 +132,9 @@ func PostOnFacebook(link, message string) error {
 //facebook config
 func fbConfig() *oauth2.Config {
 	return &oauth2.Config{
-		ClientID:     system.GetConfig().Oauth.Facebook.ClientID,
-		ClientSecret: system.GetConfig().Oauth.Facebook.ClientSecret,
-		RedirectURL:  system.GetConfig().Oauth.Facebook.RedirectURL,
+		ClientID:     shared.GetConfig().Oauth.Facebook.ClientID,
+		ClientSecret: shared.GetConfig().Oauth.Facebook.ClientSecret,
+		RedirectURL:  shared.GetConfig().Oauth.Facebook.RedirectURL,
 		Scopes:       []string{"email", "user_about_me"},
 		Endpoint:     facebook.Endpoint,
 	}

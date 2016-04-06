@@ -5,14 +5,14 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/denisbakhtin/blog/helpers"
 	"github.com/denisbakhtin/blog/models"
+	"github.com/denisbakhtin/blog/shared"
 )
 
 //PageShow handles /pages/:id route
 func PageShow(w http.ResponseWriter, r *http.Request) {
-	tmpl := helpers.Template(r)
-	data := helpers.DefaultData(r)
+	tmpl := shared.Template(r)
+	data := shared.DefaultData(r)
 	if r.Method == "GET" {
 
 		id := r.URL.Path[len("/pages/"):]
@@ -31,24 +31,23 @@ func PageShow(w http.ResponseWriter, r *http.Request) {
 		err := fmt.Errorf("Method %q not allowed", r.Method)
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(405)
-		tmpl.Lookup("errors/405").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/405").Execute(w, shared.ErrorData(err))
 	}
 }
 
 //PageIndex handles GET /admin/pages route
 func PageIndex(w http.ResponseWriter, r *http.Request) {
-	tmpl := helpers.Template(r)
-	data := helpers.DefaultData(r)
-	T := helpers.T(r)
+	tmpl := shared.Template(r)
+	data := shared.DefaultData(r)
 	if r.Method == "GET" {
 
 		list, err := models.GetPages()
 		if err != nil {
 			w.WriteHeader(500)
-			tmpl.Lookup("errors/500").Execute(w, helpers.ErrorData(err))
+			tmpl.Lookup("errors/500").Execute(w, shared.ErrorData(err))
 			return
 		}
-		data["Title"] = T("pages")
+		data["Title"] = "Pages"
 		data["Active"] = "pages"
 		data["List"] = list
 		tmpl.Lookup("pages/index").Execute(w, data)
@@ -57,19 +56,18 @@ func PageIndex(w http.ResponseWriter, r *http.Request) {
 		err := fmt.Errorf("Method %q not allowed", r.Method)
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(405)
-		tmpl.Lookup("errors/405").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/405").Execute(w, shared.ErrorData(err))
 	}
 }
 
 //PageCreate handles /admin/new_page route
 func PageCreate(w http.ResponseWriter, r *http.Request) {
-	tmpl := helpers.Template(r)
-	session := helpers.Session(r)
-	data := helpers.DefaultData(r)
-	T := helpers.T(r)
+	tmpl := shared.Template(r)
+	session := shared.Session(r)
+	data := shared.DefaultData(r)
 	if r.Method == "GET" {
 
-		data["Title"] = T("new_page")
+		data["Title"] = "New page"
 		data["Active"] = "pages"
 		data["Flash"] = session.Flashes()
 		session.Save(r, w)
@@ -80,7 +78,7 @@ func PageCreate(w http.ResponseWriter, r *http.Request) {
 		page := &models.Page{
 			Name:      r.PostFormValue("name"),
 			Content:   r.PostFormValue("content"),
-			Published: helpers.Atob(r.PostFormValue("published")),
+			Published: shared.Atob(r.PostFormValue("published")),
 		}
 
 		if err := page.Insert(); err != nil {
@@ -95,27 +93,26 @@ func PageCreate(w http.ResponseWriter, r *http.Request) {
 		err := fmt.Errorf("Method %q not allowed", r.Method)
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(405)
-		tmpl.Lookup("errors/405").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/405").Execute(w, shared.ErrorData(err))
 	}
 }
 
 //PageUpdate handles /admin/edit_page/:id route
 func PageUpdate(w http.ResponseWriter, r *http.Request) {
-	tmpl := helpers.Template(r)
-	session := helpers.Session(r)
-	data := helpers.DefaultData(r)
-	T := helpers.T(r)
+	tmpl := shared.Template(r)
+	session := shared.Session(r)
+	data := shared.DefaultData(r)
 	if r.Method == "GET" {
 
 		id := r.URL.Path[len("/admin/edit_page/"):]
 		page, err := models.GetPage(id)
 		if err != nil {
 			w.WriteHeader(400)
-			tmpl.Lookup("errors/400").Execute(w, helpers.ErrorData(err))
+			tmpl.Lookup("errors/400").Execute(w, shared.ErrorData(err))
 			return
 		}
 
-		data["Title"] = T("edit_page")
+		data["Title"] = "Edit page"
 		data["Active"] = "pages"
 		data["Page"] = page
 		data["Flash"] = session.Flashes()
@@ -125,10 +122,10 @@ func PageUpdate(w http.ResponseWriter, r *http.Request) {
 	} else if r.Method == "POST" {
 
 		page := &models.Page{
-			ID:        helpers.Atoi64(r.PostFormValue("id")),
+			ID:        shared.Atoi64(r.PostFormValue("id")),
 			Name:      r.PostFormValue("name"),
 			Content:   r.PostFormValue("content"),
-			Published: helpers.Atob(r.PostFormValue("published")),
+			Published: shared.Atob(r.PostFormValue("published")),
 		}
 
 		if err := page.Update(); err != nil {
@@ -143,13 +140,13 @@ func PageUpdate(w http.ResponseWriter, r *http.Request) {
 		err := fmt.Errorf("Method %q not allowed", r.Method)
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(405)
-		tmpl.Lookup("errors/405").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/405").Execute(w, shared.ErrorData(err))
 	}
 }
 
 //PageDelete handles /admin/delete_page route
 func PageDelete(w http.ResponseWriter, r *http.Request) {
-	tmpl := helpers.Template(r)
+	tmpl := shared.Template(r)
 
 	if r.Method == "POST" {
 
@@ -157,13 +154,13 @@ func PageDelete(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Printf("ERROR: %s\n", err)
 			w.WriteHeader(404)
-			tmpl.Lookup("errors/404").Execute(w, helpers.ErrorData(err))
+			tmpl.Lookup("errors/404").Execute(w, shared.ErrorData(err))
 		}
 
 		if err := page.Delete(); err != nil {
 			log.Printf("ERROR: %s\n", err)
 			w.WriteHeader(500)
-			tmpl.Lookup("errors/500").Execute(w, helpers.ErrorData(err))
+			tmpl.Lookup("errors/500").Execute(w, shared.ErrorData(err))
 			return
 		}
 		http.Redirect(w, r, "/admin/pages", 303)
@@ -172,6 +169,6 @@ func PageDelete(w http.ResponseWriter, r *http.Request) {
 		err := fmt.Errorf("Method %q not allowed", r.Method)
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(405)
-		tmpl.Lookup("errors/405").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/405").Execute(w, shared.ErrorData(err))
 	}
 }

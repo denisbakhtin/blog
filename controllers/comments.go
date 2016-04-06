@@ -5,26 +5,25 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/denisbakhtin/blog/helpers"
 	"github.com/denisbakhtin/blog/models"
+	"github.com/denisbakhtin/blog/shared"
 	"github.com/gorilla/context"
 	"gopkg.in/guregu/null.v3"
 )
 
 //CommentIndex handles GET /admin/comments route
 func CommentIndex(w http.ResponseWriter, r *http.Request) {
-	tmpl := helpers.Template(r)
-	data := helpers.DefaultData(r)
-	T := helpers.T(r)
+	tmpl := shared.Template(r)
+	data := shared.DefaultData(r)
 	if r.Method == "GET" {
 
 		list, err := models.GetComments()
 		if err != nil {
 			w.WriteHeader(500)
-			tmpl.Lookup("errors/500").Execute(w, helpers.ErrorData(err))
+			tmpl.Lookup("errors/500").Execute(w, shared.ErrorData(err))
 			return
 		}
-		data["Title"] = T("comments")
+		data["Title"] = "Comments"
 		data["Active"] = "comments"
 		data["List"] = list
 		tmpl.Lookup("comments/index").Execute(w, data)
@@ -33,26 +32,26 @@ func CommentIndex(w http.ResponseWriter, r *http.Request) {
 		err := fmt.Errorf("Method %q not allowed", r.Method)
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(405)
-		tmpl.Lookup("errors/405").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/405").Execute(w, shared.ErrorData(err))
 	}
 }
 
 //CommentCreate handles /new_comment route
 func CommentCreate(w http.ResponseWriter, r *http.Request) {
-	session := helpers.Session(r)
-	tmpl := helpers.Template(r)
+	session := shared.Session(r)
+	tmpl := shared.Template(r)
 	if r.Method == "POST" {
 
 		if _, ok := session.Values["oauth_name"]; !ok {
 			err := fmt.Errorf("You are not authorized to post comments.")
 			log.Printf("ERROR: %s\n", err)
 			w.WriteHeader(405)
-			tmpl.Lookup("errors/405").Execute(w, helpers.ErrorData(err))
+			tmpl.Lookup("errors/405").Execute(w, shared.ErrorData(err))
 			return
 		}
 
 		comment := &models.Comment{
-			PostID:     helpers.Atoi64(r.PostFormValue("post_id")),
+			PostID:     shared.Atoi64(r.PostFormValue("post_id")),
 			AuthorName: session.Values["oauth_name"].(string),
 			Content:    r.PostFormValue("content"),
 			Published:  false, //comments are published by admin via dashboard
@@ -61,7 +60,7 @@ func CommentCreate(w http.ResponseWriter, r *http.Request) {
 		if err := comment.Insert(); err != nil {
 			log.Printf("ERROR: %s\n", err)
 			w.WriteHeader(400)
-			tmpl.Lookup("errors/400").Execute(w, helpers.ErrorData(err))
+			tmpl.Lookup("errors/400").Execute(w, shared.ErrorData(err))
 			return
 		}
 		session.AddFlash("Thank you! Your comment will be visible after approval.", "comments")
@@ -72,27 +71,26 @@ func CommentCreate(w http.ResponseWriter, r *http.Request) {
 		err := fmt.Errorf("Method %q not allowed", r.Method)
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(405)
-		tmpl.Lookup("errors/405").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/405").Execute(w, shared.ErrorData(err))
 	}
 }
 
 //CommentUpdate handles /admin/edit_comment/:id route
 func CommentUpdate(w http.ResponseWriter, r *http.Request) {
-	tmpl := helpers.Template(r)
-	session := helpers.Session(r)
-	data := helpers.DefaultData(r)
-	T := helpers.T(r)
+	tmpl := shared.Template(r)
+	session := shared.Session(r)
+	data := shared.DefaultData(r)
 	if r.Method == "GET" {
 
 		id := r.URL.Path[len("/admin/edit_comment/"):]
 		comment, err := models.GetComment(id)
 		if err != nil {
 			w.WriteHeader(404)
-			tmpl.Lookup("errors/404").Execute(w, helpers.ErrorData(err))
+			tmpl.Lookup("errors/404").Execute(w, shared.ErrorData(err))
 			return
 		}
 
-		data["Title"] = T("edit_comment")
+		data["Title"] = "Edit comment"
 		data["Active"] = "comments"
 		data["Comment"] = comment
 		data["Flash"] = session.Flashes("comments")
@@ -103,9 +101,9 @@ func CommentUpdate(w http.ResponseWriter, r *http.Request) {
 
 		r.ParseForm()
 		comment := &models.Comment{
-			ID:        helpers.Atoi64(r.PostFormValue("id")),
+			ID:        shared.Atoi64(r.PostFormValue("id")),
 			Content:   r.PostFormValue("content"),
-			Published: helpers.Atob(r.PostFormValue("published")),
+			Published: shared.Atob(r.PostFormValue("published")),
 		}
 
 		if err := comment.Update(); err != nil {
@@ -120,20 +118,19 @@ func CommentUpdate(w http.ResponseWriter, r *http.Request) {
 		err := fmt.Errorf("Method %q not allowed", r.Method)
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(405)
-		tmpl.Lookup("errors/405").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/405").Execute(w, shared.ErrorData(err))
 	}
 }
 
 //CommentReply handles /admin/new_comment route
 func CommentReply(w http.ResponseWriter, r *http.Request) {
-	tmpl := helpers.Template(r)
-	session := helpers.Session(r)
-	data := helpers.DefaultData(r)
-	T := helpers.T(r)
+	tmpl := shared.Template(r)
+	session := shared.Session(r)
+	data := shared.DefaultData(r)
 	if r.Method == "GET" {
 
 		user := context.Get(r, "user").(*models.User)
-		parentID := helpers.Atoi64(r.FormValue("parent_id"))
+		parentID := shared.Atoi64(r.FormValue("parent_id"))
 		parent, _ := models.GetComment(parentID)
 		comment := &models.Comment{
 			PostID:     parent.PostID,
@@ -141,7 +138,7 @@ func CommentReply(w http.ResponseWriter, r *http.Request) {
 			AuthorName: user.Name,
 		}
 
-		data["Title"] = T("reply")
+		data["Title"] = "Reply"
 		data["Active"] = "comments"
 		data["Comment"] = comment
 		data["Flash"] = session.Flashes("comments")
@@ -150,13 +147,13 @@ func CommentReply(w http.ResponseWriter, r *http.Request) {
 
 	} else if r.Method == "POST" {
 
-		parentID := helpers.Atoi64(r.PostFormValue("parent_id"))
+		parentID := shared.Atoi64(r.PostFormValue("parent_id"))
 		comment := &models.Comment{
-			PostID:     helpers.Atoi64(r.PostFormValue("post_id")),
+			PostID:     shared.Atoi64(r.PostFormValue("post_id")),
 			ParentID:   null.NewInt(parentID, parentID > 0),
 			AuthorName: r.PostFormValue("author_name"),
 			Content:    r.PostFormValue("content"),
-			Published:  helpers.Atob(r.PostFormValue("published")),
+			Published:  shared.Atob(r.PostFormValue("published")),
 		}
 
 		if err := comment.Insert(); err != nil {
@@ -171,13 +168,13 @@ func CommentReply(w http.ResponseWriter, r *http.Request) {
 		err := fmt.Errorf("Method %q not allowed", r.Method)
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(405)
-		tmpl.Lookup("errors/405").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/405").Execute(w, shared.ErrorData(err))
 	}
 }
 
 //CommentDelete handles /admin/delete_comment route
 func CommentDelete(w http.ResponseWriter, r *http.Request) {
-	tmpl := helpers.Template(r)
+	tmpl := shared.Template(r)
 
 	if r.Method == "POST" {
 
@@ -185,13 +182,13 @@ func CommentDelete(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Printf("ERROR: %s\n", err)
 			w.WriteHeader(404)
-			tmpl.Lookup("errors/404").Execute(w, helpers.ErrorData(err))
+			tmpl.Lookup("errors/404").Execute(w, shared.ErrorData(err))
 		}
 
 		if err := comment.Delete(); err != nil {
 			log.Printf("ERROR: %s\n", err)
 			w.WriteHeader(500)
-			tmpl.Lookup("errors/500").Execute(w, helpers.ErrorData(err))
+			tmpl.Lookup("errors/500").Execute(w, shared.ErrorData(err))
 			return
 		}
 		http.Redirect(w, r, "/admin/comments", 303)
@@ -200,6 +197,6 @@ func CommentDelete(w http.ResponseWriter, r *http.Request) {
 		err := fmt.Errorf("Method %q not allowed", r.Method)
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(405)
-		tmpl.Lookup("errors/405").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/405").Execute(w, shared.ErrorData(err))
 	}
 }

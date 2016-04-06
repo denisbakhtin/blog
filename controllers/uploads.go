@@ -11,7 +11,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/denisbakhtin/blog/system"
+	"github.com/denisbakhtin/blog/shared"
 )
 
 //Upload handles POST /upload route
@@ -55,7 +55,7 @@ func saveFile(fh *multipart.FileHeader, f multipart.File) (string, error) {
 	fileExt := filepath.Ext(fh.Filename)
 	newName := fmt.Sprint(time.Now().Unix()) + fileExt //unique file name ;D
 	uri := "/public/uploads/" + newName
-	fullName := filepath.Join(system.UploadsPath(), newName)
+	fullName := filepath.Join(shared.UploadsPath(), newName)
 
 	file, err := os.OpenFile(fullName, os.O_WRONLY|os.O_CREATE, 0666)
 	if err != nil {

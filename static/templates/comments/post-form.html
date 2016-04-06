@@ -1,0 +1,42 @@
+{{define "comments/post-form"}}
+  {{if .OauthName}}
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <form class="form-horizontal" method="post" action="/new_comment" data-parsley-validate>
+        <fieldset>
+          <legend>{{.Title}}</legend>
+          {{.csrfField}}
+          <input type="hidden" name="post_id" value="{{.Post.ID}}" >
+
+          <div class="form-group">
+            <label class="col-md-2 control-label" for="content">Comment</label>
+            <div class="col-md-10">
+              <textarea class="form-control" name="content" id="content" required data-parsley-required-message="Comment is required">{{.Comment.Content}}</textarea>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-md-2"></label>
+            <div class="col-md-10">
+              <input type="submit" class="btn btn-primary" value="Submit" >
+              <input type="button" class="btn btn-default" formnovalidate onclick="window.history.back();" value="Cancel">
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+  {{else}}
+  <div id="comment-oauth-login" class="panel panel-info">
+    <div class="text-center panel-heading">
+      To comment login with:
+    </div>
+    <div class="panel-body text-center">
+      <a href="/facebook_login" title="Login with Facebook"><img src="/public/images/facebook_icon.jpg" /></a>
+      <a href="/google_login" title="Login with Google+"><img src="/public/images/gplus_icon.jpg" /></a>
+      <a href="/linkedin_login" title="Login with Linkedin"><img src="/public/images/linkedin_icon.jpg" /></a>
+      <a href="/vk_login" title="Login with Vkontakte"><img src="/public/images/vk_icon.jpg" /></a>
+    </div>
+  </div>
+  {{end}}
+{{end}}

@@ -1,0 +1,21 @@
+{{define "dashboard/show"}}
+{{template "dashboard/header" .}}
+{{template "dashboard/navbar" .}}
+{{template "dashboard/sidebar" .}}
+<div id="main-column" class="container-fluid" role="main">
+  <div class="jumbotron">
+    <h2>{{.Title}}</h2>
+
+    This is a blog boilerplate
+    <br>
+    <br>
+    Project's source code can be found here:
+    <br>
+    <br>
+    <div class="well">
+      <a href="https://github.com/denisbakhtin/blog">https://github.com/denisbakhtin/blog</a>
+    </div>
+  </div>
+</div>
+{{template "dashboard/footer" .}}
+{{end}}

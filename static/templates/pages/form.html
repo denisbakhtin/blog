@@ -1,0 +1,51 @@
+{{define "pages/form"}}
+{{template "dashboard/header" .}}
+{{template "dashboard/navbar" .}}
+{{template "dashboard/sidebar" .}}
+<div id="main-column" class="container-fluid" role="main">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <form id="markdown-form" class="form-horizontal" method="post" data-parsley-validate>
+      <fieldset>
+        <legend>{{.Title}}</legend>
+        {{range .Flash}}
+          <div class="alert alert-danger">{{.}}</div><p>
+        {{end}}
+        {{.csrfField}}
+        <input type="hidden" name="id" value="{{.Page.ID}}" >
+        <div class="form-group">
+          <label class="col-md-2 control-label" for="name">Title</label>
+          <div class="col-md-10">
+            <input id="name" name="name" value="{{.Page.Name}}" class="form-control input-md" required="" data-parsley-required-message="Title is required">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-2 control-label" for="content">Content</label>
+          <div class="col-md-10">
+            <input id="content" type="hidden" name="content">
+            <div id="markdown-editor">{{.Page.Content}}</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-offset-2 col-md-10" for="published">
+            <input id="published" name="published" type="checkbox" value="true" {{if .Page.Published}}checked{{end}} >
+            Published
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-2"></label>
+          <div class="col-md-10">
+            <input type="submit" class="btn btn-primary" value="Submit">
+            <input type="button" class="btn btn-default" formnovalidate onclick="window.history.back();" value="Cancel">
+          </div>
+        </div>
+      </fieldset>
+      </form>
+    </div>
+  </div>
+</div>
+{{template "dashboard/footer" .}}
+{{end}}

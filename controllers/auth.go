@@ -5,20 +5,19 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/denisbakhtin/blog/helpers"
 	"github.com/denisbakhtin/blog/models"
+	"github.com/denisbakhtin/blog/shared"
 )
 
 //SignIn handles /signin route
 func SignIn(w http.ResponseWriter, r *http.Request) {
-	tmpl := helpers.Template(r)
-	session := helpers.Session(r)
-	data := helpers.DefaultData(r)
-	T := helpers.T(r)
+	tmpl := shared.Template(r)
+	session := shared.Session(r)
+	data := shared.DefaultData(r)
 
 	if r.Method == "GET" {
 
-		data["Title"] = T("sign_in")
+		data["Title"] = "Sign in"
 		data["Active"] = "signin"
 		data["Flash"] = session.Flashes()
 		session.Save(r, w)
@@ -55,20 +54,19 @@ func SignIn(w http.ResponseWriter, r *http.Request) {
 	} else {
 		err := fmt.Errorf("Method %q not allowed", r.Method)
 		log.Printf("ERROR: %s\n", err)
-		tmpl.Lookup("errors/405").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/405").Execute(w, shared.ErrorData(err))
 	}
 }
 
 //SignUp handles /signup route
 func SignUp(w http.ResponseWriter, r *http.Request) {
-	tmpl := helpers.Template(r)
-	session := helpers.Session(r)
-	data := helpers.DefaultData(r)
-	T := helpers.T(r)
+	tmpl := shared.Template(r)
+	session := shared.Session(r)
+	data := shared.DefaultData(r)
 
 	if r.Method == "GET" {
 
-		data["Title"] = T("sign_up")
+		data["Title"] = "Sign up"
 		data["Active"] = "signup"
 		data["Flash"] = session.Flashes()
 		session.Save(r, w)
@@ -111,14 +109,14 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 	} else {
 		err := fmt.Errorf("Method %q not allowed", r.Method)
 		log.Printf("ERROR: %s\n", err)
-		tmpl.Lookup("errors/405").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/405").Execute(w, shared.ErrorData(err))
 	}
 }
 
 //Logout handles /logout route
 func Logout(w http.ResponseWriter, r *http.Request) {
 	//any method will do :3
-	session := helpers.Session(r)
+	session := shared.Session(r)
 	delete(session.Values, "user_id")
 	session.Save(r, w)
 	http.Redirect(w, r, "/", 303)

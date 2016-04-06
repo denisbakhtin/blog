@@ -6,8 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/denisbakhtin/blog/helpers"
-	"github.com/denisbakhtin/blog/system"
+	"github.com/denisbakhtin/blog/shared"
 	"github.com/gorilla/context"
 	"github.com/gorilla/sessions"
 	"golang.org/x/oauth2"
@@ -33,7 +32,7 @@ func GoogleCallback(w http.ResponseWriter, r *http.Request) {
 		err := fmt.Errorf("Wrong state string: Expected %s, got %s. Please, try again", oauthState, state)
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(400)
-		tmpl.Lookup("errors/400").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/400").Execute(w, shared.ErrorData(err))
 		return
 	}
 
@@ -41,7 +40,7 @@ func GoogleCallback(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(400)
-		tmpl.Lookup("errors/400").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/400").Execute(w, shared.ErrorData(err))
 		return
 	}
 
@@ -50,7 +49,7 @@ func GoogleCallback(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(400)
-		tmpl.Lookup("errors/400").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/400").Execute(w, shared.ErrorData(err))
 		return
 	}
 	uService := goauth2.NewUserinfoService(service)
@@ -58,7 +57,7 @@ func GoogleCallback(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(400)
-		tmpl.Lookup("errors/400").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/400").Execute(w, shared.ErrorData(err))
 		return
 	}
 
@@ -77,9 +76,9 @@ func GoogleCallback(w http.ResponseWriter, r *http.Request) {
 //google config
 func goConfig() *oauth2.Config {
 	return &oauth2.Config{
-		ClientID:     system.GetConfig().Oauth.Google.ClientID,
-		ClientSecret: system.GetConfig().Oauth.Google.ClientSecret,
-		RedirectURL:  system.GetConfig().Oauth.Google.RedirectURL,
+		ClientID:     shared.GetConfig().Oauth.Google.ClientID,
+		ClientSecret: shared.GetConfig().Oauth.Google.ClientSecret,
+		RedirectURL:  shared.GetConfig().Oauth.Google.RedirectURL,
 		Scopes:       []string{goauth2.PlusLoginScope, goauth2.PlusMeScope, goauth2.UserinfoEmailScope, goauth2.UserinfoProfileScope},
 		Endpoint:     google.Endpoint,
 	}

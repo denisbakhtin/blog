@@ -5,24 +5,23 @@ import (
 	"net/http"
 
 	"fmt"
-	"github.com/denisbakhtin/blog/helpers"
 	"github.com/denisbakhtin/blog/models"
+	"github.com/denisbakhtin/blog/shared"
 )
 
 //UserIndex handles GET /admin/users route
 func UserIndex(w http.ResponseWriter, r *http.Request) {
-	tmpl := helpers.Template(r)
-	data := helpers.DefaultData(r)
-	T := helpers.T(r)
+	tmpl := shared.Template(r)
+	data := shared.DefaultData(r)
 	if r.Method == "GET" {
 
 		list, err := models.GetUsers()
 		if err != nil {
 			w.WriteHeader(500)
-			tmpl.Lookup("errors/404").Execute(w, helpers.ErrorData(err))
+			tmpl.Lookup("errors/404").Execute(w, shared.ErrorData(err))
 			return
 		}
-		data["Title"] = T("users")
+		data["Title"] = "Users"
 		data["Active"] = "users"
 		data["List"] = list
 		tmpl.Lookup("users/index").Execute(w, data)
@@ -31,19 +30,18 @@ func UserIndex(w http.ResponseWriter, r *http.Request) {
 		err := fmt.Errorf("Method %q not allowed", r.Method)
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(405)
-		tmpl.Lookup("errors/405").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/405").Execute(w, shared.ErrorData(err))
 	}
 }
 
 //UserCreate handles /admin/new_user route
 func UserCreate(w http.ResponseWriter, r *http.Request) {
-	tmpl := helpers.Template(r)
-	session := helpers.Session(r)
-	data := helpers.DefaultData(r)
-	T := helpers.T(r)
+	tmpl := shared.Template(r)
+	session := shared.Session(r)
+	data := shared.DefaultData(r)
 	if r.Method == "GET" {
 
-		data["Title"] = T("new_user")
+		data["Title"] = "New user"
 		data["Active"] = "users"
 		data["Flash"] = session.Flashes()
 		session.Save(r, w)
@@ -60,7 +58,7 @@ func UserCreate(w http.ResponseWriter, r *http.Request) {
 		if err := user.HashPassword(); err != nil {
 			log.Printf("ERROR: %s\n", err)
 			w.WriteHeader(500)
-			tmpl.Lookup("errors/500").Execute(w, helpers.ErrorData(err))
+			tmpl.Lookup("errors/500").Execute(w, shared.ErrorData(err))
 			return
 		}
 		if err := user.Insert(); err != nil {
@@ -75,27 +73,26 @@ func UserCreate(w http.ResponseWriter, r *http.Request) {
 		err := fmt.Errorf("Method %q not allowed", r.Method)
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(405)
-		tmpl.Lookup("errors/405").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/405").Execute(w, shared.ErrorData(err))
 	}
 }
 
 //UserUpdate handles /admin/edit_user/:id route
 func UserUpdate(w http.ResponseWriter, r *http.Request) {
-	tmpl := helpers.Template(r)
-	session := helpers.Session(r)
-	data := helpers.DefaultData(r)
-	T := helpers.T(r)
+	tmpl := shared.Template(r)
+	session := shared.Session(r)
+	data := shared.DefaultData(r)
 	if r.Method == "GET" {
 
 		id := r.URL.Path[len("/admin/edit_user/"):]
 		user, err := models.GetUser(id)
 		if err != nil {
 			w.WriteHeader(404)
-			tmpl.Lookup("errors/404").Execute(w, helpers.ErrorData(err))
+			tmpl.Lookup("errors/404").Execute(w, shared.ErrorData(err))
 			return
 		}
 
-		data["Title"] = T("edit_user")
+		data["Title"] = "Edit user"
 		data["Active"] = "users"
 		data["User"] = user
 		data["Flash"] = session.Flashes()
@@ -105,7 +102,7 @@ func UserUpdate(w http.ResponseWriter, r *http.Request) {
 	} else if r.Method == "POST" {
 
 		user := &models.User{
-			ID:       helpers.Atoi64(r.PostFormValue("id")),
+			ID:       shared.Atoi64(r.PostFormValue("id")),
 			Name:     r.PostFormValue("name"),
 			Email:    r.PostFormValue("email"),
 			Password: r.PostFormValue("password"),
@@ -114,7 +111,7 @@ func UserUpdate(w http.ResponseWriter, r *http.Request) {
 		if err := user.HashPassword(); err != nil {
 			log.Printf("ERROR: %s\n", err)
 			w.WriteHeader(500)
-			tmpl.Lookup("errors/500").Execute(w, helpers.ErrorData(err))
+			tmpl.Lookup("errors/500").Execute(w, shared.ErrorData(err))
 			return
 		}
 		if err := user.Update(); err != nil {
@@ -129,13 +126,13 @@ func UserUpdate(w http.ResponseWriter, r *http.Request) {
 		err := fmt.Errorf("Method %q not allowed", r.Method)
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(405)
-		tmpl.Lookup("errors/405").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/405").Execute(w, shared.ErrorData(err))
 	}
 }
 
 //UserDelete handles /admin/delete_user route
 func UserDelete(w http.ResponseWriter, r *http.Request) {
-	tmpl := helpers.Template(r)
+	tmpl := shared.Template(r)
 
 	if r.Method == "POST" {
 
@@ -143,13 +140,13 @@ func UserDelete(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Printf("ERROR: %s\n", err)
 			w.WriteHeader(404)
-			tmpl.Lookup("errors/404").Execute(w, helpers.ErrorData(err))
+			tmpl.Lookup("errors/404").Execute(w, shared.ErrorData(err))
 		}
 
 		if err := user.Delete(); err != nil {
 			log.Printf("ERROR: %s\n", err)
 			w.WriteHeader(500)
-			tmpl.Lookup("errors/500").Execute(w, helpers.ErrorData(err))
+			tmpl.Lookup("errors/500").Execute(w, shared.ErrorData(err))
 			return
 		}
 		http.Redirect(w, r, "/admin/users", 303)
@@ -158,6 +155,6 @@ func UserDelete(w http.ResponseWriter, r *http.Request) {
 		err := fmt.Errorf("Method %q not allowed", r.Method)
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(405)
-		tmpl.Lookup("errors/405").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/405").Execute(w, shared.ErrorData(err))
 	}
 }

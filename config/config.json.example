@@ -1,6 +1,6 @@
 {
   "debug": {
-    "public": "public",
+    "public": "static/public",
     "domain": "http://localhost:8080",
     "session_secret": "session-secret-phrase",
     "csrf_secret": "csrf-secret-phrase",
@@ -54,7 +54,7 @@
     }
   },
   "test": {
-    "public": "public",
+    "public": "static/public",
     "domain": "http://localhost:8080",
     "session_secret": "session-secret-phrase",
     "csrf_secret": "csrf-secret-phrase",

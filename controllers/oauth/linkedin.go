@@ -8,8 +8,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/denisbakhtin/blog/helpers"
-	"github.com/denisbakhtin/blog/system"
+	"github.com/denisbakhtin/blog/shared"
 	"github.com/gorilla/context"
 	"github.com/gorilla/sessions"
 	"golang.org/x/oauth2"
@@ -33,7 +32,7 @@ func LinkedinCallback(w http.ResponseWriter, r *http.Request) {
 		err := fmt.Errorf("Wrong state string: Expected %s, got %s. Please, try again", oauthState, state)
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(400)
-		tmpl.Lookup("errors/400").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/400").Execute(w, shared.ErrorData(err))
 		return
 	}
 
@@ -41,7 +40,7 @@ func LinkedinCallback(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(400)
-		tmpl.Lookup("errors/400").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/400").Execute(w, shared.ErrorData(err))
 		return
 	}
 
@@ -54,7 +53,7 @@ func LinkedinCallback(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(400)
-		tmpl.Lookup("errors/400").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/400").Execute(w, shared.ErrorData(err))
 		return
 	}
 	req.Header.Set("Bearer", token.AccessToken)
@@ -63,7 +62,7 @@ func LinkedinCallback(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(400)
-		tmpl.Lookup("errors/400").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/400").Execute(w, shared.ErrorData(err))
 		return
 	}
 
@@ -72,7 +71,7 @@ func LinkedinCallback(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(500)
-		tmpl.Lookup("errors/500").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/500").Execute(w, shared.ErrorData(err))
 		return
 	}
 
@@ -88,7 +87,7 @@ func LinkedinCallback(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Printf("ERROR: %s\n", err)
 		w.WriteHeader(500)
-		tmpl.Lookup("errors/500").Execute(w, helpers.ErrorData(err))
+		tmpl.Lookup("errors/500").Execute(w, shared.ErrorData(err))
 		return
 	}
 
@@ -106,9 +105,9 @@ func LinkedinCallback(w http.ResponseWriter, r *http.Request) {
 
 func inConfig() *oauth2.Config {
 	return &oauth2.Config{
-		ClientID:     system.GetConfig().Oauth.Linkedin.ClientID,
-		ClientSecret: system.GetConfig().Oauth.Linkedin.ClientSecret,
-		RedirectURL:  system.GetConfig().Oauth.Linkedin.RedirectURL,
+		ClientID:     shared.GetConfig().Oauth.Linkedin.ClientID,
+		ClientSecret: shared.GetConfig().Oauth.Linkedin.ClientSecret,
+		RedirectURL:  shared.GetConfig().Oauth.Linkedin.RedirectURL,
 		Scopes:       []string{"r_basicprofile", "r_emailaddress"},
 		Endpoint:     linkedin.Endpoint,
 	}
